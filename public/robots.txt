@@ -1,3 +1,10 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+User-agent: *
+Disallow: /
+
+# Notice to all web crawlers:
+# Access to this site is restricted.
+# Please contact the owner at [your-email@example.com] 
+to negotiate and/or discuss access permissions.
+
