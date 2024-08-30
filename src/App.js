@@ -4,6 +4,13 @@ import React from "react";
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/themes";
+import { Header,
+	Footer,
+Sidebar, 
+EmailSignup,
+AdBanner } from './components';
+
+
 
 function App() {
 	const isDarkMode = false; // Toggle based on user preference or state

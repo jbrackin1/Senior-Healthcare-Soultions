@@ -13,16 +13,6 @@ const ColorPallet = {
 		backgroundAlt: "#FFFFF0", // Ivory
 	},
 
-	// Earthy Coral Scheme
-	earthyCoral: {
-		primary: "#8C7B75", // Cinereous
-		primaryAlt: "#E3DAC9", // Bone
-		accent: "#AAB7B8", // Ash Gray
-		accentAlt: "#F08080", // Coral Red
-		text: "#3E2723", // Deep Brown
-		background: "#FFF8E1", // Off White
-	},
-
 	// Purple Scheme
 	purple: {
 		primary: "#CDC3E3", // Thistle
