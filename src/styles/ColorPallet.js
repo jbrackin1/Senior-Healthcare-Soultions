@@ -1,6 +1,6 @@
 /** @format */
 
-// GlobalColors.js
+// ColorPallet.js
 
 const ColorPallet = {
 	// Blue Gray Scheme

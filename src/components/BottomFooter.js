@@ -2,7 +2,7 @@
 
 // Footer.js
 
-function createFooter() {
+function BottomFooter() {
 	// Create a footer container
 	const footer = document.createElement("footer");
 	footer.id = "site-footer";
@@ -26,4 +26,4 @@ function createFooter() {
 	document.body.appendChild(footer);
 }
 
-export { createFooter };
+export default BottomFooter ;

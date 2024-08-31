@@ -2,9 +2,11 @@
 
 // themes/GlobalStyles.js
 import { createGlobalStyle } from "styled-components";
-import ColorPallet from "./GlobalColors";
+import ColorPallet from "./ColorPallet";
+
 
 const GlobalStyles = createGlobalStyle`
+ @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Open+Sans:wght@300;400;600;700&display=swap');
   /* Reset some basic elements */
   *, *::before, *::after {
     box-sizing: border-box;
@@ -14,7 +16,7 @@ const GlobalStyles = createGlobalStyle`
 
   /* Set global font and background */
   body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     background-color: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
     line-height: 1.6;
@@ -23,8 +25,9 @@ const GlobalStyles = createGlobalStyle`
   }
 
   h1, h2, h3, h4, h5, h6 {
-    color: ${({ theme }) => theme.colors.primary};
-    margin-bottom: 1.5rem;
+font-family: 'Libre Baskerville', serif;
+color: ${({ theme }) => theme.colors.primary};
+margin-bottom: 1.5rem;
   }
 
   p {

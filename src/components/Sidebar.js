@@ -2,7 +2,7 @@
 
 // Sidebar.js
 
-function createSidebar() {
+function Sidebar() {
 	// Create a sidebar container
 	const sidebar = document.createElement("aside");
 	sidebar.id = "site-sidebar";
@@ -21,9 +21,9 @@ function createSidebar() {
 	sidebar.innerHTML = `
     <h3>Menu</h3>
     <ul>
-      <li><a href="#section1">Section 1</a></li>
-      <li><a href="#section2">Section 2</a></li>
-      <li><a href="#section3">Section 3</a></li>
+      <li><a href="#section1">Home</a></li>
+      <li><a href="#section2">About</a></li>
+      <li><a href="#section3">Contact</a></li>
     </ul>
   `;
 
@@ -31,4 +31,4 @@ function createSidebar() {
 	document.body.appendChild(sidebar);
 }
 
-export { createSidebar };
+export default Sidebar ;

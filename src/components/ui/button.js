@@ -1,25 +1,26 @@
 /** @format */
 
-// src/components/ui/button.js
-import React from "react";
 import styled from "styled-components";
 
-const StyledButton = styled.button`
+const Button = styled.button`
+	font-family: "Open Sans", sans-serif;
 	background-color: ${({ theme }) => theme.colors.primary};
-	color: ${({ theme }) => theme.colors.white};
+	color: ${({ theme }) => theme.colors.backgroundAlt};
 	border: none;
-	padding: ${({ theme }) => theme.spacing.medium};
-	font-size: ${({ theme }) => theme.fontSize.medium};
-	border-radius: 4px;
+	padding: 0.5rem 1rem;
 	cursor: pointer;
+	transition: background-color 0.3s ease;
 
 	&:hover {
-		background-color: ${({ theme }) => theme.colors.secondary};
+		background-color: ${({ theme }) => theme.colors.accent};
+	}
+
+	&:disabled {
+		background-color: ${({ theme }) => theme.colors.secondaryPrimary};
+		cursor: not-allowed;
+		opacity: 0.6;
 	}
 `;
 
-const Button = ({ children, onClick }) => {
-	return <StyledButton onClick={onClick}>{children}</StyledButton>;
-};
-
 export default Button;
+

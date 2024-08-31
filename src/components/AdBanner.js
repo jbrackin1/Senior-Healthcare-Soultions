@@ -3,7 +3,7 @@
 // AdBanner.js
 
 // Function to create an ad banner
-function createAdBanner() {
+function AdBanner() {
 	// Create a banner container
 	const bannerContainer = document.createElement("div");
 	bannerContainer.id = "ad-banner";
@@ -31,4 +31,4 @@ function createAdBanner() {
 }
 
 // Export the function to be used in other files
-export { createAdBanner };
+export default AdBanner ;

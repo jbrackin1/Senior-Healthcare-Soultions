@@ -2,7 +2,7 @@
 
 // EmailSignup.js
 
-function createEmailSignup() {
+function EmailSignup() {
 	// Create a container for the signup form
 	const signupContainer = document.createElement("div");
 	signupContainer.id = "email-signup";
@@ -44,4 +44,4 @@ function createEmailSignup() {
 	document.body.appendChild(signupContainer);
 }
 
-export { createEmailSignup };
+export default EmailSignup ;

@@ -1,4 +1,4 @@
-// //Resources.js
+//Resources.js
 // Purpose: Provides valuable information about insurance, healthcare,
 // and related topics.
 // Content:

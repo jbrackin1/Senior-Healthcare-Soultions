@@ -1,15 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+/** @format */
+// index.js
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 import { ThemeProvider } from "styled-components";
-import theme from "./styles/theme";
+import { lightTheme } from "./styles/themes/LightDarkTheme"; // Import a default theme
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<React.StrictMode>
-		<ThemeProvider theme={theme}>
+		{/* Provide the default theme to ThemeProvider */}
+		<ThemeProvider theme={lightTheme}>
 			<App />
 		</ThemeProvider>
 	</React.StrictMode>
