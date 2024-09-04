@@ -1,23 +1,17 @@
 /** @format */
 
-// themes/GlobalStyles.js
+// GlobalStyles.js
 import { createGlobalStyle } from "styled-components";
-import ColorPallet from "./ColorPallet";
-
 
 const GlobalStyles = createGlobalStyle`
- @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Open+Sans:wght@300;400;600;700&display=swap');
-  /* Reset some basic elements */
   *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
 
-  /* Set global font and background */
   body {
     font-family: 'Open Sans', sans-serif;
-    background-color: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
     line-height: 1.6;
     margin: 0;
@@ -25,9 +19,9 @@ const GlobalStyles = createGlobalStyle`
   }
 
   h1, h2, h3, h4, h5, h6 {
-font-family: 'Libre Baskerville', serif;
-color: ${({ theme }) => theme.colors.primary};
-margin-bottom: 1.5rem;
+    font-family: 'Libre Baskerville', serif;
+    color: ${({ theme }) => theme.colors.accent};
+    margin-bottom: 1.5rem;
   }
 
   p {
@@ -36,11 +30,11 @@ margin-bottom: 1.5rem;
   }
 
   a {
-    color: ${({ theme }) => theme.colors.accent};
+    color: ${({ theme }) => theme.colors.text};
     text-decoration: none;
 
     &:hover {
-      color: ${({ theme }) => theme.colors.primary};
+      color: #add8e6;
     }
   }
 
@@ -53,13 +47,12 @@ margin-bottom: 1.5rem;
     cursor: pointer;
 
     &:hover {
-      background-color: ${({ theme }) => theme.colors.accent};
+      background-color: #add8e6;
     }
   }
 
-  /* Utility classes for background colors */
   .bg-primary {
-    background-color: ${({ theme }) => theme.colors.primary};
+    background-color: #2b3a42;
   }
 
   .bg-accent {
@@ -78,7 +71,6 @@ margin-bottom: 1.5rem;
     background-color: ${({ theme }) => theme.colors.backgroundAlt};
   }
 
-  /* Utility classes for text colors */
   .text-primary {
     color: ${({ theme }) => theme.colors.primary};
   }

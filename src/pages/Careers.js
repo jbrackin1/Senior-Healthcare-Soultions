@@ -1,2 +1,2 @@
-// Optional - future use -  If your website represents a larger organization,
+// Optional - future use -  when your website organization grows,
 // this could include job openings, company culture, and application forms.
