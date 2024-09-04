@@ -30,7 +30,7 @@ const ModalContent = styled.div`
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
 	backdrop-filter: blur(
 		8px
-	); /* Adds a blur effect to the background behind the modal */
+	);
 `;
 
 const Modal = ({ children, onClose }) => {

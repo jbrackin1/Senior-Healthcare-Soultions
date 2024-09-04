@@ -37,23 +37,23 @@ const FooterTitle = styled.h4`
 
 const FooterLink = styled(Link)`
 	text-decoration: none;
-	color: #ffffff; /* White color for internal links */
+	color: #ffffff;
 	display: block;
 	margin: 0.2rem 0;
 
 	&:hover {
-		color: ${({ theme }) => theme.colors.accent}; /* Hover effect */
+		color: ${({ theme }) => theme.colors.hoverBackground};
 	}
 `;
 
 const ExternalLink = styled.a`
 	text-decoration: none;
-	color: #ffffff; /* White color for external links */
+	color: #ffffff; 
 	display: block;
 	margin: 0.2rem 0;
 
 	&:hover {
-		color: ${({ theme }) => theme.colors.accent}; /* Hover effect */
+		color: ${({ theme }) => theme.colors.hoverBackground}; /* Hover effect */
 	}
 `;
 

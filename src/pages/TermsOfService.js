@@ -15,7 +15,7 @@ const TermsContainer = styled.div`
 `;
 
 const Heading = styled.h1`
-	color: ${({ theme }) => theme.colors.primary};
+	color: ${({ theme }) => theme.colors.accent};
 	margin-bottom: 1rem;
 `;
 
@@ -32,9 +32,8 @@ const TermsOfService = () => {
 
 	return (
 		<TermsContainer>
-			Chat gpt wrote this have a lawyer verify if it is good or not
 			<Heading>
-				Terms and Conditions - NOTICE - Chat gpt wrote this have a lawyer verify
+				Terms and Conditions - NOTICE - Generic template have a lawyer verify
 				if it is good or not
 			</Heading>
 			<Paragraph>

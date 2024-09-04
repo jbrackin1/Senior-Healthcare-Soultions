@@ -24,7 +24,7 @@ const PrivacyContainer = styled.div`
 `;
 
 const Heading = styled.h1`
-	color: ${({ theme }) => theme.colors.primary};
+	color: ${({ theme }) => theme.colors.accent};
 	margin-bottom: 1rem;
 `;
 
@@ -40,7 +40,7 @@ const Paragraph = styled.p`
 const PrivacyPolicy = () => {
 	return (
 		<PrivacyContainer>
-			<Heading>Privacy Policy- NOTICE - Chat gpt wrote this have a lawyer review it.</Heading>
+			<Heading>Privacy Policy- NOTICE - Generic template have a lawyer review it.</Heading>
 			<Paragraph>
 				This Privacy Policy explains how [Your Website Name] collects, uses, and
 				protects the personal information you provide while using our website.

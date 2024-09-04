@@ -3,18 +3,20 @@
 // HomePage.js
 import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "../components/ui/button";
-import Input from "../components/ui/Input";
-import Modal from "../components/ui/modal";
+import Button from "../components/ui/Global/button";
+import Input from "../components/ui/Global/Input";
+import Modal from "../components/ui/Global/modal";
 
 // Styled Components for Main Content and Layout
 const MainContent = styled.main`
 	padding: 2rem;
-	background-image: url("/assets/images/BlueBackground.jpeg"); /* Background image for main content */
-	background-size: cover; /* Cover the entire background area */
-	background-position: center; /* Center the background image */
-	background-repeat: no-repeat; /* Prevents the image from repeating */
+	background-image: url("/assets/images/BlueBackground.jpeg");
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
 	color: ${({ theme }) => theme.colors.text};
+	display: flex; /* Use flex to align items side by side */
+	justify-content: space-between; /* Space between sections */
 `;
 
 const HeroSection = styled.section`
@@ -37,38 +39,42 @@ const HeroDescription = styled.p`
 `;
 
 const HighlightSection = styled.section`
-	margin: 2rem 0;
-	text-align: center;
-	color: #ffffff; /* Make text white */
+	margin: 2rem;
+	display: flex;
+	flex-direction: column; /* Stack items vertically */
+	align-items: flex-start; /* Align items to the left */
 `;
 
 const HighlightTitle = styled.h2`
 	font-family: "Libre Baskerville", serif;
 	font-size: 2rem;
 	margin-bottom: 1.5rem;
-	color: #ffffff; /* Make title white */
+	color: #ffffff;
 `;
 
 const HighlightList = styled.ul`
 	list-style-type: none;
 	padding: 0;
 	font-family: "Open Sans", sans-serif;
-	color: #ffffff; /* Make list items white */
+	color: #ffffff;
+	margin: 0; /* Reset margin */
 `;
 
 const HighlightItem = styled.li`
 	margin-bottom: 1rem;
-	color: #ffffff; /* Make individual list items white */
+	color: #ffffff;
 `;
 
 const QuickLinks = styled.section`
-	margin: 2rem 0;
+	margin: 2rem;
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+  justify-content:center;
 `;
 
 const LinkButton = styled(Button)`
-	margin: 0 1rem;
+	margin-bottom: 1rem;
 `;
 
 const TestimonialSection = styled.section`
@@ -89,7 +95,7 @@ const TestimonialAuthor = styled.p`
 	font-weight: bold;
 `;
 
-// HomePage Component
+
 const HomePage = () => {
 	const [isModalOpen, setModalOpen] = useState(false);
 
@@ -103,7 +109,6 @@ const HomePage = () => {
 
 	return (
 		<>
-			{/* Hero Section */}
 			<HeroSection>
 				<HeroTitle>Welcome to Insurance Compare</HeroTitle>
 				<HeroDescription>
@@ -112,9 +117,13 @@ const HomePage = () => {
 				<Button onClick={handleButtonClick}>Compare Now</Button>
 			</HeroSection>
 
-			{/* Main Content */}
 			<MainContent>
-				{/* Introduction and Highlights */}
+				<QuickLinks>
+					<LinkButton>Compare Plans</LinkButton>
+					<LinkButton>Resources</LinkButton>
+					<LinkButton>Contact Us</LinkButton>
+				</QuickLinks>
+
 				<HighlightSection>
 					<HighlightTitle>Why Choose Us?</HighlightTitle>
 					<HighlightList>
@@ -125,24 +134,15 @@ const HomePage = () => {
 						<HighlightItem>Trusted by Experts</HighlightItem>
 					</HighlightList>
 				</HighlightSection>
-
-				{/* Quick Access Links */}
-				<QuickLinks>
-					<LinkButton>Compare Plans</LinkButton>
-					<LinkButton>Resources</LinkButton>
-					<LinkButton>Contact Us</LinkButton>
-				</QuickLinks>
-
-				{/* Testimonials */}
-				<TestimonialSection>
-					<TestimonialQuote>
-						"This website made it so easy to find the best insurance for me!"
-					</TestimonialQuote>
-					<TestimonialAuthor>– Happy Customer</TestimonialAuthor>
-				</TestimonialSection>
 			</MainContent>
 
-			{/* Modal for further user interaction */}
+			<TestimonialSection>
+				<TestimonialQuote>
+					"This website made it so easy to find the best insurance for me!"
+				</TestimonialQuote>
+				<TestimonialAuthor>A Happy Customer</TestimonialAuthor>
+			</TestimonialSection>
+
 			{isModalOpen && (
 				<Modal onClose={handleCloseModal}>
 					<h2>Request More Information</h2>

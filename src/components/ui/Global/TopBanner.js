@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 // Styled Components
 const TopBanner = styled.header`
 	background-color: ${({ theme }) => theme.colors.accent};
-	// min-height: 0.2vh;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -18,28 +17,33 @@ const TopBanner = styled.header`
 	font-family: "Libre Baskerville", serif;
 `;
 
-
 const NavMenu = styled.nav`
 	display: flex;
 	gap: 20px;
 	margin-top: 20px;
-	position: relative; 
+	position: relative;
 `;
 
 const NavItem = styled(Link)`
 	text-decoration: none;
 	color: ${({ theme }) => theme.colors.backgroundAlt};
-};
 	font-size: ${({ theme }) => theme.fontSizes.medium};
 	font-weight: bold;
-	position: relative; 
 
 	&:hover {
 		color: ${({ theme }) => theme.colors.backgroundAlt};
 	}
+`;
+
+const DropdownToggle = styled.div`
+	color: ${({ theme }) => theme.colors.backgroundAlt};
+	font-size: ${({ theme }) => theme.fontSizes.medium};
+	font-weight: bold;
+	cursor: pointer;
+	position: relative;
 
 	&:hover > div {
-		display: block; /* Show the dropdown on hover */
+		display: block;
 	}
 `;
 
@@ -79,23 +83,23 @@ const TopBannerComponent = () => {
 				<NavItem to="/contact">Contact</NavItem>
 
 				{/* Dropdown Menu Example */}
-				<NavItem to="#">
+				<DropdownToggle>
 					Resources
 					<DropdownMenu>
 						<DropdownItem to="/privacy-policy">Privacy Policy</DropdownItem>
 						<DropdownItem to="/terms-of-service">Terms of Service</DropdownItem>
 						<DropdownItem to="/testimonials">Testimonials</DropdownItem>
 					</DropdownMenu>
-				</NavItem>
+				</DropdownToggle>
 
 				{/* Another Dropdown Menu Example */}
-				<NavItem to="#">
+				<DropdownToggle>
 					User
 					<DropdownMenu>
 						<DropdownItem to="/login-signup">Login/Signup</DropdownItem>
 						<DropdownItem to="/user-profile">User Profile</DropdownItem>
 					</DropdownMenu>
-				</NavItem>
+				</DropdownToggle>
 			</NavMenu>
 		</TopBanner>
 	);

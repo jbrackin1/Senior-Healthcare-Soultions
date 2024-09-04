@@ -8,7 +8,8 @@ const StyledInput = styled.input`
 	padding: ${({ theme }) => theme.spacing.small};
 	border: 1px solid ${({ theme }) => theme.colors.border};
 	border-radius: 4px;
-	font-size: ${({ theme }) => theme.fontSize.medium};
+	font-size: ${({ theme }) =>
+		theme.fontSizes.medium};
 	width: 100%;
 	box-sizing: border-box;
 

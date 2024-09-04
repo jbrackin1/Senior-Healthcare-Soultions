@@ -4,13 +4,13 @@ import styled from "styled-components";
 
 const Button = styled.button`
 	font-family: "Open Sans", sans-serif;
-	font-weight: bold; 
+	font-weight: bold;
+	font-size: 1.25rem; 
 	background: linear-gradient(
 		to bottom right,
 		white 30%,
-		transparent 60%
-	); /* Gradient from white to transparent */
-	color: ${({ theme }) => theme.colors.text}; /* Dark gray text */
+		transparent 60% );
+	color: ${({ theme }) => theme.colors.text};
 	border: 2px solid ${({ theme }) => theme.colors.darkGray}; 
 	border-radius: 10px;
 	padding: 0.5rem 1rem;
