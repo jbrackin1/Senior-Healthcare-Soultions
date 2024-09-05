@@ -92,7 +92,7 @@ const TopBannerComponent = () => {
 					</DropdownMenu>
 				</DropdownToggle>
 
-				{/* Another Dropdown Menu Example */}
+				
 				<DropdownToggle>
 					User
 					<DropdownMenu>

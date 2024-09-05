@@ -6,7 +6,7 @@ const ColorPallet = {
 	// Blue Gray Scheme
 	blueGray: {
 		primary: "#2C3E50", // Charcoal
-		accent: "#AED6F1", // Uranian Blue
+		accent: "#AED6F1", // Uranian/Light Blue
 		secondaryPrimary: "#BDC3C7", // French Gray
 		text: "#2F2F2F", // Dark Charcoal
 		background: "#ECECEC", // Light Gray

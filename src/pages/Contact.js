@@ -16,10 +16,16 @@ const ContactContainer = styled.main`
 	color: ${({ theme }) => theme.colors.text};
 	font-family: "Open Sans", sans-serif;
 	line-height: 1.6;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 `;
 
 const Section = styled.section`
 	margin-bottom: 3rem;
+	max-width: 600px;
+	width: 100%;
+	text-align: center;
 `;
 
 const SectionTitle = styled.h2`
@@ -49,7 +55,7 @@ const SocialIcon = styled.a`
 	font-size: 1.5rem;
 
 	&:hover {
-		color: ${({ theme }) => theme.colors.primary};
+		color: ${({ theme }) => theme.colors.hoverBackground};
 	}
 `;
 
@@ -132,13 +138,12 @@ const Contact = () => {
 				</MapContainer>
 			</Section>
 
-			{/* Social Media Links */}
 			<Section>
 				<SectionTitle>Follow Us</SectionTitle>
 				<SocialMediaLinks>
 					<SocialIcon
 						href="https://facebook.com"
-						target="_blank"
+						target="fill_in_the_blank"
 						rel="noopener noreferrer">
 						<FaFacebook />
 					</SocialIcon>
@@ -157,7 +162,6 @@ const Contact = () => {
 				</SocialMediaLinks>
 			</Section>
 
-			{/* FAQ Section */}
 			<Section>
 				<SectionTitle>Frequently Asked Questions</SectionTitle>
 				<FAQList>

@@ -10,10 +10,11 @@ const ModalOverlay = styled.div`
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.5); /* Dark semi-transparent background */
+	background-color: rgba(0, 0, 0, 0.2);
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	z-index: 1000;
 `;
 
 const ModalContent = styled.div`
@@ -22,15 +23,30 @@ const ModalContent = styled.div`
 		255,
 		255,
 		0.8
-	); /* Light grayish white with 80% opacity */
-	padding: ${({ theme }) => theme.spacing.large};
-	border-radius: 8px;
+	);
+	padding: ${({ theme }) => theme.spacing.large || "2rem"};
+	border-radius: 20px;
 	width: 500px;
 	max-width: 90%;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
-	backdrop-filter: blur(
-		8px
-	);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+	backdrop-filter: blur(8px);
+	z-index: 1001;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+`;
+
+const ModalHeading = styled.h2`
+	margin: 0;
+	line-height: 1;
+	padding 0:
+`;
+
+const ModalParagraph = styled.p`
+	margin: 0; 
+	line-height: 1;
+	padding 0:
 `;
 
 const Modal = ({ children, onClose }) => {

@@ -6,20 +6,29 @@ import styled from "styled-components";
 import Button from "../components/ui/Global/button";
 import Input from "../components/ui/Global/Input";
 import Modal from "../components/ui/Global/modal";
+import { Link } from "react-router-dom";
+import ComparePlans from "./Compare";
+import Contact from "./Contact";
+import Resources from "./Resources";
 
-// Styled Components for Main Content and Layout
-const MainContent = styled.main`
-	padding: 2rem;
+// Full page wrapper with background image
+const PageWrapper = styled.div`
+	padding: 0;
 	background-image: url("/assets/images/BlueBackground.jpeg");
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
 	color: ${({ theme }) => theme.colors.text};
-	display: flex; /* Use flex to align items side by side */
-	justify-content: space-between; /* Space between sections */
+	min-height: 100vh; /* Ensure it covers the full viewport height */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
 `;
 
+// Hero Section alone at the top
 const HeroSection = styled.section`
+	width: 100%;
 	text-align: center;
 	padding: 4rem 2rem;
 	background-color: ${({ theme }) => theme.colors.primary};
@@ -38,54 +47,98 @@ const HeroDescription = styled.p`
 	margin-bottom: 2rem;
 `;
 
-const HighlightSection = styled.section`
-	margin: 2rem;
+const MiddleContent = styled.div`
 	display: flex;
-	flex-direction: column; /* Stack items vertically */
-	align-items: flex-start; /* Align items to the left */
-`;
-
-const HighlightTitle = styled.h2`
-	font-family: "Libre Baskerville", serif;
-	font-size: 2rem;
-	margin-bottom: 1.5rem;
-	color: #ffffff;
-`;
-
-const HighlightList = styled.ul`
-	list-style-type: none;
-	padding: 0;
-	font-family: "Open Sans", sans-serif;
-	color: #ffffff;
-	margin: 0; /* Reset margin */
-`;
-
-const HighlightItem = styled.li`
-	margin-bottom: 1rem;
-	color: #ffffff;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 6rem;
+	width: 100%;
+	padding: 12rem;
 `;
 
 const QuickLinks = styled.section`
-	margin: 2rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-  justify-content:center;
+	justify-content: center;
+	flex: 1;
+`;
+
+const StyledLink = styled(Link)`
+	text-decoration: none;
 `;
 
 const LinkButton = styled(Button)`
 	margin-bottom: 1rem;
 `;
 
+const HighlightSection = styled.section`
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	flex: 1;
+	padding: 2rem;
+	margin: 2rem;
+	z-index: 1;
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: rgba(255, 255, 255, 0.5);
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+		border-radius: 12px;
+		z-index: -1;
+		color: ${({ theme }) => theme.colors.text};
+	}
+`;
+
+const HighlightTitle = styled.h2`
+	font-family: "Libre Baskerville", serif;
+	font-size: 2rem;
+	margin-bottom: 1.5rem;
+`;
+
+const HighlightList = styled.ul`
+	list-style-type: none;
+	padding: 0;
+	font-family: "Open Sans", sans-serif;
+	margin: 0;
+`;
+
+const HighlightItem = styled.li`
+	margin-bottom: 0.2rem;
+	font-size: 1.25rem;
+	font-weight: bold;
+`;
+
 const TestimonialSection = styled.section`
 	padding: 2rem;
-	background-color: ${({ theme }) => theme.colors.background};
+	border-radius: 8px;
+	background-color: rgba(255, 255, 255, 0.8);
 	text-align: center;
+	width: 100%;
+	margin-top: 2rem;
+	background-color: rgba(
+		255,
+		255,
+		255,
+		0.5
+	);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	border-radius: 12px; 
 `;
 
 const TestimonialQuote = styled.p`
 	font-family: "Open Sans", sans-serif;
 	font-size: 1rem;
+	font-weight: bold;
 	font-style: italic;
 	margin-bottom: 1rem;
 `;
@@ -94,7 +147,6 @@ const TestimonialAuthor = styled.p`
 	font-family: "Libre Baskerville", serif;
 	font-weight: bold;
 `;
-
 
 const HomePage = () => {
 	const [isModalOpen, setModalOpen] = useState(false);
@@ -108,20 +160,26 @@ const HomePage = () => {
 	};
 
 	return (
-		<>
+		<PageWrapper>
 			<HeroSection>
 				<HeroTitle>Welcome to Insurance Compare</HeroTitle>
 				<HeroDescription>
 					Find the best insurance plans tailored to your needs.
 				</HeroDescription>
-				<Button onClick={handleButtonClick}>Compare Now</Button>
+				<Button onClick={handleButtonClick}>Sign Up Now</Button>
 			</HeroSection>
 
-			<MainContent>
+			<MiddleContent>
 				<QuickLinks>
-					<LinkButton>Compare Plans</LinkButton>
-					<LinkButton>Resources</LinkButton>
-					<LinkButton>Contact Us</LinkButton>
+					<StyledLink to="/compare">
+						<LinkButton>Compare Plans</LinkButton>
+					</StyledLink>
+					<StyledLink to="/resources">
+						<LinkButton>Resources</LinkButton>
+					</StyledLink>
+					<StyledLink to="/contact">
+						<LinkButton>Contact Us</LinkButton>
+					</StyledLink>
 				</QuickLinks>
 
 				<HighlightSection>
@@ -134,7 +192,7 @@ const HomePage = () => {
 						<HighlightItem>Trusted by Experts</HighlightItem>
 					</HighlightList>
 				</HighlightSection>
-			</MainContent>
+			</MiddleContent>
 
 			<TestimonialSection>
 				<TestimonialQuote>
@@ -146,12 +204,13 @@ const HomePage = () => {
 			{isModalOpen && (
 				<Modal onClose={handleCloseModal}>
 					<h2>Request More Information</h2>
-					<p>Please provide your contact details to get personalized offers.</p>
+					<div>Sign up with your contact details to</div>
+					<div>receive offers customized just for you.</div>
 					<Input placeholder="Enter your email" />
 					<Button onClick={handleCloseModal}>Close</Button>
 				</Modal>
 			)}
-		</>
+		</PageWrapper>
 	);
 };
 

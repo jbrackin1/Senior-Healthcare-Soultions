@@ -6,10 +6,11 @@ import styled from "styled-components";
 
 const StyledInput = styled.input`
 	padding: ${({ theme }) => theme.spacing.small};
+	margin-bottom: ${({ theme }) =>
+		theme.spacing.small};
 	border: 1px solid ${({ theme }) => theme.colors.border};
-	border-radius: 4px;
-	font-size: ${({ theme }) =>
-		theme.fontSizes.medium};
+	border-radius: 8px; 
+	font-size: ${({ theme }) => theme.fontSizes.medium};
 	width: 100%;
 	box-sizing: border-box;
 
