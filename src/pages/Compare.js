@@ -1,14 +1,13 @@
 /** @format */
 
-// src/pages/ComparePlans.js
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "../components/ui/Global/button";
-import { fetchAllPlans, saveUserFavorites } from "../services/api";
 import SearchBar from "../components/ui/compare/Searchbar";
-import FilterSelect from "../components/ui/compare/FilterSlelect"
+import FilterSelect from "../components/ui/compare/FilterSlelect";
+import { fetchAllAetnaData } from "../services/Api/Aetna/Aetna";
 
-// Define or import missing styled components
+// Styled components
 const CompareContainer = styled.main`
 	padding: 2rem;
 	background-color: ${({ theme }) => theme.colors.backgroundAlt};
@@ -65,7 +64,6 @@ const ComparePlans = () => {
 		const savedFavorites = localStorage.getItem("favorites");
 		return savedFavorites ? JSON.parse(savedFavorites) : [];
 	});
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [filters, setFilters] = useState({
 		age: "",
@@ -75,20 +73,26 @@ const ComparePlans = () => {
 
 	useEffect(() => {
 		const fetchPlans = async () => {
-			const allPlans = await fetchAllPlans();
-			setPlans(allPlans);
+			try {
+				const allData = await fetchAllAetnaData();
+				const allPlans = allData
+					.filter((result) => result.data) // Filter out any errors
+					.flatMap((result) => result.data); // Combine data from all endpoints
+
+				setPlans(allPlans); // Assuming the structure is consistent
+			} catch (error) {
+				console.error("Error fetching plans:", error);
+			}
 		};
 
 		fetchPlans();
 	}, []);
 
 	useEffect(() => {
-		if (!isLoggedIn) {
-			localStorage.setItem("favorites", JSON.stringify(favorites));
-		}
-	}, [favorites, isLoggedIn]);
+		localStorage.setItem("favorites", JSON.stringify(favorites));
+	}, [favorites]);
 
-	// Define toggleFavorite function
+	// Toggle favorite plan
 	const toggleFavorite = (planId) => {
 		if (favorites.includes(planId)) {
 			setFavorites(favorites.filter((id) => id !== planId));
@@ -97,20 +101,11 @@ const ComparePlans = () => {
 		}
 	};
 
-	// Define saveFavorites function
-	const saveFavorites = async () => {
-		if (isLoggedIn) {
-			try {
-				await saveUserFavorites(favorites);
-			} catch (error) {
-				console.error("Failed to save favorites:", error);
-			}
-		}
-	};
-
+	// Filter plans based on search query and filters
 	const filteredPlans = plans.filter((plan) => {
 		return (
-			plan.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+			(plan.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+				plan.description.toLowerCase().includes(searchQuery.toLowerCase())) &&
 			(filters.age === "" || plan.age === filters.age) &&
 			(filters.location === "" || plan.location === filters.location) &&
 			(filters.planType === "" || plan.planType === filters.planType)
@@ -167,12 +162,6 @@ const ComparePlans = () => {
 					</HeartButton>
 				</PlanCard>
 			))}
-
-			{isLoggedIn && (
-				<Button onClick={saveFavorites} style={{ marginTop: "1rem" }}>
-					Save Favorites
-				</Button>
-			)}
 		</CompareContainer>
 	);
 };

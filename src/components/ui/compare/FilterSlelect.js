@@ -1,6 +1,6 @@
 /** @format */
 
-// src/components/ComparePlans/FilterSelect.js
+// src/components/compare/FilterSelect.js
 import React from "react";
 import styled from "styled-components";
 

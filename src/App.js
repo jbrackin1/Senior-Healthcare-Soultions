@@ -5,7 +5,7 @@ import { ThemeProvider } from "styled-components";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import GlobalStyles from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/themes/LightDarkTheme";
-import AdBanner from "./components/ui/Global/AdBanner";
+import AdBanner from "./components/ui/Global/Ads/AdBanner";
 import TopBannerComponent from "./components/ui/Global/TopBanner";
 import BottomFooter from "./components/ui/Global/BottomFooter";
 // import MenuSidebar from "./components/Sidebar";
@@ -22,6 +22,7 @@ import Testimonials from "./pages/Testimonials";
 import Profile from "./pages/UserProfile";
 import Resources from "./pages/Resources";
 import TestTestimonials from "./pages/TestTestimonials";
+import PractitionerPage from "./pages/Practitioner";
 import AdminBlog from "./components/ui/Admin/EditBlog";
 import Blog from "./pages/Blog";
 import ComparePlans from "./pages/Compare";
@@ -53,6 +54,7 @@ function App() {
 					<Route path="/user-profile" element={<Profile />} />
 					<Route path="/compare" element={<ComparePlans />} />
 					<Route path="/resources" element={<Resources />} />
+					<Route path="/practitioner" component={<PractitionerPage/>} />
 					<Route path="/testimonials" component={<Testimonials />} />
 					<Route path="/test-testimonials" component={<TestTestimonials />} />
 				</Routes>

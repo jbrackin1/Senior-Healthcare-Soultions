@@ -7,9 +7,7 @@ import Button from "../components/ui/Global/button";
 import Input from "../components/ui/Global/Input";
 import Modal from "../components/ui/Global/modal";
 import { Link } from "react-router-dom";
-import ComparePlans from "./Compare";
-import Contact from "./Contact";
-import Resources from "./Resources";
+
 
 // Full page wrapper with background image
 const PageWrapper = styled.div`
@@ -162,7 +160,7 @@ const HomePage = () => {
 	return (
 		<PageWrapper>
 			<HeroSection>
-				<HeroTitle>Welcome to Insurance Compare</HeroTitle>
+				<HeroTitle>Senior Healthcare Solutions</HeroTitle>
 				<HeroDescription>
 					Find the best insurance plans tailored to your needs.
 				</HeroDescription>
