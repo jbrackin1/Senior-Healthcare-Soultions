@@ -1,15 +1,17 @@
 /** @format */
 
 // src/pages/Dash.js
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import UserManagement from "../components/Admin/UserManagement";
+import EditDocument from "../components/Admin/EditDocs";
+import AdminBlog from "../components/Admin/AdminBlog";
+import AnalyticsDashboard from "../components/Admin/AnalyticsDashboard";
+import Settings from "../components/Admin/Settings";
 import Button from "../components/ui/Global/button";
-import EditBlog from "../components/ui/Admin/EditBlog" 
-import AnalyticsChart from "../components/ui/Admin/AnalyticsChart";
-import EditDocs from "../components/ui/Admin/EditDocs"; 
 
-// Styled Components
+// Styled Components for Dashboard Layout
 const DashboardContainer = styled.main`
 	display: flex;
 	flex-direction: column;
@@ -51,73 +53,91 @@ const DashboardGrid = styled.div`
 	gap: 2rem;
 `;
 
-// Admin Dashboard Component
+const NavigationMenu = styled.div`
+	margin-bottom: 2rem;
+	padding: 1rem;
+	border-radius: 8px;
+	background-color: ${({ theme }) => theme.colors.background};
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	display: flex;
+	justify-content: space-around;
+`;
+
+const NavButton = styled(Button)`
+	background-color: ${({ active }) =>
+		active
+			? ({ theme }) => theme.colors.accent
+			: ({ theme }) => theme.colors.primary};
+	color: ${({ theme }) => theme.colors.backgroundAlt};
+	&:hover {
+		background-color: ${({ theme }) => theme.colors.accent};
+	}
+`;
+
 function Dash() {
+	const [activeSection, setActiveSection] = useState("user-management");
 	const navigate = useNavigate();
 
-	const handleUserManagement = () => {
-		alert("Navigating to User Management...");
-	};
-
-	const handleContentManagement = () => {
-		// Navigate to AdminBlog component page
-		navigate("/admin/blog");
-	};
-
-	const handleAnalyticsReports = () => {
-		alert("Displaying Analytics and Reports...");
-	};
-
-	const handleSettings = () => {
-		// Navigate to EditDocs component page
-		navigate("/admin/settings");
+	const handleNavigation = (section) => {
+		setActiveSection(section);
 	};
 
 	return (
 		<DashboardContainer>
-			<SectionTitle>Admin Dashboard</SectionTitle>
+			{/* Navigation Menu */}
+			<NavigationMenu>
+				<NavButton
+					active={activeSection === "user-management"}
+					onClick={() => handleNavigation("user-management")}>
+					User Management
+				</NavButton>
+				<NavButton
+					active={activeSection === "content-management"}
+					onClick={() => handleNavigation("content-management")}>
+					Content Management
+				</NavButton>
+				<NavButton
+					active={activeSection === "analytics"}
+					onClick={() => handleNavigation("analytics")}>
+					Analytics & Reports
+				</NavButton>
+				<NavButton
+					active={activeSection === "settings"}
+					onClick={() => handleNavigation("settings")}>
+					Settings
+				</NavButton>
+			</NavigationMenu>
+
 			<DashboardGrid>
-				{/* User Management Section */}
-				<Section>
-					<SectionTitle>User Management</SectionTitle>
-					<p>Manage registered users, roles, permissions, and activity logs.</p>
-					<AdminButton onClick={handleUserManagement}>Manage Users</AdminButton>
-				</Section>
+				{/* Conditionally Render Components Based on Active Section */}
+				{activeSection === "user-management" && (
+					<Section>
+						<SectionTitle>User Management</SectionTitle>
+						<UserManagement />
+					</Section>
+				)}
 
-				{/* Content Management Section */}
-				<Section>
-					<SectionTitle>Content Management</SectionTitle>
-					<p>
-						Add, edit, or remove pages, blog posts, insurance plan data, FAQs,
-						etc.
-					</p>
-					<AdminButton onClick={handleContentManagement}>
-						Manage Blog
-					</AdminButton>
-                    <EditBlog />
-                    <EditDocs />
-				</Section>
+				{activeSection === "content-management" && (
+					<Section>
+						<SectionTitle>Content Management</SectionTitle>
+						<AdminBlog />
+						<EditDocument documentType="Privacy Policy" />
+					</Section>
+				)}
 
-				{/* Analytics and Reports Section */}
-				<Section>
-					<SectionTitle>Analytics and Reports</SectionTitle>
-					<p>
-						View site analytics, user engagement stats, and conversion metrics.
-					</p>
-					<AnalyticsChart />
-					<AdminButton onClick={handleAnalyticsReports}>
-						View Analytics
-					</AdminButton>
-				</Section>
+				{activeSection === "analytics" && (
+					<Section>
+						<SectionTitle>Analytics and Reports</SectionTitle>
+						<AnalyticsDashboard />
+					</Section>
+				)}
 
-				{/* Settings and Configurations Section */}
-				<Section>
-					<SectionTitle>Settings and Configurations</SectionTitle>
-					<p>
-						Configure site settings, privacy policies, and user notifications.
-					</p>
-					<AdminButton onClick={handleSettings}>Manage Settings</AdminButton>
-				</Section>
+				{activeSection === "settings" && (
+					<Section>
+						<SectionTitle>Settings and Configurations</SectionTitle>
+						<Settings />
+					</Section>
+				)}
 			</DashboardGrid>
 		</DashboardContainer>
 	);

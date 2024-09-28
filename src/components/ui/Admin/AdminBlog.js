@@ -1,6 +1,6 @@
 /** @format */
 
-// src/pages/AdminBlog.js
+// Users/ash/Desktop/NicolesProject/nicoles-app/src/components/ui/Admin/AdminBlog.js
 import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../Global/button";
@@ -106,6 +106,13 @@ const AdminBlog = () => {
 		const updatedPosts = posts.filter((_, i) => i !== index);
 		setPosts(updatedPosts);
 	};
+
+	const [previewMode, setPreviewMode] = useState(false);
+
+	const togglePreviewMode = () => {
+		setPreviewMode(!previewMode);
+	};
+
 
 	return (
 		<AdminBlogContainer>

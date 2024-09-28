@@ -1,6 +1,7 @@
 // /** @format */
 
 // // src/components/ui/Global/Sidebar.js
+//Maybe change it to sideAds.js??
 
 // import React from "react";
 // import styled from "styled-components";
