@@ -1,0 +1,83 @@
+
+
+A list of essential data points and questions you should include:
+
+/*
+ * Data Requirements for Insurance Comparison:
+ * - Age
+ * - Sex
+ * - Veteran Status
+ * - Medications
+ * - Pre-existing Conditions (e.g., Diabetes, High BP, Cancer)
+ * - Fitness and Wellness Programs (e.g., SilverSneakers)
+ * - Plan Type (HMO, PPO, etc.)
+ * - Network and Hospital Coverage
+ * - Costs (Premiums, Deductibles, Co-pays, etc.)
+ * - Additional Benefits (Dental, Vision, etc.)
+ */
+
+
+### Basic Personal Information
+1. **Age**: Important for determining eligibility and premium costs.
+2. **Sex**: Can influence the types of coverage options available.
+
+### Health Conditions and Requirements
+1. **Pre-existing Conditions**: 
+   - Diabetes
+   - High Blood Pressure
+   - Heart Issues
+   - Cancer
+   - Asthma
+   - Any other chronic conditions
+   
+   This helps determine if these conditions are covered and at what cost.
+
+2. **Medications**:
+   - A list of current medications to check if they are covered under the plan's formulary and at what tier or cost.
+
+### Lifestyle and Special Programs
+1. **Fitness and Wellness Programs**:
+   - Coverage of programs like SilverSneakers (fitness program for older adults).
+   - Other wellness incentives or programs included.
+
+2. **Telehealth Services**:
+   - Availability and coverage for virtual doctor visits, mental health support, etc.
+
+### Coverage Details
+1. **Plan Type**:
+   - HMO, PPO, EPO, etc. Understand the differences in coverage, networks, and referral requirements.
+2. **Network**:
+   - In-network vs. out-of-network providers.
+3. **Hospital Coverage**:
+   - If specific hospitals are included and at what cost (e.g., copays, coinsurance).
+
+### Cost and Benefits
+1. **Premiums**: 
+   - Monthly cost of the plan.
+2. **Deductibles**: 
+   - Amount the user must pay before the insurance starts covering costs.
+3. **Co-pays and Co-insurance**:
+   - Costs associated with doctor visits, specialist visits, hospital stays, etc.
+4. **Out-of-Pocket Maximum**:
+   - The most a user will have to pay during a policy period before the plan covers 100%.
+
+5. **Coverage for Specific Treatments**:
+   - Is coverage provided for cancer treatments, dialysis, mental health, etc.?
+   - Limits on the number of visits or treatments covered.
+
+6. **Medicare/Medicaid Eligibility and Supplemental Plans**:
+   - For older adults, understanding if they are eligible for Medicare, if the plan supplements it, or if Medicaid options are better.
+
+### Additional Benefits
+1. **Dental, Vision, and Hearing Coverage**:
+   - Are these included, and if so, what are the details?
+2. **Alternative Medicine**:
+   - Coverage for chiropractic care, acupuncture, etc.
+
+### Final Checklist for Comparison:
+- **Cost Analysis**: Comparing total expected costs (premiums, deductibles, co-pays) across plans.
+- **Plan Ratings**: Based on customer reviews, ease of service, claims process, etc.
+- **Enrollment Periods**: Information on open enrollment dates and special enrollment periods.
+- **Plan Flexibility**: Options to change coverage during the year, add-ons, etc.
+
+This structured approach will ensure that users have a holistic view of their options and can choose a plan that best fits their medical needs, financial situation, and lifestyle preferences. Would you like more help with any specific data or structuring the site layout for these features?
