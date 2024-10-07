@@ -1,13 +1,16 @@
 /** @format */
 
-// src/components/Plan/PlanList.js
 import React from "react";
 import PlanCard from "./PlanCard";
+import { formatInsuranceList } from "../../../utils/formatData";
 
 const PlanList = ({ plans, onFavoriteToggle, favorites }) => {
+	// Format each plan in the list
+	const formattedPlans = formatInsuranceList(plans);
+
 	return (
 		<div>
-			{plans.map((plan) => (
+			{formattedPlans.map((plan) => (
 				<PlanCard
 					key={plan.id}
 					plan={plan}
@@ -20,3 +23,4 @@ const PlanList = ({ plans, onFavoriteToggle, favorites }) => {
 };
 
 export default PlanList;
+

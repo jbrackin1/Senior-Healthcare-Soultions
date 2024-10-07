@@ -26,3 +26,5 @@ yarn-error.log*
 *.pem
 *.jwk
 
+# Ignore the config directory with sensitive keys
+config/

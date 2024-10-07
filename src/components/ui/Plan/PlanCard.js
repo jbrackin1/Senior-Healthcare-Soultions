@@ -31,7 +31,13 @@ const PlanCard = ({ plan, onFavoriteToggle, isFavorite }) => {
 		<CardContainer>
 			<PlanInfo>
 				<PlanTitle>{plan.name}</PlanTitle>
-				<p>{plan.description}</p>
+				<p>Type: {plan.type}</p>
+				<p>Premium: {plan.premium}</p>
+				<p>Deductible: {plan.deductible}</p>
+				<p>General Co-Pay: {plan.coPay.general}</p>
+				<p>Specialist Co-Pay: {plan.coPay.specialist}</p>
+				<p>Network Coverage: {plan.networkCoverage}</p>
+				<p>Additional Benefits: {plan.additionalBenefits.join(", ")}</p>
 			</PlanInfo>
 			<Button onClick={() => onFavoriteToggle(plan.id)}>
 				{isFavorite ? "❤️" : "♡"}

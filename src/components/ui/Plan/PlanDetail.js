@@ -3,6 +3,11 @@
 // src/components/Plan/PlanDetail.js
 import React from "react";
 import styled from "styled-components";
+import {
+	formatInsuranceData,
+	formatInsuranceList,
+} from "../../../utils/formatData";
+
 
 const DetailContainer = styled.div`
 	padding: 2rem;
@@ -16,9 +21,34 @@ const DetailContainer = styled.div`
 const PlanDetail = ({ plan }) => {
 	return (
 		<DetailContainer>
-			<h2>{plan.name}</h2>
-			<p>{plan.description}</p>
-			{/* Add more detailed information here */}
+			<h2>{formattedPlan.name}</h2>
+			<p>{formattedPlan.description}</p>
+			<p>Premium: {formattedPlan.premium}</p>
+			<p>Plan Type: {formattedPlan.planType}</p>
+			<p>Network: {formattedPlan.network}</p>
+			<p>Benefits: {formattedPlan.benefits}</p>
+			<p>Deductible: {formattedPlan.deductible}</p>
+			<p>General Co-Pay: {formattedData.coPay.general}</p>
+			<p>Specialist Co-Pay: {formattedData.coPay.specialist}</p>
+			<p>Hospital Co-Pay: {formattedData.coPay.hospital}</p>
+			<p>Network Coverage: {formattedData.networkCoverage}</p>
+			<p>Medicare Eligible: {formattedData.medicareEligible}</p>
+			<p>Medicaid Eligible: {formattedData.medicaidEligible}</p>
+			<h3>Coverage Details:</h3>
+			<ul>
+				{formattedData.coverage.map((item, index) => (
+					<li key={index}>
+						{item.service}: {item.coverageAmount}
+					</li>
+				))}
+			</ul>
+			<h3>Additional Benefits:</h3>
+			<ul>
+				{formattedData.additionalBenefits.map((benefit, index) => (
+					<li key={index}>{benefit}</li>
+				))}
+			</ul>
+			{/* add more details if needed */}
 		</DetailContainer>
 	);
 };
