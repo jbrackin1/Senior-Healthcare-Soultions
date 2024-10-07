@@ -7,17 +7,21 @@
 const BASE_URL = "https://fhir.cigna.com/ProviderDirectory/v1-devportal/";
 
 const cignaApi = [
+
 	{ path: "/HealthcareService", description: "Healthcare Service Data" },
 	{ path: "/InsurancePlan", description: "Insurance Plan Data" },
 	{ path: "/Location", description: "Location Data" },
 	{ path: "/Organization", description: "Organization Data" },
-	{
-		path: "/OrganizationAffiliation",
-		description: "Organization Affiliation Data",
-	},
+	{ path: "/OrganizationAffiliation", description: "Organization Affiliation Data" },
 	{ path: "/Practitioner", description: "Practitioner Data" },
 	{ path: "/PractitionerRole", description: "Practitioner Role Data" },
 	{ path: "/Endpoint", description: "Endpoint Data" },
+	
+    // Add these APIs for personal and health-related data
+	{ path: "/v2/patientaccess/Patient", description: "Patient Demographic Data" },
+	{ path: "/v2/patientaccess/Condition", description: "Pre-existing Conditions Data" },
+	{ path: "/v2/patientaccess/MedicationRequest", description: "Medications Data" },
+	{ path: "/v2/patientaccess/Coverage", description: "Insurance Plan Coverage and Costs" },
 ];
 
 
