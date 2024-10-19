@@ -1,6 +1,6 @@
 /** @format */
 // App.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import GlobalStyles from "./styles/GlobalStyles";
@@ -26,9 +26,23 @@ import PractitionerPage from "./pages/Practitioner";
 import AdminBlog from "./components/ui/Admin/EditBlog";
 import Blog from "./pages/Blog";
 import ComparePlans from "./pages/Compare";
+import { getCignaToken } from "./services/Api/Cigna/getCignaToken";
+
 
 function App() {
 	const [isDarkMode, setIsDarkMode] = useState(false);
+
+	 useEffect(() => {
+			const fetchToken = async () => {
+				try {
+					const token = await getCignaToken();
+					console.log("Cigna Token:", token);
+				} catch (error) {
+					console.error("Failed to fetch token:", error);
+				}
+			};
+			fetchToken();
+		}, []);
 
 	return (
 		<ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
