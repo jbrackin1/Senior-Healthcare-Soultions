@@ -3,8 +3,8 @@
 // src/pages/Profile.js
 import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "../components/ui/Global/button";
-import Input from "../components/ui/Global/Input";
+import Button from "../../components/ui/Global/button";
+import Input from "../../components/ui/Global/Input";
 
 // Styled Components
 const ProfileContainer = styled.main`

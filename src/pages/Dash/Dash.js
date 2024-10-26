@@ -9,7 +9,7 @@ import EditDocument from "../components/Admin/EditDocs";
 import AdminBlog from "../components/Admin/AdminBlog";
 import AnalyticsDashboard from "../components/Admin/AnalyticsDashboard";
 import Settings from "../components/Admin/Settings";
-import Button from "../components/ui/Global/button";
+import Button from "../../components/ui/Global/button";
 
 // Styled Components for Dashboard Layout
 const DashboardContainer = styled.main`

@@ -3,9 +3,9 @@
 // HomePage.js
 import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "../components/ui/Global/button";
-import Input from "../components/ui/Global/Input";
-import Modal from "../components/ui/Global/modal";
+import Button from "../../components/ui/Global/button";
+import Input from "../../components/ui/Global/Input";
+import Modal from "../../components/ui/Global/modal";
 import { Link } from "react-router-dom";
 
 
