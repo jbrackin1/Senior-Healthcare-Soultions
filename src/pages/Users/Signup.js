@@ -63,23 +63,45 @@ const ToggleButton = styled.button`
 	}
 `;
 
-// LoginSignup Component
+// LoginSignup For Returningusers
+/** @format */
+import React, { useState } from "react";
+import styled from "styled-components";
+import Button from "../../components/ui/Global/button";
+import Input from "../../components/ui/Global/Input";
+
+// Styled Components (same as before)
+
 function LoginSignup() {
-	const [isLogin, setIsLogin] = useState(true); // Toggle between login and signup
+	const [isLogin, setIsLogin] = useState(true); 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [name, setName] = useState("");
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState("");
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if (isLogin) {
-			// Handle login logic here
-			alert(`Logging in with ${email}`);
-		} else {
-			// Handle signup logic here
-			alert(`Signing up with ${name} and ${email}`);
+		setError("");
+		setLoading(true);
+
+		try {
+			if (isLogin) {
+				// Handle login logic here
+				alert(`Logging in with ${email}`);
+				// Reset states on success
+			} else {
+				alert(`Signing up with ${name} and ${email}`);
+				// Reset states on success
+			}
+		} catch (error) {
+			setError("An error occurred. Please try again.");
+		} finally {
+			setLoading(false);
 		}
 	};
+
+	const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
 
 	return (
 		<LoginSignupContainer>
@@ -102,6 +124,9 @@ function LoginSignup() {
 						onChange={(e) => setEmail(e.target.value)}
 						required
 					/>
+					{!validateEmail(email) && email && (
+						<p style={{ color: "red" }}>Invalid email format</p>
+					)}
 					<StyledInput
 						type="password"
 						placeholder="Password"
@@ -109,14 +134,13 @@ function LoginSignup() {
 						onChange={(e) => setPassword(e.target.value)}
 						required
 					/>
-					<StyledButton type="submit">
-						{isLogin ? "Login" : "Sign Up"}
+					{error && <p style={{ color: "red" }}>{error}</p>}
+					<StyledButton type="submit" disabled={loading}>
+						{loading ? "Processing..." : isLogin ? "Login" : "Sign Up"}
 					</StyledButton>
 				</form>
 				<ToggleButton onClick={() => setIsLogin(!isLogin)}>
-					{isLogin
-						? "Don't have an account? Sign Up"
-						: "Already have an account? Login"}
+					{isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login"}
 				</ToggleButton>
 			</FormContainer>
 		</LoginSignupContainer>

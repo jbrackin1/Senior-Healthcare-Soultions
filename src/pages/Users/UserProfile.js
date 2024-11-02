@@ -64,14 +64,23 @@ function Profile() {
 		name: "John Doe",
 		email: "john.doe@example.com",
 		password: "",
+		age: "",
+		sex: "",
+		zipCode: "",
+		income: "",
+		householdSize: "",
+		isVeteran: false,
 	});
 
 	// State to manage form inputs
 	const [formData, setFormData] = useState({ ...userData });
 
 	const handleInputChange = (e) => {
-		const { name, value } = e.target;
-		setFormData((prevData) => ({ ...prevData, [name]: value }));
+		const { name, value, type, checked } = e.target;
+		setFormData((prevData) => ({
+			...prevData,
+			[name]: type === "checkbox" ? checked : value,
+		}));
 	};
 
 	const handleFormSubmit = (e) => {
@@ -81,9 +90,8 @@ function Profile() {
 	};
 
 	const handleLogout = () => {
-		// Handle logout logic
 		alert("You have been logged out.");
-		// Future: Add logic to clear user session and redirect to login page
+		// Add logic to clear user session and redirect to login page if needed
 	};
 
 	return (
@@ -115,6 +123,57 @@ function Profile() {
 					onChange={handleInputChange}
 					required
 				/>
+				<Input
+					type="number"
+					name="age"
+					placeholder="Age"
+					value={formData.age}
+					onChange={handleInputChange}
+				/>
+				<label>
+					Sex:
+					<select
+						name="sex"
+						value={formData.sex}
+						onChange={handleInputChange}
+						required>
+						<option value="">Select</option>
+						<option value="male">Male</option>
+						<option value="female">Female</option>
+						<option value="other">Other</option>
+						<option value="preferNotToSay">Prefer not to say</option>
+					</select>
+				</label>
+				<Input
+					type="text"
+					name="zipCode"
+					placeholder="ZIP Code"
+					value={formData.zipCode}
+					onChange={handleInputChange}
+				/>
+				<Input
+					type="number"
+					name="income"
+					placeholder="Annual Income (Optional)"
+					value={formData.income}
+					onChange={handleInputChange}
+				/>
+				<Input
+					type="number"
+					name="householdSize"
+					placeholder="Household Size (Optional)"
+					value={formData.householdSize}
+					onChange={handleInputChange}
+				/>
+				<label>
+					<input
+						type="checkbox"
+						name="isVeteran"
+						checked={formData.isVeteran}
+						onChange={handleInputChange}
+					/>
+					Are you a veteran?
+				</label>
 				<StyledButton type="submit">Update Profile</StyledButton>
 			</ProfileForm>
 

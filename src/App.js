@@ -49,7 +49,7 @@ function App() {
 			<GlobalStyles />
 			<Router>
 				<TopBannerComponent />
-				{/* <MenuSidebar /> */}
+				{/* <MenuSidebar /> Maybe retool for ads? */}
 				<AdBanner />
 
 				<Routes>
