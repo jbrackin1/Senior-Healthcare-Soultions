@@ -1,12 +1,24 @@
 /** @format */
 
-// src/pages/Profile.js
 import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../../components/ui/Global/button";
 import Input from "../../components/ui/Global/Input";
+import Dropdowns from "../../components/ui/Global/Dropdowns";
+
 
 // Styled Components
+
+const BackgroundContainer = styled.div`
+	background-image: url("/assets/images/MedicalWallpaper.webp");
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	background-size: cover;
+	background-position: center;
+`;
+
 const ProfileContainer = styled.main`
 	padding: 2rem;
 	background-color: ${({ theme }) => theme.colors.backgroundAlt};
@@ -48,18 +60,17 @@ const NotificationSettingsSection = styled.div`
 	background-color: ${({ theme }) => theme.colors.background};
 `;
 
-const StyledButton = styled(Button)`
-	background-color: ${({ theme }) => theme.colors.primary};
-	color: ${({ theme }) => theme.colors.backgroundAlt};
-	margin-top: 1rem;
-	&:hover {
-		background-color: ${({ theme }) => theme.colors.accent};
-	}
-`;
+// const StyledButton = styled(Button)`
+// 	background-color: ${({ theme }) => theme.colors.primary};
+// 	color: ${({ theme }) => theme.colors.backgroundAlt};
+// 	margin-top: 1rem;
+// 	&:hover {
+// 		background-color: ${({ theme }) => theme.colors.accent};
+// 	}
+// `;
 
 // Profile Component
 function Profile() {
-	// State to manage user data
 	const [userData, setUserData] = useState({
 		name: "John Doe",
 		email: "john.doe@example.com",
@@ -72,7 +83,6 @@ function Profile() {
 		isVeteran: false,
 	});
 
-	// State to manage form inputs
 	const [formData, setFormData] = useState({ ...userData });
 
 	const handleInputChange = (e) => {
@@ -91,119 +101,127 @@ function Profile() {
 
 	const handleLogout = () => {
 		alert("You have been logged out.");
-		// Add logic to clear user session and redirect to login page if needed
 	};
 
 	return (
-		<ProfileContainer>
-			{/* Personal Information Section */}
-			<SectionTitle>Personal Information</SectionTitle>
-			<ProfileForm onSubmit={handleFormSubmit}>
-				<Input
-					type="text"
-					name="name"
-					placeholder="Name"
-					value={formData.name}
-					onChange={handleInputChange}
-					required
-				/>
-				<Input
-					type="email"
-					name="email"
-					placeholder="Email"
-					value={formData.email}
-					onChange={handleInputChange}
-					required
-				/>
-				<Input
-					type="password"
-					name="password"
-					placeholder="Password"
-					value={formData.password}
-					onChange={handleInputChange}
-					required
-				/>
-				<Input
-					type="number"
-					name="age"
-					placeholder="Age"
-					value={formData.age}
-					onChange={handleInputChange}
-				/>
-				<label>
-					Sex:
-					<select
-						name="sex"
-						value={formData.sex}
-						onChange={handleInputChange}
-						required>
-						<option value="">Select</option>
-						<option value="male">Male</option>
-						<option value="female">Female</option>
-						<option value="other">Other</option>
-						<option value="preferNotToSay">Prefer not to say</option>
-					</select>
-				</label>
-				<Input
-					type="text"
-					name="zipCode"
-					placeholder="ZIP Code"
-					value={formData.zipCode}
-					onChange={handleInputChange}
-				/>
-				<Input
-					type="number"
-					name="income"
-					placeholder="Annual Income (Optional)"
-					value={formData.income}
-					onChange={handleInputChange}
-				/>
-				<Input
-					type="number"
-					name="householdSize"
-					placeholder="Household Size (Optional)"
-					value={formData.householdSize}
-					onChange={handleInputChange}
-				/>
-				<label>
-					<input
-						type="checkbox"
-						name="isVeteran"
-						checked={formData.isVeteran}
+		<BackgroundContainer>
+			<ProfileContainer>
+				<SectionTitle>Personal Information</SectionTitle>
+				<ProfileForm onSubmit={handleFormSubmit}>
+					<div>
+						Name (Optional)
+						<Input
+							type="text"
+							name="name"
+							placeholder="Name (Optional)"
+							value={formData.name}
+							onChange={handleInputChange}
+						/>
+					</div>
+					<div>
+						{" "}
+						Need to update to make this send to BE and states
+						thisiswheretheychange their email, sameforpassword
+						<Input
+							type="email"
+							name="email"
+							placeholder="Email"
+							value={formData.email}
+							onChange={handleInputChange}
+						/>
+					</div>
+					<Input
+						type="password"
+						name="password"
+						placeholder="Change Password"
+						value={formData.password}
 						onChange={handleInputChange}
 					/>
-					Are you a veteran?
-				</label>
-				<StyledButton type="submit">Update Profile</StyledButton>
-			</ProfileForm>
+					<div>
+						{" "}
+						Enter your Age(Optional)
+						<Input
+							type="number"
+							name="age"
+							placeholder="Age"
+							value={formData.age}
+							onChange={handleInputChange}
+						/>
+					</div>
+					<label>
+						Sex:
+						<Dropdowns
+							name="sex"
+							value={formData.sex}
+							onChange={handleInputChange}
+							options={["Male", "Female", "Other", "Prefer not to say"]}
+						/>
+					</label>
+					<Input
+						type="text"
+						name="zipCode"
+						placeholder="ZIP Code"
+						value={formData.zipCode}
+						onChange={handleInputChange}
+					/>
+					<label>
+						Annual Income (Optional):
+						<Dropdowns
+							name="income"
+							value={formData.income}
+							onChange={handleInputChange}
+							options={[
+								"Below $25,000",
+								"$25,000 - $50,000",
+								"$50,000 - $75,000",
+								"$75,000 - $100,000",
+								"Above $100,000",
+							]}
+						/>
+					</label>
+					<div>
+						{" "}
+						Enter Household Size
+						<Input
+							type="number"
+							name="householdSize"
+							placeholder="Household Size (Optional)"
+							value={formData.householdSize}
+							onChange={handleInputChange}
+						/>
+					</div>
+					<label
+						style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+						<input
+							type="checkbox"
+							name="isVeteran"
+							checked={formData.isVeteran}
+							onChange={handleInputChange}
+						/>
+						<span>Are you a veteran? (Check the box if yes)</span>
+					</label>
+					<Button type="submit">Update Profile</Button>
+				</ProfileForm>
 
-			{/* Saved Comparisons Section */}
-			<SavedComparisonsSection>
-				<SectionTitle>Saved Comparisons</SectionTitle>
-				<p>No saved insurance comparisons yet.</p>
-				{/* Future implementation: Display saved comparisons dynamically */}
-			</SavedComparisonsSection>
+				{/* <SavedComparisonsSection>
+					<SectionTitle>Saved Comparisons</SectionTitle>
+					<p>No saved insurance comparisons yet.</p>
+				</SavedComparisonsSection>
 
-			{/* Notification Settings Section */}
-			<NotificationSettingsSection>
-				<SectionTitle>Notification Settings</SectionTitle>
-				<p>Manage your notification preferences.</p>
-				{/* Future implementation: Allow user to manage notifications */}
-			</NotificationSettingsSection>
-
-			{/* Logout Button */}
-			<StyledButton onClick={handleLogout}>Logout</StyledButton>
-		</ProfileContainer>
+				<NotificationSettingsSection>
+					<SectionTitle>Notification Settings</SectionTitle>
+					<p>Manage your notification preferences.</p>
+				</NotificationSettingsSection> */}
+				<div
+					style={{
+						gap: "0.5rem",
+						margin: "1rem 0",
+					}}>
+					<Button onClick={handleLogout}>Logout</Button>
+				</div>
+			</ProfileContainer>
+		</BackgroundContainer>
 	);
 }
 
 export default Profile;
-
-// Purpose: A user profile page for logged-in users to manage their details.
-// Content:
-// Personal Information: Display and update personal information
-//(name, email, password).
-// Saved Comparisons: A section to view and manage
-//saved insurance comparisons.
-// Notification Settings: Manage notifications and preferences.
-// Logout: Option to securely log out.

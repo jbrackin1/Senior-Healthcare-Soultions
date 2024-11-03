@@ -1,6 +1,5 @@
 /** @format */
 
-// src/pages/LoginSignup.js
 import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../../components/ui/Global/button";
@@ -12,7 +11,7 @@ const LoginSignupContainer = styled.main`
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
-	background-image: url("/assets/images/BlueBackground.jpeg"); /* Background image for the page */
+	background-image: url("/assets/images/BlueBackground.jpeg"); /* Background image */
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -20,7 +19,7 @@ const LoginSignupContainer = styled.main`
 `;
 
 const FormContainer = styled.div`
-	background-color: rgba(255, 255, 255, 0.8);
+	background-color: rgba(255, 255, 255, 0.95);
 	padding: 2rem;
 	border-radius: 8px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -34,7 +33,7 @@ const FormTitle = styled.h2`
 	font-family: "Libre Baskerville", serif;
 	font-size: 2rem;
 	margin-bottom: 1.5rem;
-	color: ${({ theme }) => theme.colors.primary};
+	color: ${({ theme }) => theme.colors.accent};
 `;
 
 const StyledInput = styled(Input)`
@@ -42,6 +41,7 @@ const StyledInput = styled(Input)`
 `;
 
 const StyledButton = styled(Button)`
+	/* Use your reusable Button */
 	margin-top: 1rem;
 	background-color: ${({ theme }) => theme.colors.primary};
 	color: ${({ theme }) => theme.colors.backgroundAlt};
@@ -53,7 +53,7 @@ const StyledButton = styled(Button)`
 const ToggleButton = styled.button`
 	background: none;
 	border: none;
-	color: ${({ theme }) => theme.colors.primary};
+	color: ${({ theme }) => theme.colors.accent};
 	cursor: pointer;
 	font-size: 0.9rem;
 	margin-top: 1rem;
@@ -63,10 +63,8 @@ const ToggleButton = styled.button`
 	}
 `;
 
-// Styled Components (same as before)
-
 function LoginSignup() {
-	const [isLogin, setIsLogin] = useState(true); 
+	const [isLogin, setIsLogin] = useState(true);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [name, setName] = useState("");
@@ -80,12 +78,9 @@ function LoginSignup() {
 
 		try {
 			if (isLogin) {
-				// Handle login logic here
 				alert(`Logging in with ${email}`);
-				// Reset states on success
 			} else {
 				alert(`Signing up with ${name} and ${email}`);
-				// Reset states on success
 			}
 		} catch (error) {
 			setError("An error occurred. Please try again.");
@@ -128,12 +123,14 @@ function LoginSignup() {
 						required
 					/>
 					{error && <p style={{ color: "red" }}>{error}</p>}
-					<StyledButton type="submit" disabled={loading}>
+					<Button type="submit" disabled={loading}>
 						{loading ? "Processing..." : isLogin ? "Login" : "Sign Up"}
-					</StyledButton>
+					</Button>
 				</form>
 				<ToggleButton onClick={() => setIsLogin(!isLogin)}>
-					{isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login"}
+					{isLogin
+						? "Don't have an account? Sign Up"
+						: "Already have an account? Login"}
 				</ToggleButton>
 			</FormContainer>
 		</LoginSignupContainer>

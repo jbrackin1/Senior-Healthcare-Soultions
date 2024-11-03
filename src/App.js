@@ -13,8 +13,7 @@ import Home from "./pages/Generic/Home";
 import About from "./pages/Generic/About";
 import Careers from "./pages/Generic/Careers";
 import Contact from "./pages/Generic/Contact";
-import Signup from "./pages/Users/Signup";
-import Login from "./containers/LoginPage";
+import LoginSignup from "./pages/Users/Signup";
 import Dash from "./pages/Dash/Dash";
 import PrivacyPolicy from "./pages/Legal/PrivacyPolicy";
 import TermsOfService from "./pages/Legal/TermsOfService";
@@ -58,8 +57,7 @@ function App() {
 					<Route path="/blog" element={<Blog />} />
 					<Route path="/careers" element={<Careers />} />
 					<Route path="/contact" element={<Contact />} />
-					<Route path="/signup" element={<Signup />} />
-					<Route path="/login-page" element={<Login />} />
+					<Route path="/login-signup" element={<LoginSignup />} />
 					<Route path="/privacy-policy" element={<PrivacyPolicy />} />
 					<Route path="/terms-of-service" element={<TermsOfService />} />
 					<Route path="/user-profile" element={<Profile />} />

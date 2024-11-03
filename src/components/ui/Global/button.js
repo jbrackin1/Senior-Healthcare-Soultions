@@ -5,7 +5,7 @@ import styled from "styled-components";
 const Button = styled.button`
 	font-family: "Open Sans", sans-serif;
 	font-weight: bold;
-	font-size: 1.25rem; 
+	font-size: 1.75rem; 
 	background: linear-gradient(
 		to bottom right,
 		white 30%,
