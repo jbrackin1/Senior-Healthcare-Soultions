@@ -4,11 +4,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import UserManagement from "../components/Admin/UserManagement";
-import EditDocument from "../components/Admin/EditDocs";
-import AdminBlog from "../components/Admin/AdminBlog";
-import AnalyticsDashboard from "../components/Admin/AnalyticsDashboard";
-import Settings from "../components/Admin/Settings";
+import UserManagement from "../../components/ui/Admin/UserManagement";
+import EditDocument from "../../components/ui/Admin/EditDocs";
+import AdminBlog from "../../components/ui/Admin/AdminBlog";
+import AnalyticsChart from "../../components/ui/Admin/AnalyticsChart";
+import Settings from "../../components/ui/Admin/Settings";
 import Button from "../../components/ui/Global/button";
 
 // Styled Components for Dashboard Layout
@@ -128,7 +128,7 @@ function Dash() {
 				{activeSection === "analytics" && (
 					<Section>
 						<SectionTitle>Analytics and Reports</SectionTitle>
-						<AnalyticsDashboard />
+						<AnalyticsChart />
 					</Section>
 				)}
 
