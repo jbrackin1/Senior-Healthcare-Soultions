@@ -20,7 +20,7 @@ import TermsOfService from "./pages/Legal/TermsOfService";
 import Testimonials from "./pages/Generic/Testimonials";
 import Profile from "./pages/Users/UserProfile";
 import Resources from "./pages/Generic/Resources";
-import TestTestimonials from "./pages/Generic/TestTestimonials";
+// import TestTestimonials from "./pages/Generic/TestTestimonials";
 import PractitionerPage from "./pages/Users/Practitioner";
 import Blog from "./pages/Generic/Blog";
 import ComparePlans from "./pages/Insurance/Compare";
@@ -49,7 +49,6 @@ function App() {
 				<TopBannerComponent />
 				{/* <MenuSidebar /> Maybe retool for ads? */}
 				<AdBanner />
-
 				<Routes>
 					<Route path="/admin" element={<Dash />} />
 					<Route path="/" element={<Home />} />
@@ -63,9 +62,9 @@ function App() {
 					<Route path="/user-profile" element={<Profile />} />
 					<Route path="/compare" element={<ComparePlans />} />
 					<Route path="/resources" element={<Resources />} />
-					<Route path="/practitioner" component={<PractitionerPage />} />
-					<Route path="/testimonials" component={<Testimonials />} />
-					<Route path="/test-testimonials" component={<TestTestimonials />} />
+					<Route path="/practitioner" element={<PractitionerPage />} />
+					<Route path="/testimonials" element={<Testimonials />} />
+					{/* <Route path="/test-testimonials" component={<TestTestimonials />} /> */}
 				</Routes>
 				<BottomFooter />
 			</Router>

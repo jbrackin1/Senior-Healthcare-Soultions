@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 // Full page wrapper with background image
 const PageWrapper = styled.div`
 	padding: 0;
-	background-image: url("/assets/images/BlueBackground.jpeg");
+	background-image: url("/assets/images/BlueBackground.webp");
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;

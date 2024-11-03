@@ -7,6 +7,16 @@ import React from "react";
 import styled from "styled-components";
 
 // Styled Components
+const BackgroundContainer = styled.div`
+	background-image: url("/assets/images/MedicalWallpaper.webp");
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	background-size: cover;
+	background-position: center;
+`;
+
 const TestimonialsContainer = styled.main`
   padding: 2rem;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
@@ -72,17 +82,19 @@ const Testimonials = () => {
   ];
 
   return (
-    <TestimonialsContainer>
-      <SectionTitle>User Testimonials</SectionTitle>
-      {testimonialsData.map((testimonial, index) => (
-        <TestimonialCard key={index}>
-          <TestimonialText>"{testimonial.text}"</TestimonialText>
-          <TestimonialAuthor>- {testimonial.author}</TestimonialAuthor>
-          <TestimonialSource>{testimonial.source}</TestimonialSource>
-        </TestimonialCard>
-      ))}
-    </TestimonialsContainer>
-  );
+		<BackgroundContainer>
+			<TestimonialsContainer>
+				<SectionTitle>User Testimonials</SectionTitle>
+				{testimonialsData.map((testimonial, index) => (
+					<TestimonialCard key={index}>
+						<TestimonialText>"{testimonial.text}"</TestimonialText>
+						<TestimonialAuthor>- {testimonial.author}</TestimonialAuthor>
+						<TestimonialSource>{testimonial.source}</TestimonialSource>
+					</TestimonialCard>
+				))}
+			</TestimonialsContainer>
+		</BackgroundContainer>
+	);
 };
 
 export default Testimonials;

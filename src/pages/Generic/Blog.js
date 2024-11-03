@@ -6,6 +6,16 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 // Styled Components
+const BackgroundContainer = styled.div`
+	background-image: url("/assets/images/MedicalWallpaper.webp");
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	background-size: cover;
+	background-position: center;
+`;
+
 const BlogContainer = styled.main`
   padding: 2rem;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
@@ -77,22 +87,26 @@ const Blog = () => {
   }, []);
 
   return (
-    <BlogContainer>
-      <SectionTitle>Our Blog</SectionTitle>
+		<BackgroundContainer>
+			<BlogContainer>
+				<SectionTitle>Our Blog</SectionTitle>
 
-      {/* Display blog posts */}
-      {posts.length === 0 ? (
-        <p>No blog posts are available at the moment. Please check back later!</p>
-      ) : (
-        posts.map((post, index) => (
-          <BlogPostContainer key={index}>
-            <BlogPostTitle>{post.title}</BlogPostTitle>
-            <BlogPostContent>{post.content}</BlogPostContent>
-          </BlogPostContainer>
-        ))
-      )}
-    </BlogContainer>
-  );
+				{/* Display blog posts */}
+				{posts.length === 0 ? (
+					<p>
+						No blog posts are available at the moment. Please check back later!
+					</p>
+				) : (
+					posts.map((post, index) => (
+						<BlogPostContainer key={index}>
+							<BlogPostTitle>{post.title}</BlogPostTitle>
+							<BlogPostContent>{post.content}</BlogPostContent>
+						</BlogPostContainer>
+					))
+				)}
+			</BlogContainer>
+		</BackgroundContainer>
+	);
 };
 
 export default Blog;
