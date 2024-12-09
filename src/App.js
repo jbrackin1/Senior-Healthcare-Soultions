@@ -9,7 +9,9 @@ import AdBanner from "./components/ui/Global/Ads/AdBanner";
 import TopBannerComponent from "./components/ui/Global/TopBanner";
 import BottomFooter from "./components/ui/Global/BottomFooter";
 // import MenuSidebar from "./components/Sidebar";
-import Home from "./pages/Generic/Home";
+import SignUp from "./pages/Generic/SignUp";
+import MarketPlacePage from "./pages/Insurance/MarketplaceAPIPage/MarketPlacePage"
+import HomePage from "./pages/Generic/HomePage";
 import About from "./pages/Generic/About";
 import Careers from "./pages/Generic/Careers";
 import Contact from "./pages/Generic/Contact";
@@ -51,9 +53,11 @@ function App() {
 				<AdBanner />
 				<Routes>
 					<Route path="/admin" element={<Dash />} />
-					<Route path="/" element={<Home />} />
+					<Route path="/signup" element={<SignUp />} />
 					<Route path="/about" element={<About />} />
 					<Route path="/blog" element={<Blog />} />
+					<Route path="/" element={<HomePage />} />
+					<Route path="/marketplace" element={<MarketPlacePage />} />
 					<Route path="/careers" element={<Careers />} />
 					<Route path="/contact" element={<Contact />} />
 					<Route path="/login-signup" element={<LoginSignup />} />
