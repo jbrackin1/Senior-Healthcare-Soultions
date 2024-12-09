@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Button from "../../components/ui/Global/button";
-import SearchBar from "../../components/ui/compare/Searchbar";
-import FilterSelect from "../../components/ui/compare/FilterSlelect";
-import { fetchAllAetnaData } from "../../services/Api/Aetna/Aetna";
+import Button from "../../../components/ui/Global/button";
+import SearchBar from "../../../components/ui/compare/Searchbar";
+import FilterSelect from "../../../components/ui/compare/FilterSlelect";
+import { fetchAllAetnaData } from "../../../services/Api/Aetna/Aetna";
 
 // Styled components
 const CompareContainer = styled.main`
@@ -58,7 +58,7 @@ const HeartButton = styled(Button)`
 `;
 
 // Main Component
-const ComparePlans = () => {
+const MarketPlacePage = () => {
 	const [plans, setPlans] = useState([]);
 	const [favorites, setFavorites] = useState(() => {
 		const savedFavorites = localStorage.getItem("favorites");
@@ -71,27 +71,65 @@ const ComparePlans = () => {
 		planType: "",
 	});
 
-	useEffect(() => {
-		const fetchPlans = async () => {
-			try {
-				const allData = await fetchAllAetnaData();
-				const allPlans = allData
-					.filter((result) => result.data) // Filter out any errors
-					.flatMap((result) => result.data); // Combine data from all endpoints
-
-				setPlans(allPlans); // Assuming the structure is consistent
-			} catch (error) {
-				console.error("Error fetching plans:", error);
-			}
-		};
-
-		fetchPlans();
-		console.log(plans);
-	}, []);
-
-	useEffect(() => {
-		localStorage.setItem("favorites", JSON.stringify(favorites));
-	}, [favorites]);
+    useEffect(() => {
+      const fetchMarketplaceData = async () => {
+        const apiKey = "d687412e7b53146b2631dc01974ad0a4"; // Your API Key
+        const requestData = {
+          household: {
+            income: 52000,
+            people: [
+              {
+                age: 27,
+                aptc_eligible: true,
+                gender: "Female",
+                uses_tobacco: false,
+              },
+            ],
+          },
+          market: "Individual",
+          place: {
+            countyfips: "37057", // FIPS code for the county
+            state: "NC",
+            zipcode: "27360", // User's zip code
+          },
+          year: 2019,
+        };
+  
+        try {
+          const response = await fetch(
+            `https://marketplace.api.healthcare.gov/api/v1/plans/search?apikey=${apiKey}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(requestData),
+            }
+          );
+          const data = await response.json();
+  
+          if (response.ok) {
+            setPlans(data.plans || []); // Assuming 'plans' is the key in the returned JSON
+          } else {
+            console.error("Error fetching marketplace data:", data);
+          }
+        } catch (error) {
+          console.error("Error fetching marketplace data:", error);
+        }
+      };
+  
+      fetchMarketplaceData();
+    }, []); // Empty dependency array ensures this runs only once when component mounts
+  
+    // Log the plans after they have been updated
+    useEffect(() => {
+      if (plans.length > 0) {
+        console.log(plans); // Logs the updated plans state after the fetch is complete
+      }
+    }, [plans]); // This will run each time plans change
+	// useEffect(() => {
+	// 	localStorage.setItem("favorites", JSON.stringify(favorites));
+	// }, [favorites]);
 
 	// Toggle favorite plan
 	const toggleFavorite = (planId) => {
@@ -167,4 +205,4 @@ const ComparePlans = () => {
 	);
 };
 
-export default ComparePlans;
+export default MarketPlacePage;
