@@ -6,6 +6,7 @@ import styled from "styled-components";
 import Button from "../../components/ui/Global/button";
 import Input from "../../components/ui/Global/Input";
 import Modal from "../../components/ui/Global/modal";
+import SHSClearLogo from "../../../assets/SHSClearLogo";
 import { Link } from "react-router-dom";
 
 
@@ -146,6 +147,11 @@ const TestimonialAuthor = styled.p`
 	font-weight: bold;
 `;
 
+const LogoImage = styled.img`
+	width: 150px;
+	margin-bottom: 1rem;
+`;
+
 const HomePage = () => {
 	const [isModalOpen, setModalOpen] = useState(false);
 
@@ -160,6 +166,8 @@ const HomePage = () => {
 	return (
 		<PageWrapper>
 			<HeroSection>
+				<img src={DarkShieldLogo} alt="Dark Shield Logo" />
+				<img src={SHSClearLogo} alt="Senior Healthcare Solutions Logo" />
 				<HeroTitle>Senior Healthcare Solutions</HeroTitle>
 				<HeroDescription>
 					Find the best insurance plans tailored to your needs.
