@@ -6,19 +6,18 @@ import styled from "styled-components";
 import Button from "../../components/ui/Global/button";
 import Input from "../../components/ui/Global/Input";
 import Modal from "../../components/ui/Global/modal";
-import SHSClearLogo from "../../../assets/SHSClearLogo";
 import { Link } from "react-router-dom";
+import DarkLogoSHS from "../../Img/assets/SiteLogos/DarkLogoSHS.webp";
+import BlueBackground from "../../Img/assets/images/BlueBackground.jpeg";
 
-
-// Full page wrapper with background image
 const PageWrapper = styled.div`
 	padding: 0;
-	background-image: url("/assets/images/BlueBackground.webp");
-	background-size: cover;
+	background-image: url(${BlueBackground});
+	background-size: fit;
 	background-position: center;
 	background-repeat: no-repeat;
 	color: ${({ theme }) => theme.colors.text};
-	min-height: 100vh; /* Ensure it covers the full viewport height */
+	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -34,11 +33,11 @@ const HeroSection = styled.section`
 	color: ${({ theme }) => theme.colors.backgroundAlt};
 `;
 
-const HeroTitle = styled.h1`
-	font-family: "Libre Baskerville", serif;
-	font-size: 3rem;
-	margin-bottom: 1rem;
-`;
+// const HeroTitle = styled.h1`
+// 	font-family: "Libre Baskerville", serif;
+// 	font-size: 3rem;
+// 	margin-bottom: 1rem;
+// `;
 
 const HeroDescription = styled.p`
 	font-family: "Open Sans", sans-serif;
@@ -124,14 +123,9 @@ const TestimonialSection = styled.section`
 	text-align: center;
 	width: 100%;
 	margin-top: 2rem;
-	background-color: rgba(
-		255,
-		255,
-		255,
-		0.5
-	);
+	background-color: rgba(255, 255, 255, 0.5);
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-	border-radius: 12px; 
+	border-radius: 12px;
 `;
 
 const TestimonialQuote = styled.p`
@@ -145,11 +139,6 @@ const TestimonialQuote = styled.p`
 const TestimonialAuthor = styled.p`
 	font-family: "Libre Baskerville", serif;
 	font-weight: bold;
-`;
-
-const LogoImage = styled.img`
-	width: 150px;
-	margin-bottom: 1rem;
 `;
 
 const HomePage = () => {
@@ -166,9 +155,13 @@ const HomePage = () => {
 	return (
 		<PageWrapper>
 			<HeroSection>
-				<img src={DarkShieldLogo} alt="Dark Shield Logo" />
-				<img src={SHSClearLogo} alt="Senior Healthcare Solutions Logo" />
-				<HeroTitle>Senior Healthcare Solutions</HeroTitle>
+				<img
+					src={DarkLogoSHS}
+					alt="SHS Logo"
+					style={{ width: "400px" }}
+				/>
+
+				{/* <HeroTitle>Senior Healthcare Solutions</HeroTitle> */}
 				<HeroDescription>
 					Find the best insurance plans tailored to your needs.
 				</HeroDescription>
