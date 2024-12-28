@@ -86,6 +86,7 @@ const ComparePlans = () => {
 		};
 
 		fetchPlans();
+		console.log(plans);
 	}, []);
 
 	useEffect(() => {

@@ -81,6 +81,7 @@ const TopBannerComponent = () => {
 				<NavItem to="/blog">Blog</NavItem>
 				<NavItem to="/careers">Careers</NavItem>
 				<NavItem to="/contact">Contact</NavItem>
+				<NavItem to="/marketplace">MarketPlace</NavItem>
 
 				{/* Dropdown Menu Example */}
 				<DropdownToggle>
