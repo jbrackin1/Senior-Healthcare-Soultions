@@ -41,26 +41,26 @@ const FormField = styled.div`
   }
 `;
 
-// const PlanCard = styled.div`
-//   padding: 1.5rem;
-//   margin-bottom: 1.5rem;
-//   border-radius: 8px;
-//   background-color: ${({ theme }) => theme.colors.background};
-//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-// `;
+const PlanCard = styled.div`
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.colors.background};
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
-// const PlanInfo = styled.div`
-//   flex-grow: 1;
-// `;
+const PlanInfo = styled.div`
+  flex-grow: 1;
+`;
 
-// const PlanTitle = styled.h3`
-//   font-size: 1.5rem;
-//   margin-bottom: 0.5rem;
-//   color: ${({ theme }) => theme.colors.primary};
-// `;
+const PlanTitle = styled.h3`
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: ${({ theme }) => theme.colors.primary};
+`;
 
 const MarketPlacePage = () => {
   const [plans, setPlans] = useState([]);

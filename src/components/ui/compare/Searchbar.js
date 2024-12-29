@@ -18,7 +18,7 @@ const SearchBar = ({ value, onChange }) => {
 	return (
 		<StyledSearchBar
 			type="text"
-			placeholder="Search for a plan..."
+			placeholder="Search for..."
 			value={value}
 			onChange={onChange}
 		/>
