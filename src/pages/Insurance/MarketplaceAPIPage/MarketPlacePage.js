@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "../../../components/ui/Global/button";
+import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
 
 const CompareContainer = styled.main`
   padding: 2rem;
@@ -40,26 +41,26 @@ const FormField = styled.div`
   }
 `;
 
-const PlanCard = styled.div`
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.background};
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
+// const PlanCard = styled.div`
+//   padding: 1.5rem;
+//   margin-bottom: 1.5rem;
+//   border-radius: 8px;
+//   background-color: ${({ theme }) => theme.colors.background};
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+// `;
 
-const PlanInfo = styled.div`
-  flex-grow: 1;
-`;
+// const PlanInfo = styled.div`
+//   flex-grow: 1;
+// `;
 
-const PlanTitle = styled.h3`
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-  color: ${({ theme }) => theme.colors.primary};
-`;
+// const PlanTitle = styled.h3`
+//   font-size: 1.5rem;
+//   margin-bottom: 0.5rem;
+//   color: ${({ theme }) => theme.colors.primary};
+// `;
 
 const MarketPlacePage = () => {
   const [plans, setPlans] = useState([]);
@@ -227,6 +228,17 @@ const MarketPlacePage = () => {
     }
   };
 
+  //   const sortPlansByPremium = () => {
+  //   const sorted = [...filteredPlans].sort((a, b) => a.premium - b.premium);
+  //   setFilteredPlans(sorted);
+  // };
+
+  // const filterByHSAEligible = () => {
+  //   const filtered = plans.filter((plan) => plan.hsa_eligible);
+  //   setFilteredPlans(filtered);
+  // };
+
+
   return (
     <CompareContainer>
       <SectionTitle>Compare Insurance Plans</SectionTitle>
@@ -237,6 +249,7 @@ const MarketPlacePage = () => {
           fetchMarketplaceData();
         }}
       >
+        
         <FormField>
           <label htmlFor="income">Household Income</label>
           <input
@@ -288,7 +301,9 @@ const MarketPlacePage = () => {
 
       {loading ? (
         <p>Loading...</p>
-      ) : (
+        ) : plans.length > 0 ? (
+  <ComparisonTable plans={plans} />
+) : (
         <div>
           {plans.length > 0 ? (
             plans.map((plan) => (
@@ -305,6 +320,7 @@ const MarketPlacePage = () => {
         </div>
       )}
     </CompareContainer>
+    
   );
 };
 
