@@ -90,10 +90,12 @@ const MarketPlacePage = () => {
       const fipsData = await response.json();
       setState(fipsData.counties[0].state);
       console.log(state);
+
     //   const fipsFromZips = fipsData.counties.filter((fipsInstance) => {
     //     return fipsInstance[0].fips[0];
     //   })
     //   console.log(fipsFromZips);
+    
       console.log(fipsData);  // Log to check the response
       if (response.ok && fipsData.counties && fipsData.counties.length > 0) {
         return fipsData.counties[0].state;
