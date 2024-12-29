@@ -92,8 +92,8 @@ const ComparisonTable = ({ plans }) => {
 				<TableData>
 				  {plan.premium !== undefined ? `$${plan.premium}` : "N/A"}
 				</TableData>
-				<TableData>{plan.deductibles[0]?.amount || "N/A"}</TableData>
-				<TableData>{plan.moops[0]?.amount || "N/A"}</TableData>
+				<TableData>${plan.deductibles[0]?.amount || "N/A"}</TableData>
+				<TableData>${plan.moops[0]?.amount || "N/A"}</TableData>
 				<TableData>{plan.network_tier || "N/A"}</TableData>
 				<TableData>{plan.hsa_eligible ? "Yes" : "No"}</TableData>
 			  </tr>
