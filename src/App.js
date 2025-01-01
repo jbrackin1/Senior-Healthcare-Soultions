@@ -26,11 +26,14 @@ import Resources from "./pages/Generic/Resources";
 import PractitionerPage from "./pages/Users/Practitioner";
 import Blog from "./pages/Generic/Blog";
 import ComparePlans from "./pages/Insurance/Compare";
+import PlanDetail from "./components/ui/Plan/PlanDetail";
+import { PlanProvider } from "./services/hooks/PlanContext";
 import { getCignaToken } from "./services/Api/Cigna/getCignaToken";
 
 
 function App() {
 	const [isDarkMode, setIsDarkMode] = useState(false);
+	const [plans, setPlans] = useState([]);
 
 	 useEffect(() => {
 			const fetchToken = async () => {
@@ -46,32 +49,35 @@ function App() {
 
 	return (
 		<ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-			<GlobalStyles />
-			<Router>
-				<TopBannerComponent />
-				{/* <MenuSidebar /> Maybe retool for ads? */}
-				<AdBanner />
-				<Routes>
-					<Route path="/admin" element={<Dash />} />
-					<Route path="/signup" element={<SignUp />} />
-					<Route path="/about" element={<About />} />
-					<Route path="/blog" element={<Blog />} />
-					<Route path="/" element={<HomePage />} />
-					<Route path="/marketplace" element={<MarketPlacePage />} />
-					<Route path="/careers" element={<Careers />} />
-					<Route path="/contact" element={<Contact />} />
-					<Route path="/login-signup" element={<LoginSignup />} />
-					<Route path="/privacy-policy" element={<PrivacyPolicy />} />
-					<Route path="/terms-of-service" element={<TermsOfService />} />
-					<Route path="/user-profile" element={<Profile />} />
-					<Route path="/compare" element={<ComparePlans />} />
-					<Route path="/resources" element={<Resources />} />
-					<Route path="/practitioner" element={<PractitionerPage />} />
-					<Route path="/testimonials" element={<Testimonials />} />
-					{/* <Route path="/test-testimonials" component={<TestTestimonials />} /> */}
-				</Routes>
-				<BottomFooter />
-			</Router>
+			<PlanProvider>
+				<GlobalStyles />
+				<Router>
+					<TopBannerComponent />
+					{/* <MenuSidebar /> Maybe retool for ads? */}
+					<AdBanner />
+					<Routes>
+						<Route path="/admin" element={<Dash />} />
+						<Route path="/signup" element={<SignUp />} />
+						<Route path="/about" element={<About />} />
+						<Route path="/blog" element={<Blog />} />
+						<Route path="/" element={<HomePage />} />
+						<Route path="/marketplace" element={<MarketPlacePage />} />
+						<Route path="/careers" element={<Careers />} />
+						<Route path="/contact" element={<Contact />} />
+						<Route path="/login-signup" element={<LoginSignup />} />
+						<Route path="/privacy-policy" element={<PrivacyPolicy />} />
+						<Route path="/terms-of-service" element={<TermsOfService />} />
+						<Route path="/user-profile" element={<Profile />} />
+						<Route path="/compare" element={<ComparePlans />} />
+						<Route path="/plan/:planId" element={<PlanDetail />} />
+						<Route path="/resources" element={<Resources />} />
+						<Route path="/practitioner" element={<PractitionerPage />} />
+						<Route path="/testimonials" element={<Testimonials />} />
+						{/* <Route path="/test-testimonials" component={<TestTestimonials />} /> */}
+					</Routes>
+					<BottomFooter />
+				</Router>
+			</PlanProvider>
 		</ThemeProvider>
 	);
 }

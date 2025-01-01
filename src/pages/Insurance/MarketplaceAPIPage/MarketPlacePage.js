@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import Button from "../../../components/ui/Global/button";
 import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
 
@@ -238,90 +239,95 @@ const MarketPlacePage = () => {
   //   setFilteredPlans(filtered);
   // };
 
-
   return (
-    <CompareContainer>
-      <SectionTitle>Compare Insurance Plans</SectionTitle>
+		<CompareContainer>
+			<SectionTitle>Compare Insurance Plans</SectionTitle>
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          fetchMarketplaceData();
-        }}
-      >
-        
-        <FormField>
-          <label htmlFor="income">Household Income</label>
-          <input
-            type="number"
-            id="income"
-            name="income"
-            value={formData.income}
-            onChange={handleInputChange}
-          />
-        </FormField>
+			<form
+				onSubmit={(e) => {
+					e.preventDefault();
+					fetchMarketplaceData();
+				}}>
+				<FormField>
+					<label htmlFor="income">Household Income</label>
+					<input
+						type="number"
+						id="income"
+						name="income"
+						value={formData.income}
+						onChange={handleInputChange}
+					/>
+				</FormField>
 
-        <FormField>
-          <label htmlFor="age">Age</label>
-          <input
-            type="number"
-            id="age"
-            name="age"
-            value={formData.age}
-            onChange={handleInputChange}
-          />
-        </FormField>
+				<FormField>
+					<label htmlFor="age">Age</label>
+					<input
+						type="number"
+						id="age"
+						name="age"
+						value={formData.age}
+						onChange={handleInputChange}
+					/>
+				</FormField>
 
-        <FormField>
-          <label htmlFor="gender">Gender</label>
-          <select
-            id="gender"
-            name="gender"
-            value={formData.gender}
-            onChange={handleInputChange}
-          >
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
-          </select>
-        </FormField>
+				<FormField>
+					<label htmlFor="gender">Gender</label>
+					<select
+						id="gender"
+						name="gender"
+						value={formData.gender}
+						onChange={handleInputChange}>
+						<option value="Female">Female</option>
+						<option value="Male">Male</option>
+					</select>
+				</FormField>
 
-        <FormField>
-          <label htmlFor="zipcode">Zip Code</label>
-          <input
-            type="text"
-            id="zipcode"
-            name="zipcode"
-            value={formData.zipcode}
-            onChange={handleInputChange}
-          />
-        </FormField>
+				<FormField>
+					<label htmlFor="zipcode">Zip Code</label>
+					<input
+						type="text"
+						id="zipcode"
+						name="zipcode"
+						value={formData.zipcode}
+						onChange={handleInputChange}
+					/>
+				</FormField>
 
-        <Button type="submit">Search Plans</Button>
-      </form>
+				<Button type="submit">Search Plans</Button>
+			</form>
 
-      {loading ? (
-        <p>Loading...</p>
-        ) : plans.length > 0 ? (
-  <ComparisonTable plans={plans} />
-) : (
-        <div>
-          {plans.length > 0 ? (
-            plans.map((plan) => (
-              <PlanCard key={plan.id}>
-                <PlanInfo>
-                  <PlanTitle>{plan.name}</PlanTitle>
-                  <p>{plan.description}</p>
-                </PlanInfo>
-              </PlanCard>
-            ))
-          ) : (
-            <p>No plans available.</p>
-          )}
-        </div>
-      )}
-    </CompareContainer>
-    
-  );
+			{loading ? (
+				<p>Loading...</p>
+			) : plans.length > 0 ? (
+				<ComparisonTable plans={plans} />
+			) : (
+				<div>
+					{plans.length > 0 ? (
+						plans.map((plan) => (
+							<PlanCard key={plan.id}>
+								<PlanInfo>
+									<PlanTitle>
+										<b>
+											<Link
+												to={`/plan/${plan.id}`}
+												onClick={() =>
+													console.log("Navigating to:", `/plan/${plan.id}`)
+												}>
+												{plan.name}
+											</Link>
+										</b>
+									</PlanTitle>
+									<p>{plan.description}</p>
+								</PlanInfo>
+							</PlanCard>
+						))
+					) : (
+						<p>No plans available.</p>
+					)}
+				</div>
+			)}
+		</CompareContainer>
+	);
 };
 
 export default MarketPlacePage;
