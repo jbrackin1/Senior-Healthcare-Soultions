@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Button from "../../../components/ui/Global/button";
 import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
 
+
 const CompareContainer = styled.main`
   padding: 2rem;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
@@ -326,6 +327,9 @@ const MarketPlacePage = () => {
 					)}
 				</div>
 			)}
+			<Button as={Link} to="/drug-coverage" >
+				Check if your medications are covered
+			</Button>
 		</CompareContainer>
 	);
 };

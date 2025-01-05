@@ -1,11 +1,11 @@
 /** @format */
 
 import React, { useState } from "react";
-import BasicInfoForm from "./BasicInfoForm";
-import HealthConditionsForm from "./HealthConditionsForm";
-import LifestyleProgramsForm from "./LifestyleProgramsForm";
-import CostAndBenefitsForm from "./CostAndBenefitsForm";
-import FinalStep from "./FinalStep";
+import BasicInfoForm from "./FormBlocks/BasicInfoForm";
+import HealthConditionsForm from "./FormBlocks/HealthConditionsForm";
+import LifestyleProgramsForm from "./FormBlocks/LifeStyleProgramsForm";
+import CostAndBenefitsForm from "./FormBlocks/CostAndBenefitsForm";
+import FinalStep from "./FormBlocks/FinalStep";
 
 const InsuranceForm = () => {
 	const [formData, setFormData] = useState({});

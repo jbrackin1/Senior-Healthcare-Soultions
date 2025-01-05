@@ -2,15 +2,10 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { PlanContext } from "../../../services/hooks/PlanContext";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../Global/button";
-import {
-	formatInsuranceData,
-	formatInsuranceList,
-} from "../../../utils/formatData";
-import { formatDollar } from "../../../utils/formatDollar";
-
+import { formatDetailedInsInfo } from "../../../utils/formatDetailedInsInfo";
+import {formatCurrency, formatDate, formatPlanType} from "../../../utils/formatData";
 const DetailContainer = styled.div`
 	padding: 2rem;
 	background-color: ${({ theme }) => theme.colors.background};
@@ -47,42 +42,73 @@ const PlanDetail = ({ addToFavorites, addToComparison, isSignedIn }) => {
 	if (loading) return <p>Loading...</p>;
 	if (!plan) return <p>No plan details available.</p>;
 
-	// Format insurance data if needed
-	const formattedPlan = formatInsuranceData(plan);
-	const formattedData = formatInsuranceList(plan);
+	// Format the plan data for detailed view
+	const formattedPlan = formatDetailedInsInfo(plan);
 
 	return (
 		<DetailContainer>
-			<h2>{plan.name || "N/A"}</h2>
-			<p>{plan.description || "No description available."}</p>
-			<p>Premium: {formatDollar(plan.premium)}</p>
-			<p>Plan Type: {plan.planType || "N/A"}</p>
-			<p>Deductible: {formatDollar(plan.deductible)}</p>
+			<h2>{formattedPlan.name || "N/A"}</h2>
+			<p>
+				{formattedPlan.marketingUrl ? (
+					<a href={formattedPlan.marketingUrl}>Plan Details</a>
+				) : (
+					"No description available."
+				)}
+			</p>
+			<p>Premium: {formattedPlan.premium || "Data not available"}</p>
+			<p>Plan Type: {formattedPlan.type || "Data not available"}</p>
+			<p>Deductible: {formattedPlan.deductible || "Data not available"}</p>
 
 			<h3>Coverage Details:</h3>
 			<ul>
-				<li>General Co-Pay: {formatDollar(formattedData?.coPay?.general)}</li>
 				<li>
-					Specialist Co-Pay: {formatDollar(formattedData?.coPay?.specialist)}
-				</li>
-				<li>Hospital Co-Pay: {formatDollar(formattedData?.coPay?.hospital)}</li>
-				<li>Network Coverage: {formattedData?.networkCoverage || "N/A"}</li>
-				<li>
-					Medicare Eligible: {formattedData?.medicareEligible ? "Yes" : "No"}
+					General Co-Pay: {formattedPlan.coPay.general || "Data not available"}
 				</li>
 				<li>
-					Medicaid Eligible: {formattedData?.medicaidEligible ? "Yes" : "No"}
+					Specialist Co-Pay:{" "}
+					{formattedPlan.coPay.specialist || "Data not available"}
+				</li>
+				<li>
+					Hospital Co-Pay:{" "}
+					{formattedPlan.coPay.hospital || "Data not available"}
+				</li>
+				<li>
+					Network Coverage:{" "}
+					{formattedPlan.networkCoverage || "Data not available"}
+				</li>
+				<li>
+					Medicare Eligible:{" "}
+					{formattedPlan.medicareEligible || "Data not available"}
+				</li>
+				<li>
+					Medicaid Eligible:{" "}
+					{formattedPlan.medicaidEligible || "Data not available"}
 				</li>
 			</ul>
 
 			<h3>Additional Benefits:</h3>
 			<ul>
-				{formattedData?.additionalBenefits?.length > 0 ? (
-					formattedData.additionalBenefits.map((benefit, index) => (
+				{formattedPlan.additionalBenefits.length > 0 ? (
+					formattedPlan.additionalBenefits.map((benefit, index) => (
 						<li key={index}>{benefit}</li>
 					))
 				) : (
 					<p>No additional benefits available.</p>
+				)}
+			</ul>
+
+			{/* Example: Adding Provider Directory and Limitations */}
+			<h3>Provider Directory:</h3>
+			<p>{formattedPlan.providerDirectory || "Not Available"}</p>
+
+			<h3>Limitations:</h3>
+			<ul>
+				{formattedPlan.limitations.length > 0 ? (
+					formattedPlan.limitations.map((limitation, index) => (
+						<li key={index}>{limitation}</li>
+					))
+				) : (
+					<p>No limitations specified.</p>
 				)}
 			</ul>
 

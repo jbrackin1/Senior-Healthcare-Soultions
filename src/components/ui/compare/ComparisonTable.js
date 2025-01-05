@@ -129,13 +129,13 @@ const ComparisonTable = ({ plans }) => {
 						key={plan.id}
 						onClick={() => (window.location.href = `/plan/${plan.id}`)}
 						style={{ cursor: "pointer" }}>
-						<td
+						<b><td
 							onClick={() => {
 								console.log("Navigating to plan:", plan.id);
 								window.location.href = `/plan/${plan.id}`;
 							}}>
 							{plan.name || "N/A"}
-						</td>
+						</td></b>
 						<td>{plan.premium !== undefined ? `$${plan.premium}` : "N/A"}</td>
 						<td>${plan.deductibles[0]?.amount || "N/A"}</td>
 						<td>${plan.moops[0]?.amount || "N/A"}</td>

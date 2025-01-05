@@ -25,6 +25,7 @@ import Resources from "./pages/Generic/Resources";
 // import TestTestimonials from "./pages/Generic/TestTestimonials";
 import PractitionerPage from "./pages/Users/Practitioner";
 import Blog from "./pages/Generic/Blog";
+import DrugCoverage from "./components/ui/Global/DrugCoverage";
 import ComparePlans from "./pages/Insurance/Compare";
 import PlanDetail from "./components/ui/Plan/PlanDetail";
 import { PlanProvider } from "./services/hooks/PlanContext";
@@ -70,6 +71,7 @@ function App() {
 						<Route path="/user-profile" element={<Profile />} />
 						<Route path="/compare" element={<ComparePlans />} />
 						<Route path="/plan/:planId" element={<PlanDetail />} />
+						<Route path="/drug-coverage" element={< DrugCoverage />} />
 						<Route path="/resources" element={<Resources />} />
 						<Route path="/practitioner" element={<PractitionerPage />} />
 						<Route path="/testimonials" element={<Testimonials />} />
