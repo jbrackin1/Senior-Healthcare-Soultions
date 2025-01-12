@@ -60,9 +60,21 @@ const PlanInfo = styled.div`
 `;
 
 const PlanTitle = styled.h3`
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-  color: ${({ theme }) => theme.colors.primary};
+	font-size: 1.5rem;
+	margin-bottom: 0.5rem;
+	color: ${({ theme }) => theme.colors.primary};
+	cursor: pointer; // Add pointer cursor to show it's clickable
+
+	a {
+		text-decoration: underline; // Make the link visually distinct
+		color: inherit;
+	}
+
+	span {
+		margin-left: 0.5rem;
+		font-size: 0.9rem;
+		color: gray;
+	}
 `;
 
 const MarketPlacePage = () => {
@@ -327,6 +339,19 @@ const formattedPlanId = planId ? planId.toUpperCase() : "";
 							<PlanCard key={plan.id}>
 								<PlanInfo>
 									<PlanTitle>
+										<Link
+											to={`/plan/${plan.id}`}
+											style={{ textDecoration: "underline", color: "blue" }}>
+											{plan.name}
+										</Link>
+										<span
+											style={{
+												marginLeft: "0.5rem",
+												color: "gray",
+												fontSize: "0.9rem",
+											}}>
+											(Click to view details)
+										</span>
 										<b>
 											<Link
 												to={`/plan/${plan.id}`}
@@ -348,7 +373,7 @@ const formattedPlanId = planId ? planId.toUpperCase() : "";
 					)}
 				</div>
 			)}
-			<div>
+			<div style={{ marginTop: "2rem", textAlign: "center" }}>
 				<Button
 					as={Link}
 					to={{
@@ -359,12 +384,13 @@ const formattedPlanId = planId ? planId.toUpperCase() : "";
 					style={{
 						backgroundColor: selectedPlans.length === 0 ? "#ccc" : "",
 						pointerEvents: selectedPlans.length === 0 ? "none" : "auto",
+						marginTop: "2rem",
 					}}>
 					Check if your medications are covered
 				</Button>
 				{selectedPlans.length === 0 && (
-					<p style={{ color: "red", textAlign: "center" }}>
-						Please select at least one plan to continue.
+					<p style={{ color: "red", textAlign: "center", marginTop: "2rem" }}>
+						<b>Please select at least one plan to continue.</b>
 					</p>
 				)}
 			</div>

@@ -9,6 +9,7 @@ const Table = styled.table`
 	margin-top: 1rem;
 	background-color: ${({ theme }) => theme.colors.backgroundAlt};
 	color: ${({ theme }) => theme.colors.text};
+	table-layout: auto;
 `;
 
 const TableHeader = styled.th`
@@ -18,10 +19,10 @@ const TableHeader = styled.th`
 	color: ${({ theme }) => theme.colors.textOnPrimary};
 	cursor: pointer;
 	position: relative;
+	text-align: left;
 `;
 
 const Tooltip = styled.div`
-	display: none;
 	position: absolute;
 	top: 120%;
 	left: 50%;
@@ -34,9 +35,13 @@ const Tooltip = styled.div`
 	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 	white-space: nowrap;
 	z-index: 10;
+	transition: visibility 0.2s, opacity 0.2s ease-in-out;
+	visibility: hidden;
+	opacity: 0;
 
 	${TableHeader}:hover & {
-		display: block;
+		visibility: visible;
+		opacity: 1;
 	}
 `;
 
@@ -44,7 +49,9 @@ const InfoIcon = styled.span`
 	font-size: 0.9rem;
 	margin-left: 0.25rem;
 	cursor: help;
-	color: ${({ theme }) => theme.colors.textOnPrimary || "#fff"};
+	color: ${({ theme }) => theme.colors.textOnPrimary || "navy"};
+	display: inline-flex;
+	align-items: center;
 `;
 
 const ComparisonTable = ({ plans }) => {
@@ -87,36 +94,36 @@ const ComparisonTable = ({ plans }) => {
 				<tr>
 					<TableHeader onClick={() => handleSort("name")}>
 						Plan Name
-						<InfoIcon>ℹ️</InfoIcon>
+						<InfoIcon> ⓘ </InfoIcon>
 						<Tooltip>Click to sort plans alphabetically by name.</Tooltip>
 					</TableHeader>
 					<TableHeader onClick={() => handleSort("premium")}>
 						Premium
-						<InfoIcon>ℹ️</InfoIcon>
+						<InfoIcon> ⓘ </InfoIcon>
 						<Tooltip>Click to sort plans by premium cost.</Tooltip>
 					</TableHeader>
 					<TableHeader onClick={() => handleSort("deductibles")}>
 						Deductible
-						<InfoIcon>ℹ️</InfoIcon>
+						<InfoIcon> ⓘ </InfoIcon>
 						<Tooltip>Click to sort plans by deductible amount.</Tooltip>
 					</TableHeader>
 					<TableHeader onClick={() => handleSort("moops")}>
 						Out of Pocket Max
-						<InfoIcon>ℹ️</InfoIcon>
+						<InfoIcon> ⓘ </InfoIcon>
 						<Tooltip>
 							Click to sort plans by maximum out-of-pocket cost.
 						</Tooltip>
 					</TableHeader>
 					<TableHeader onClick={() => handleSort("network_tier")}>
 						Network
-						<InfoIcon>ℹ️</InfoIcon>
+						<InfoIcon> ⓘ </InfoIcon>
 						<Tooltip>
 							Click to sort plans by network type (e.g., Broad or Limited).
 						</Tooltip>
 					</TableHeader>
 					<TableHeader onClick={() => handleSort("hsa_eligible")}>
 						HSA Eligible
-						<InfoIcon>ℹ️</InfoIcon>
+						<InfoIcon> ⓘ </InfoIcon>
 						<Tooltip>
 							Click to sort plans by HSA eligibility (Yes or No).
 						</Tooltip>
@@ -129,13 +136,15 @@ const ComparisonTable = ({ plans }) => {
 						key={plan.id}
 						onClick={() => (window.location.href = `/plan/${plan.id}`)}
 						style={{ cursor: "pointer" }}>
-						<b><td
-							onClick={() => {
-								console.log("Navigating to plan:", plan.id);
-								window.location.href = `/plan/${plan.id}`;
-							}}>
-							{plan.name || "N/A"}
-						</td></b>
+						<b>
+							<td
+								onClick={() => {
+									console.log("Navigating to plan:", plan.id);
+									window.location.href = `/plan/${plan.id}`;
+								}}>
+								{plan.name || "N/A"}
+							</td>
+						</b>
 						<td>{plan.premium !== undefined ? `$${plan.premium}` : "N/A"}</td>
 						<td>${plan.deductibles[0]?.amount || "N/A"}</td>
 						<td>${plan.moops[0]?.amount || "N/A"}</td>
