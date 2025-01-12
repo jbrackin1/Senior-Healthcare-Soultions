@@ -1,6 +1,7 @@
 import React, { useState} from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+
 import Button from "../../../components/ui/Global/button";
 import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
 
@@ -65,7 +66,13 @@ const PlanTitle = styled.h3`
 `;
 
 const MarketPlacePage = () => {
+  // const { isSignedIn } = useAuth();
   const [plans, setPlans] = useState([]);
+   const isSignedIn = false; // Temporary placeholder
+		console.log("MarketPlacePage Render: isSignedIn =", isSignedIn);
+  const [selectedPlans, setSelectedPlans] = useState([]);
+  const { planId } = useParams();
+  const maxPlans = isSignedIn ? 4 : 1; 
   const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [formData, setFormData] = useState({
@@ -77,7 +84,17 @@ const MarketPlacePage = () => {
     state: "",
     zipcode: "27360", // Default value
   });
-  const [loading, setLoading] = useState(false); // State for loading
+  const [loading, setLoading] = useState(false); 
+
+   const handlePlanSelection = (planId) => {
+			if (selectedPlans.includes(planId)) {
+				setSelectedPlans((prev) => prev.filter((id) => id !== planId));
+			} else if (selectedPlans.length < maxPlans) {
+				setSelectedPlans((prev) => [...prev, planId]);
+			} else {
+				alert(`You can only select up to ${maxPlans} plan(s).`);
+			}
+		};
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -230,6 +247,8 @@ const MarketPlacePage = () => {
     }
   };
 
+const formattedPlanId = planId ? planId.toUpperCase() : ""; 
+
   //   const sortPlansByPremium = () => {
   //   const sorted = [...filteredPlans].sort((a, b) => a.premium - b.premium);
   //   setFilteredPlans(sorted);
@@ -316,6 +335,8 @@ const MarketPlacePage = () => {
 												}>
 												{plan.name}
 											</Link>
+											console.log("Navigating to plan ID:", planId);
+											console.log("Plan ID:", plan.id);
 										</b>
 									</PlanTitle>
 									<p>{plan.description}</p>
@@ -327,9 +348,26 @@ const MarketPlacePage = () => {
 					)}
 				</div>
 			)}
-			<Button as={Link} to="/drug-coverage" >
-				Check if your medications are covered
-			</Button>
+			<div>
+				<Button
+					as={Link}
+					to={{
+						pathname: "/drug-coverage",
+						state: { selectedPlans },
+					}}
+					disabled={selectedPlans.length === 0}
+					style={{
+						backgroundColor: selectedPlans.length === 0 ? "#ccc" : "",
+						pointerEvents: selectedPlans.length === 0 ? "none" : "auto",
+					}}>
+					Check if your medications are covered
+				</Button>
+				{selectedPlans.length === 0 && (
+					<p style={{ color: "red", textAlign: "center" }}>
+						Please select at least one plan to continue.
+					</p>
+				)}
+			</div>
 		</CompareContainer>
 	);
 };

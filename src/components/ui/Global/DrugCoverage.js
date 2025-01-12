@@ -2,9 +2,9 @@
 // Jerod you need to add this npm install react-select
 
 import React, { useState } from "react";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import styled from "styled-components";
-import { fetchDrugSuggestions } from "../../../utils/fetchDrugSuggestions";
+import { fetchDrugSuggestions } from "../../../utils/api/fetchDrugSuggestions";
 import AsyncSelect from "react-select/async";
 import Button from "../Global/button";
 
@@ -26,11 +26,17 @@ const Input = styled.input`
 `;
 
 const DrugCoverage = () => {
+	const location = useLocation();
+	const selectedPlan = location.state?.selectedPlan || null;
+
 	const [drugRxCuis, setDrugRxCuis] = useState("");
-	const [planIds, setPlanIds] = useState("");
+	const [planIds, setPlanIds] = useState(selectedPlan ? [selectedPlan] : []);
 	const [coverageData, setCoverageData] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
+	const [selectedPlans, setSelectedPlans] = useState([]);
+
+	const maxPlans = isSignedIn ? 4 : 1;
 
 	const fetchDrugCoverage = async () => {
 		if (!drugRxCuis || !planIds) {
@@ -40,7 +46,7 @@ const DrugCoverage = () => {
 
 		setLoading(true);
 		setError(null);
-		setCoverageData(null); // Clear old data
+		setCoverageData(null);
 
 		try {
 			const response = await fetch(
@@ -69,6 +75,20 @@ const DrugCoverage = () => {
 			setLoading(false);
 		}
 	};
+
+	const handlePlanSelection = (selectedOption) => {
+		if (planIds.length >= maxPlans) {
+			setError(`You can only select up to ${maxPlans} plans.`);
+			return;
+		}
+		setError(null);
+		setPlanIds((prev) =>
+			prev.includes(selectedOption.value)
+				? prev
+				: [...prev, selectedOption.value]
+		);
+	};
+
 
 	return (
 		<CoverageContainer>
@@ -109,8 +129,13 @@ const DrugCoverage = () => {
 				/>
 			</label>
 
-			<Button onClick={fetchDrugCoverage} disabled={loading}>
-				{loading ? "Checking..." : "Check Coverage"}
+			<Button
+				as={Link}
+				to={{
+					pathname: "/drug-coverage",
+					state: { selectedPlans }, // Note: Use selectedPlans instead of selectedPlan for consistency
+				}}>
+				Check if your medications are covered
 			</Button>
 
 			{loading && <p>Loading...</p>}

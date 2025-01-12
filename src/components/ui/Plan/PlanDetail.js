@@ -4,8 +4,13 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../Global/button";
-import { formatDetailedInsInfo } from "../../../utils/formatDetailedInsInfo";
-import {formatCurrency, formatDate, formatPlanType} from "../../../utils/formatData";
+import { formatDetailedInsInfo } from "../../../utils/formatters/formatDetailedInsInfo";
+import {
+	formatCurrency,
+	formatDate,
+	formatPlanType,
+} from "../../../utils/formatters/formatData";
+
 const DetailContainer = styled.div`
 	padding: 2rem;
 	background-color: ${({ theme }) => theme.colors.background};
@@ -50,73 +55,179 @@ const PlanDetail = ({ addToFavorites, addToComparison, isSignedIn }) => {
 			<h2>{formattedPlan.name || "N/A"}</h2>
 			<p>
 				{formattedPlan.marketingUrl ? (
-					<a href={formattedPlan.marketingUrl}>Plan Details</a>
+					<a href={formattedPlan.marketingUrl} target="_blank" rel="noreferrer">
+						Plan Details
+					</a>
 				) : (
 					"No description available."
 				)}
 			</p>
-			<p>Premium: {formattedPlan.premium || "Data not available"}</p>
-			<p>Plan Type: {formattedPlan.type || "Data not available"}</p>
-			<p>Deductible: {formattedPlan.deductible || "Data not available"}</p>
-
-			<h3>Coverage Details:</h3>
-			<ul>
-				<li>
-					General Co-Pay: {formattedPlan.coPay.general || "Data not available"}
-				</li>
-				<li>
-					Specialist Co-Pay:{" "}
-					{formattedPlan.coPay.specialist || "Data not available"}
-				</li>
-				<li>
-					Hospital Co-Pay:{" "}
-					{formattedPlan.coPay.hospital || "Data not available"}
-				</li>
-				<li>
-					Network Coverage:{" "}
-					{formattedPlan.networkCoverage || "Data not available"}
-				</li>
-				<li>
-					Medicare Eligible:{" "}
-					{formattedPlan.medicareEligible || "Data not available"}
-				</li>
-				<li>
-					Medicaid Eligible:{" "}
-					{formattedPlan.medicaidEligible || "Data not available"}
-				</li>
-			</ul>
-
-			<h3>Additional Benefits:</h3>
-			<ul>
-				{formattedPlan.additionalBenefits.length > 0 ? (
-					formattedPlan.additionalBenefits.map((benefit, index) => (
-						<li key={index}>{benefit}</li>
-					))
-				) : (
-					<p>No additional benefits available.</p>
-				)}
-			</ul>
-
-			{/* Example: Adding Provider Directory and Limitations */}
-			<h3>Provider Directory:</h3>
-			<p>{formattedPlan.providerDirectory || "Not Available"}</p>
-
-			<h3>Limitations:</h3>
-			<ul>
-				{formattedPlan.limitations.length > 0 ? (
-					formattedPlan.limitations.map((limitation, index) => (
-						<li key={index}>{limitation}</li>
-					))
-				) : (
-					<p>No limitations specified.</p>
-				)}
-			</ul>
+			<p>
+				<b>Premium:</b> {formattedPlan.premium || "Data not available"}
+			</p>
+			<p>
+				<b>Plan Type:</b> {formattedPlan.type || "Data not available"}
+			</p>
+			<p>
+				<b>Deductible:</b> {formattedPlan.deductible || "Data not available"}
+			</p>
+			<p>
+				<b>Metal Level:</b> {formattedPlan.metalLevel || "Data not available"}
+			</p>
+			<p>
+				<b>Maximum Out-of-Pocket (MOOP):</b>{" "}
+				{formattedPlan.moop || "Data not available"}
+			</p>
+			<p>
+				<b>HSA Eligible:</b> {formattedPlan.hsaEligible || "Data not available"}
+			</p>
 
 			<div>
-				<Button onClick={() => addToFavorites?.(plan)}>Add to Favorites</Button>
-				<Button onClick={() => addToComparison?.(plan)}>
-					Add to Comparison
-				</Button>
+				<h3>
+					<b>Coverage Details:</b>
+				</h3>
+				<ul>
+					<li>
+						<b>General Co-Pay:</b>{" "}
+						{formattedPlan.coPay.general || "Data not available"}
+					</li>
+					<li>
+						<b>Specialist Co-Pay:</b>{" "}
+						{formattedPlan.coPay.specialist || "Data not available"}
+					</li>
+					<li>
+						<b>Hospital Co-Pay:</b>{" "}
+						{formattedPlan.coPay.hospital || "Data not available"}
+					</li>
+					<li>
+						<b>Network Coverage:</b>{" "}
+						{formattedPlan.networkCoverage || "Data not available"}
+					</li>
+					<li>
+						<b>Medicare Eligible:</b>{" "}
+						{formattedPlan.medicareEligible || "Data not available"}
+					</li>
+					<li>
+						<b>Medicaid Eligible:</b>{" "}
+						{formattedPlan.medicaidEligible || "Data not available"}
+					</li>
+				</ul>
+			</div>
+
+			<div>
+				<h3>
+					<b>Additional Benefits:</b>
+				</h3>
+				<ul>
+					{formattedPlan.additionalBenefits.length > 0 ? (
+						formattedPlan.additionalBenefits.map((benefit, index) => (
+							<li key={index}>{benefit}</li>
+						))
+					) : (
+						<p>No additional benefits available.</p>
+					)}
+				</ul>
+			</div>
+
+			<div>
+				<h3>
+					<b>Disease Management Programs:</b>
+				</h3>
+				<ul>
+					{formattedPlan.diseaseMgmtPrograms.length > 0 ? (
+						formattedPlan.diseaseMgmtPrograms.map((program, index) => (
+							<li key={index}>{program}</li>
+						))
+					) : (
+						<p>No disease management programs available.</p>
+					)}
+				</ul>
+			</div>
+
+			<div>
+				<h3>
+					<b>Plan Resources:</b>
+				</h3>
+				<ul>
+					<li>
+						<b>Brochure:</b>{" "}
+						{formattedPlan.brochureUrl ? (
+							<a
+								href={formattedPlan.brochureUrl}
+								target="_blank"
+								rel="noreferrer">
+								View Brochure
+							</a>
+						) : (
+							"Not Available"
+						)}
+					</li>
+					<li>
+						<b>Benefits:</b>{" "}
+						{formattedPlan.benefitsUrl ? (
+							<a
+								href={formattedPlan.benefitsUrl}
+								target="_blank"
+								rel="noreferrer">
+								View Benefits
+							</a>
+						) : (
+							"Not Available"
+						)}
+					</li>
+					<li>
+						<b>Network:</b>{" "}
+						{formattedPlan.networkUrl ? (
+							<a
+								href={formattedPlan.networkUrl}
+								target="_blank"
+								rel="noreferrer">
+								View Network
+							</a>
+						) : (
+							"Not Available"
+						)}
+					</li>
+					<li>
+						<b>Formulary:</b>{" "}
+						{formattedPlan.formularyUrl ? (
+							<a
+								href={formattedPlan.formularyUrl}
+								target="_blank"
+								rel="noreferrer">
+								View Formulary
+							</a>
+						) : (
+							"Not Available"
+						)}
+					</li>
+				</ul>
+			</div>
+
+			<div>
+				<h3>
+					<b>Limitations:</b>
+				</h3>
+				<ul>
+					{formattedPlan.limitations.length > 0 ? (
+						formattedPlan.limitations.map((limitation, index) => (
+							<li key={index}>{limitation}</li>
+						))
+					) : (
+						<p>No limitations specified.</p>
+					)}
+				</ul>
+			</div>
+
+			<div>
+				<div style={{ display: "flex", gap: "1rem" }}>
+					<Button onClick={() => addToFavorites?.(plan)}>
+						Add to Favorites
+					</Button>
+					<Button onClick={() => addToComparison?.(plan)}>
+						Add to Comparison
+					</Button>
+				</div>
 
 				{isSignedIn ? (
 					<Button onClick={() => navigate("/comparison")}>
