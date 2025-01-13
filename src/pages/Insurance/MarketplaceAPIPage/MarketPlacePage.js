@@ -1,7 +1,6 @@
 import React, { useState} from "react";
 import styled from "styled-components";
-import { Link, useParams } from "react-router-dom";
-
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Button from "../../../components/ui/Global/button";
 import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
 
@@ -78,200 +77,212 @@ const PlanTitle = styled.h3`
 `;
 
 const MarketPlacePage = () => {
-  // const { isSignedIn } = useAuth();
-  const [plans, setPlans] = useState([]);
-   const isSignedIn = false; // Temporary placeholder
-		console.log("MarketPlacePage Render: isSignedIn =", isSignedIn);
-  const [selectedPlans, setSelectedPlans] = useState([]);
-  const { planId } = useParams();
-  const maxPlans = isSignedIn ? 4 : 1; 
-  const [state, setState] = useState("");
-  const [zipCode, setZipCode] = useState("");
-  const [formData, setFormData] = useState({
-    income: 52000,
-    age: 27,
-    gender: "Female",
-    usesTobacco: false,
-    countyfips: "37057", // Default value
-    state: "",
-    zipcode: "27360", // Default value
-  });
-  const [loading, setLoading] = useState(false); 
+	const [plans, setPlans] = useState([]); 
+	const [sortKey, setSortKey] = useState("premium");
+	const [sortOrder, setSortOrder] = useState("asc");
+	const isSignedIn = false; // Temporary placeholder, useAuth();
+	console.log("MarketPlacePage Render: isSignedIn =", isSignedIn);
+	const [selectedPlans, setSelectedPlans] = useState([]);
+	const { planId } = useParams();
+	const maxPlans = isSignedIn ? 4 : 1;
+	const [state, setState] = useState("");
+	const [zipCode, setZipCode] = useState("");
+	const [formData, setFormData] = useState({
+		income: 52000,
+		age: 27,
+		gender: "Female",
+		usesTobacco: false,
+		countyfips: "37057", // Default value
+		state: "",
+		zipcode: "27360", // Default value
+	});
+	const [loading, setLoading] = useState(false);
 
-   const handlePlanSelection = (planId) => {
-			if (selectedPlans.includes(planId)) {
-				setSelectedPlans((prev) => prev.filter((id) => id !== planId));
-			} else if (selectedPlans.length < maxPlans) {
-				setSelectedPlans((prev) => [...prev, planId]);
+  const handlePlanToggle = (plan) => {
+		const isAlreadySelected = selectedPlans.find((p) => p.id === plan.id);
+
+		if (isAlreadySelected) {
+			setSelectedPlans(selectedPlans.filter((p) => p.id !== plan.id));
+		} else if (selectedPlans.length < maxPlans) {
+			setSelectedPlans([...selectedPlans, plan]);
+		} else {
+			alert(`You can only select up to ${maxPlans} plan(s).`);
+		}
+	};
+
+  const handleSort = (key) => {
+		if (sortKey === key) {
+			setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
+		} else {
+			setSortKey(key);
+			setSortOrder("asc");
+		}
+	};
+
+	const handleInputChange = (e) => {
+		const { name, value } = e.target;
+		setFormData((prevData) => ({ ...prevData, [name]: value }));
+	};
+
+	const getState = async (zipcode) => {
+		const apiKey = process.env.REACT_APP_MARKETPLACE_API_KEY;
+		try {
+			const response = await fetch(
+				`https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${zipcode}?apikey=${apiKey}`
+			);
+			const fipsData = await response.json();
+			setState(fipsData.counties[0].state);
+			console.log(state);
+
+			//   const fipsFromZips = fipsData.counties.filter((fipsInstance) => {
+			//     return fipsInstance[0].fips[0];
+			//   })
+			//   console.log(fipsFromZips);
+
+			console.log(fipsData); // Log to check the response
+			if (response.ok && fipsData.counties && fipsData.counties.length > 0) {
+				return fipsData.counties[0].state;
 			} else {
-				alert(`You can only select up to ${maxPlans} plan(s).`);
+				console.error("Error fetching FIPS code:", fipsData);
+				return null;
 			}
+		} catch (error) {
+			console.error("Error fetching FIPS code:", error);
+			return null;
+		}
+	};
+
+	const getFipsCode = async (zipcode) => {
+		const apiKey = process.env.REACT_APP_MARKETPLACE_API_KEY;
+		try {
+			const response = await fetch(
+				`https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${zipcode}?apikey=${apiKey}`
+			);
+			const fipsData = await response.json();
+			const zipArray = fipsData.counties[0].zipcode;
+			console.log(zipArray);
+			//   const fipsFromZips = fipsData.counties.filter((fipsInstance) => {
+			//     return fipsInstance[0].fips[0];
+			//   })
+			//   console.log(fipsFromZips);
+			console.log(fipsData); // Log to check the response
+			if (response.ok && fipsData.counties && fipsData.counties.length > 0) {
+				return fipsData.counties[0].fips;
+			} else {
+				console.error("Error fetching FIPS code:", fipsData);
+				return null;
+			}
+		} catch (error) {
+			console.error("Error fetching FIPS code:", error);
+			return null;
+		}
+	};
+
+	const getZipsFromFips = async (zipcode) => {
+		const apiKey = process.env.REACT_APP_MARKETPLACE_API_KEY;
+		try {
+			const response = await fetch(
+				`https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${zipcode}?apikey=${apiKey}`
+			);
+			const fipsData = await response.json();
+			const ZipCode = fipsData.counties[0].zipcode;
+			setZipCode(ZipCode);
+
+			//   const fipsFromZips = fipsData.counties.filter((fipsInstance) => {
+			//     return fipsInstance[0].fips[0];
+			//   })
+			//   console.log(fipsFromZips);
+			console.log(fipsData); // Log to check the response
+			if (response.ok && fipsData.counties && fipsData.counties.length > 0) {
+				return fipsData.counties.zipcode;
+			} else {
+				console.error("Error fetching FIPS code:", fipsData);
+				return null;
+			}
+		} catch (error) {
+			console.error("Error fetching FIPS code:", error);
+			return null;
+		}
+	};
+
+	const getStateFromZip = async () => {
+		const data = fetchMarketplaceData();
+		console.log(data);
+	};
+
+	//   useEffect(() => {
+	//     getStateFromZip();
+	//   }, []);
+
+	const fetchMarketplaceData = async () => {
+		setLoading(true); // Set loading to true
+		const fipsCode = await getFipsCode(formData.zipcode);
+		const users_state = await getState(formData.zipcode);
+
+		console.log(users_state);
+		// const zipCodes = await getZipsFromFips(formData.zipCode);
+
+		if (!fipsCode) {
+			alert("Could not retrieve FIPS code for the provided ZIP code.");
+			setLoading(false); // Set loading to false after handling error
+			return;
+		}
+
+		const requestData = {
+			household: {
+				income: parseFloat(formData.income),
+				people: [
+					{
+						age: formData.age,
+						aptc_eligible: true,
+						gender: formData.gender,
+						uses_tobacco: formData.usesTobacco,
+					},
+				],
+			},
+			market: "Individual",
+			place: {
+				countyfips: fipsCode,
+				state: state,
+				zipcode: formData.zipcode,
+			},
+			year: 2019,
 		};
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
+		try {
+			const response = await fetch(
+				`https://marketplace.api.healthcare.gov/api/v1/plans/search?apikey=${process.env.REACT_APP_MARKETPLACE_API_KEY}`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(requestData),
+				}
+			);
+			const data = await response.json();
+			console.log(data);
+			setPlans(data.plans || []);
+		} catch (error) {
+			console.error("Error fetching marketplace data:", error);
+		} finally {
+			setLoading(false); // Set loading to false after API call is complete
+		}
+	};
 
-  const getState = async (zipcode) => {
-    const apiKey = process.env.REACT_APP_MARKETPLACE_API_KEY;
-    try {
-      const response = await fetch(
-        `https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${zipcode}?apikey=${apiKey}`
-      );
-      const fipsData = await response.json();
-      setState(fipsData.counties[0].state);
-      console.log(state);
+	const formattedPlanId = planId ? planId.toUpperCase() : "";
 
-    //   const fipsFromZips = fipsData.counties.filter((fipsInstance) => {
-    //     return fipsInstance[0].fips[0];
-    //   })
-    //   console.log(fipsFromZips);
-    
-      console.log(fipsData);  // Log to check the response
-      if (response.ok && fipsData.counties && fipsData.counties.length > 0) {
-        return fipsData.counties[0].state;
-      } else {
-        console.error("Error fetching FIPS code:", fipsData);
-        return null;
-      }
-    } catch (error) {
-      console.error("Error fetching FIPS code:", error);
-      return null;
-    }
-  };
+	//   const sortPlansByPremium = () => {
+	//   const sorted = [...filteredPlans].sort((a, b) => a.premium - b.premium);
+	//   setFilteredPlans(sorted);
+	// };
 
-  const getFipsCode = async (zipcode) => {
-    const apiKey = process.env.REACT_APP_MARKETPLACE_API_KEY;
-    try {
-      const response = await fetch(
-        `https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${zipcode}?apikey=${apiKey}`
-      );
-      const fipsData = await response.json();
-      const zipArray = fipsData.counties[0].zipcode;
-      console.log(zipArray);
-    //   const fipsFromZips = fipsData.counties.filter((fipsInstance) => {
-    //     return fipsInstance[0].fips[0];
-    //   })
-    //   console.log(fipsFromZips);
-      console.log(fipsData);  // Log to check the response
-      if (response.ok && fipsData.counties && fipsData.counties.length > 0) {
-        return fipsData.counties[0].fips;
-      } else {
-        console.error("Error fetching FIPS code:", fipsData);
-        return null;
-      }
-    } catch (error) {
-      console.error("Error fetching FIPS code:", error);
-      return null;
-    }
-  };
+	// const filterByHSAEligible = () => {
+	//   const filtered = plans.filter((plan) => plan.hsa_eligible);
+	//   setFilteredPlans(filtered);
+	// };
 
-  const getZipsFromFips = async (zipcode) => {
-    const apiKey = process.env.REACT_APP_MARKETPLACE_API_KEY;
-    try {
-      const response = await fetch(
-        `https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${zipcode}?apikey=${apiKey}`
-      );
-      const fipsData = await response.json();
-      const ZipCode = fipsData.counties[0].zipcode;
-      setZipCode(ZipCode);
-   
-    //   const fipsFromZips = fipsData.counties.filter((fipsInstance) => {
-    //     return fipsInstance[0].fips[0];
-    //   })
-    //   console.log(fipsFromZips);
-      console.log(fipsData);  // Log to check the response
-      if (response.ok && fipsData.counties && fipsData.counties.length > 0) {
-        return fipsData.counties.zipcode;
-      } else {
-        console.error("Error fetching FIPS code:", fipsData);
-        return null;
-      }
-    } catch (error) {
-      console.error("Error fetching FIPS code:", error);
-      return null;
-    }
-  };
-
-  const getStateFromZip = async () => {
-    const data = fetchMarketplaceData();
-    console.log (data);
-  }
-
-//   useEffect(() => {
-//     getStateFromZip();
-//   }, []);
-
-  const fetchMarketplaceData = async () => {
-    setLoading(true); // Set loading to true
-    const fipsCode = await getFipsCode(formData.zipcode);
-    const users_state = await getState(formData.zipcode);
-
-    console.log(users_state);
-    // const zipCodes = await getZipsFromFips(formData.zipCode);
-
-    if (!fipsCode) {
-      alert("Could not retrieve FIPS code for the provided ZIP code.");
-      setLoading(false); // Set loading to false after handling error
-      return;
-    }
-
-    const requestData = {
-      household: {
-        income: parseFloat(formData.income),
-        people: [
-          {
-            age: formData.age,
-            aptc_eligible: true,
-            gender: formData.gender,
-            uses_tobacco: formData.usesTobacco,
-          },
-        ],
-      },
-      market: "Individual",
-      place: {
-        countyfips: fipsCode,
-        state: state,
-        zipcode: formData.zipcode,
-      },
-      year: 2019,
-    };
-
-    try {
-      const response = await fetch(
-        `https://marketplace.api.healthcare.gov/api/v1/plans/search?apikey=${process.env.REACT_APP_MARKETPLACE_API_KEY}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestData),
-        }
-      );
-      const data = await response.json();
-      console.log(data);
-      setPlans(data.plans || []);
-    } catch (error) {
-      console.error("Error fetching marketplace data:", error);
-    } finally {
-      setLoading(false); // Set loading to false after API call is complete
-    }
-  };
-
-const formattedPlanId = planId ? planId.toUpperCase() : ""; 
-
-  //   const sortPlansByPremium = () => {
-  //   const sorted = [...filteredPlans].sort((a, b) => a.premium - b.premium);
-  //   setFilteredPlans(sorted);
-  // };
-
-  // const filterByHSAEligible = () => {
-  //   const filtered = plans.filter((plan) => plan.hsa_eligible);
-  //   setFilteredPlans(filtered);
-  // };
-
-  return (
+	return (
 		<CompareContainer>
 			<SectionTitle>Compare Insurance Plans</SectionTitle>
 
@@ -331,7 +342,11 @@ const formattedPlanId = planId ? planId.toUpperCase() : "";
 			{loading ? (
 				<p>Loading...</p>
 			) : plans.length > 0 ? (
-				<ComparisonTable plans={plans} />
+				<ComparisonTable
+					plans={plans}
+					onTogglePlan={handlePlanToggle}
+					selectedPlans={selectedPlans}
+				/>
 			) : (
 				<div>
 					{plans.length > 0 ? (
@@ -373,23 +388,22 @@ const formattedPlanId = planId ? planId.toUpperCase() : "";
 					)}
 				</div>
 			)}
+			{/* Button for Medications */}
 			<div style={{ marginTop: "2rem", textAlign: "center" }}>
 				<Button
 					as={Link}
-					to={{
-						pathname: "/drug-coverage",
-						state: { selectedPlans },
-					}}
+					to="/drug-coverage"
+					state={{ selectedPlans }}
 					disabled={selectedPlans.length === 0}
 					style={{
-						backgroundColor: selectedPlans.length === 0 ? "#ccc" : "",
+						backgroundColor: selectedPlans.length === 0 ? "navy" : "",
 						pointerEvents: selectedPlans.length === 0 ? "none" : "auto",
 						marginTop: "2rem",
 					}}>
 					Check if your medications are covered
 				</Button>
 				{selectedPlans.length === 0 && (
-					<p style={{ color: "red", textAlign: "center", marginTop: "2rem" }}>
+					<p style={{ color: "red", textAlign: "center", marginTop: "1rem" }}>
 						<b>Please select at least one plan to continue.</b>
 					</p>
 				)}
