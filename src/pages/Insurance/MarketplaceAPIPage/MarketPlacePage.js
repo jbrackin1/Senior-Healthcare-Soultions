@@ -4,7 +4,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import Button from "../../../components/ui/Global/button";
 import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
 
-
+//Later add toast or warnings saying to pick more than 1 you need to sign up
 const CompareContainer = styled.main`
   padding: 2rem;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
@@ -400,7 +400,7 @@ const MarketPlacePage = () => {
 						pointerEvents: selectedPlans.length === 0 ? "none" : "auto",
 						marginTop: "2rem",
 					}}>
-					Check if your medications are covered
+					Ensure Your Medications Are Covered
 				</Button>
 				{selectedPlans.length === 0 && (
 					<p style={{ color: "red", textAlign: "center", marginTop: "1rem" }}>

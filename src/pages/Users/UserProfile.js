@@ -225,3 +225,26 @@ function Profile() {
 }
 
 export default Profile;
+
+// TO DO:
+// Logic for User Information:
+
+// Missing state or logic to fetch and display user details (e.g., name, email, saved plan IDs).
+// Could benefit from integrating an API call to retrieve user profile data.
+// Authentication Check:
+
+// Likely needs logic to verify if the user is signed in.
+// If not signed in, it should redirect to a login page or show limited functionality.
+// Plan ID Management:
+
+// Should include logic to display and manage saved plan IDs.
+// Options to add, remove, or view plan IDs if authenticated.
+// Error Handling:
+
+// Needs error messages or feedback for issues like "no profile data found."
+// Mobile Responsiveness:
+
+// While styled-components are used, mobile-specific styles (e.g., media queries) should be reviewed for accessibility.
+// Integration:
+
+// Needs to connect with state management (e.g., Context API, Redux) or backend API for real-time updates.

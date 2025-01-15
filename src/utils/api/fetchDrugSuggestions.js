@@ -16,3 +16,18 @@ export const fetchDrugSuggestions = async (inputValue) => {
 		return [];
 	}
 };
+
+export const fetchDrugCoverage = async ({ planIds, drugRxCuis }) => {
+	// Replace with the actual API endpoint
+	const response = await fetch(`/api/coverage`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({ planIds, drugRxCuis }),
+	});
+	if (!response.ok) {
+		throw new Error("Failed to fetch drug coverage");
+	}
+	return response.json();
+};
