@@ -396,7 +396,7 @@ const MarketPlacePage = () => {
 					state={{ selectedPlans }}
 					disabled={selectedPlans.length === 0}
 					style={{
-						backgroundColor: selectedPlans.length === 0 ? "navy" : "",
+						backgroundColor: selectedPlans.length === 0 ? "#ccc" : "",
 						pointerEvents: selectedPlans.length === 0 ? "none" : "auto",
 						marginTop: "2rem",
 					}}>
