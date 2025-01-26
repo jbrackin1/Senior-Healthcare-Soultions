@@ -13,9 +13,17 @@ export const fetchDrugSuggestions = async (inputValue) => {
 		}
 
 		const data = await response.json();
-		return data.approximateGroup.candidate.map((item) => ({
-			label: `${item.rxcui} - ${item.name}`,
-			value: item.rxcui,
+		console.log("Raw Suggestions Data:", data); // Debug raw response
+
+		// Filter out suggestions without a valid name
+		const validSuggestions = data.approximateGroup.candidate.filter(
+			(item) => item.name && item.name.trim() !== "" // Ensure name exists and is not an empty string
+		);
+
+		// Map valid suggestions into the format expected by AsyncSelect
+		return validSuggestions.map((item) => ({
+			label: item.name, // Display the drug name
+			value: item.rxcui, // Use the RxCUI as the value
 		}));
 	} catch (error) {
 		console.error("Error fetching drug suggestions:", error.message);
