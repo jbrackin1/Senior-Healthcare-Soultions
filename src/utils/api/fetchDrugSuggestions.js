@@ -22,34 +22,3 @@ export const fetchDrugSuggestions = async (inputValue) => {
 		throw error; // Throw the error so the calling component can handle it
 	}
 };
-
-export const fetchDrugCoverage = async ({ planIds, drugRxCuis }) => {
-	// Replace with the actual API endpoint
-	const response = await fetch(`/api/coverage`, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({ planIds, drugRxCuis }),
-	});
-	if (!response.ok) {
-		throw new Error("Failed to fetch drug coverage");
-	}
-	try {
-		const data = await fetchDrugCoverage({ planIds, drugRxCuis });
-		console.log("Coverage Data: ", data);
-		setCoverageData(data);
-		setError("");
-	} catch (err) {
-		console.error("API Error: ", err.message);
-		if (err.message.includes("404")) {
-			setError(
-				"The coverage API endpoint is not available. Please contact support."
-			);
-		} else {
-			setError("Failed to fetch drug coverage. Please try again.");
-		}
-	}
-
-	return response.json();
-};
