@@ -181,20 +181,16 @@ const DrugCoverage = ({ isAuthenticated }) => {
 							<tr key={index} style={{ color: getColorByIndex(index) }}>
 								{/* Plan Name */}
 								<td>{selectedPlans[index]?.name || "N/A"}</td>{" "}
-								{/* Default to "N/A" if no plan name */}
 								{/* Drug Name */}
 								<td>{entry.drugName || "Drug name not provided"}</td>{" "}
-								{/* Display custom message if no drug name */}
 								{/* Coverage Status */}
 								<td>
 									{entry.coverage && entry.coverage !== "DataNotProvided"
 										? entry.coverage
 										: "Coverage not available"}
 								</td>{" "}
-								{/* Handle "DataNotProvided" gracefully */}
 								{/* Details */}
 								<td>{entry.details || "Details not provided"}</td>{" "}
-								{/* Default message if details are missing */}
 							</tr>
 						))}
 					</tbody>
