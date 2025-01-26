@@ -1,24 +1,26 @@
 /** @format */
+import { formatDrugRxCuis } from "../formatters/formatDrugRxCuis"; // Import the format function
 
-// The fetchDrugCoverage function is a utility that fetches coverage data from the API.
 export const fetchDrugCoverage = async ({
-	planIds, // Array of selected plan IDs
-	drugRxCuis, // Array of drug RxCUI values
-	setCoverageData, // Function to update coverage data in the parent component
-	setError, // Function to update error state in the parent component
+	planIds,
+	drugRxCuis,
+	setCoverageData,
+	setError,
 }) => {
 	try {
+		// Format the drug RxCuis to a comma-separated string using the utility function
+		const formattedDrugRxCuis = formatDrugRxCuis(drugRxCuis);
+
+		// The Marketplace API for drug coverage
 		const response = await fetch(
-			"https://api.marketplace.gov/v1/drug-coverage",
+			`https://marketplace.api.healthcare.gov/api/v1/drugs/covered?apikey=${
+				process.env.REACT_APP_MARKETPLACE_API_KEY
+			}&year=2019&drugs=${formattedDrugRxCuis}&planids=${planIds.join(",")}`,
 			{
-				method: "POST",
+				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({
-					planIds, // Array of selected plan IDs
-					drugRxCuis, // Array of drug RxCUI values
-				}),
 			}
 		);
 

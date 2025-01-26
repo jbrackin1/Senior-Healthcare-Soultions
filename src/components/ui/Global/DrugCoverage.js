@@ -166,8 +166,7 @@ const DrugCoverage = ({ isAuthenticated }) => {
 				<Button onClick={handleFetchCoverage}>Fetch Coverage</Button>
 			</SpacedDiv>
 
-			{/* Render coverage data */}
-			{coverageData.length > 0 && (
+			{coverageData?.coverage?.length > 0 && (
 				<ResultsTable>
 					<thead>
 						<tr>
@@ -178,12 +177,24 @@ const DrugCoverage = ({ isAuthenticated }) => {
 						</tr>
 					</thead>
 					<tbody>
-						{coverageData.map((entry, index) => (
+						{coverageData.coverage.map((entry, index) => (
 							<tr key={index} style={{ color: getColorByIndex(index) }}>
-								<td>{selectedPlans[index]?.name}</td>
-								<td>{isValidValue(entry.drugName) ? entry.drugName : "N/A"}</td>
-								<td>{isValidValue(entry.coverage) ? entry.coverage : "N/A"}</td>
-								<td>{isValidValue(entry.details) ? entry.details : "N/A"}</td>
+								{/* Plan Name */}
+								<td>{selectedPlans[index]?.name || "N/A"}</td>{" "}
+								{/* Default to "N/A" if no plan name */}
+								{/* Drug Name */}
+								<td>{entry.drugName || "Drug name not provided"}</td>{" "}
+								{/* Display custom message if no drug name */}
+								{/* Coverage Status */}
+								<td>
+									{entry.coverage && entry.coverage !== "DataNotProvided"
+										? entry.coverage
+										: "Coverage not available"}
+								</td>{" "}
+								{/* Handle "DataNotProvided" gracefully */}
+								{/* Details */}
+								<td>{entry.details || "Details not provided"}</td>{" "}
+								{/* Default message if details are missing */}
 							</tr>
 						))}
 					</tbody>
