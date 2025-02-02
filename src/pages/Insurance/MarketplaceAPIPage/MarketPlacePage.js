@@ -401,7 +401,7 @@ const MarketPlacePage = () => {
 						backgroundColor: selectedPlans.length === 0 ? "navy" : "",
 						pointerEvents: selectedPlans.length === 0 ? "none" : "auto",
 						marginTop: "2rem",
-					}}></Button>
+					}}>Check if your medication is covered</Button>
 				{selectedPlans.length === 0 && (
 					<p style={{ color: "red", textAlign: "center", marginTop: "1rem" }}>
 						<b>Please select at least one plan to continue.</b>
