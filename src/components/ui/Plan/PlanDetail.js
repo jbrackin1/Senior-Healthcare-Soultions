@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
-import Button from "../Global/button";
+import button from "../Global/button";
 import { formatDetailedInsInfo } from "../../../utils/formatters/formatDetailedInsInfo";
 import {
 	formatCurrency,
@@ -221,23 +221,23 @@ const PlanDetail = ({ addToFavorites, addToComparison, isSignedIn }) => {
 
 			<div>
 				<div style={{ display: "flex", gap: "1rem" }}>
-					<Button onClick={() => addToFavorites?.(plan)}>
+					<button onClick={() => addToFavorites?.(plan)}>
 						Add to Favorites
-					</Button>
-					<Button onClick={() => addToComparison?.(plan)}>
+					</button>
+					<button onClick={() => addToComparison?.(plan)}>
 						Add to Comparison
-					</Button>
+					</button>
 				</div>
 
 				{isSignedIn ? (
-					<Button onClick={() => navigate("/comparison")}>
+					<button onClick={() => navigate("/comparison")}>
 						Go to Comparison
-					</Button>
+					</button>
 				) : (
 					<p>You need to sign up to compare plans.</p>
 				)}
 
-				<Button onClick={() => navigate(-1)}>Back</Button>
+				<button onClick={() => navigate(-1)}>Back</button>
 			</div>
 		</DetailContainer>
 	);

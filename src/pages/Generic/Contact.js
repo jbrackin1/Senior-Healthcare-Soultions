@@ -6,7 +6,7 @@
 import React from "react";
 import styled from "styled-components";
 import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
-import Button from "../../components/ui/Global/button";
+import button from "../../components/ui/Global/button";
 import Input from "../../components/ui/Global/Input";
 import TextArea from "../../components/ui/Global/TextArea";
 
@@ -112,7 +112,7 @@ const Contact = () => {
 					<Input type="email" placeholder="Your Email" required />
 					<Input type="tel" placeholder="Your Phone Number" />
 					<TextArea rows="5" placeholder="Your Message" required />
-					<Button type="submit">Send Message</Button>
+					<button type="submit">Send Message</button>
 				</ContactForm>
 			</Section>
 

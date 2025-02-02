@@ -2,10 +2,9 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "../../components/ui/Global/button";
+import button from "../../components/ui/Global/button";
 import Input from "../../components/ui/Global/Input";
 import Dropdowns from "../../components/ui/Global/Dropdowns";
-
 
 // Styled Components
 
@@ -60,7 +59,7 @@ const NotificationSettingsSection = styled.div`
 	background-color: ${({ theme }) => theme.colors.background};
 `;
 
-// const StyledButton = styled(Button)`
+// const Styledbutton = styled(button)`
 // 	background-color: ${({ theme }) => theme.colors.primary};
 // 	color: ${({ theme }) => theme.colors.backgroundAlt};
 // 	margin-top: 1rem;
@@ -200,7 +199,7 @@ function Profile() {
 						/>
 						<span>Are you a veteran? (Check the box if yes)</span>
 					</label>
-					<Button type="submit">Update Profile</Button>
+					<button type="submit">Update Profile</button>
 				</ProfileForm>
 
 				{/* <SavedComparisonsSection>
@@ -217,7 +216,7 @@ function Profile() {
 						gap: "0.5rem",
 						margin: "1rem 0",
 					}}>
-					<Button onClick={handleLogout}>Logout</Button>
+					<button onClick={handleLogout}>Logout</button>
 				</div>
 			</ProfileContainer>
 		</BackgroundContainer>

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { fetchDrugSuggestions } from "../../../utils/api/fetchDrugSuggestions";
 import { fetchDrugCoverage } from "../../../utils/api/fetchDrugCoverage"; // Correct import path
 import AsyncSelect from "react-select/async";
-import Button from "../Global/button";
+import button from "./button";
 import DrugCoverageDetail from "../Plan/DrugCoverageDetail"; // Assuming DrugCoverageDetail is correctly imported
 
 // Styled components for layout
@@ -163,7 +163,7 @@ const DrugCoverage = ({ isAuthenticated }) => {
 			</SpacedDiv>
 
 			<SpacedDiv>
-				<Button onClick={handleFetchCoverage}>Fetch Coverage</Button>
+				<button onClick={handleFetchCoverage}>Fetch Coverage</button>
 			</SpacedDiv>
 
 			{coverageData?.coverage?.length > 0 && (
@@ -180,8 +180,7 @@ const DrugCoverage = ({ isAuthenticated }) => {
 						{coverageData.coverage.map((entry, index) => (
 							<tr key={index} style={{ color: getColorByIndex(index) }}>
 								{/* Plan Name */}
-								<td>{selectedPlans[index]?.name || "N/A"}</td>{" "}
-								{/* Drug Name */}
+								<td>{selectedPlans[index]?.name || "N/A"}</td> {/* Drug Name */}
 								<td>{entry.drugName || "Drug name not provided"}</td>{" "}
 								{/* Coverage Status */}
 								<td>

@@ -3,7 +3,7 @@
 // src/components/Admin/Settings.js
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Button from "../Global/button";
+import button from "../Global/button";
 
 const SettingsContainer = styled.div`
 	padding: 2rem;
@@ -75,7 +75,7 @@ const Settings = () => {
 				/>
 				Enable Comments
 			</label>
-			<Button onClick={handleSaveSettings}>Save Settings</Button>
+			<button onClick={handleSaveSettings}>Save Settings</button>
 		</SettingsContainer>
 	);
 };

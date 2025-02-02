@@ -5,7 +5,7 @@ import { ThemeProvider } from "styled-components";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import GlobalStyles from "./styles/GlobalStyles";
 import { lightTheme, darkTheme } from "./styles/themes/LightDarkTheme";
-import AdBanner from "./components/ui/Global/Ads/AdBanner";
+import AdBanner from "./components/ui/Feedback/Ads/AdBanner";
 import TopBannerComponent from "./components/ui/Global/TopBanner";
 import BottomFooter from "./components/ui/Global/BottomFooter";
 // Pages and Components
@@ -32,6 +32,8 @@ import { AuthProvider } from "./services/hooks/AuthProvider";
 import { getCignaToken } from "./services/Api/Cigna/getCignaToken";
 import {PlanContext} from "./services/hooks/PlanContext"
 import { PlanProvider } from "./services/hooks/PlanContext";
+import InsuranceForm from "./pages/Forms/InsuranceForm";
+import FindTheRightPlanPage from "./pages/Forms/InsuranceForm";
 
 function App() {
 	const [isDarkMode, setIsDarkMode] = useState(false);
@@ -59,6 +61,7 @@ function App() {
 						<Routes>
 							<Route path="/admin" element={<Dash />} />
 							<Route path="/signup" element={<SignUp />} />
+							<Route path="/find-plan"element={<FindTheRightPlanPage />} />
 							<Route path="/about" element={<About />} />
 							<Route path="/blog" element={<Blog />} />
 							<Route path="/" element={<HomePage />} />

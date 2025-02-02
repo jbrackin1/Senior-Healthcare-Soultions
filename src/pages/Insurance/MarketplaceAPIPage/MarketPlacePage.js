@@ -1,4 +1,6 @@
-import React, { useState} from "react";
+/** @format */
+
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Button from "../../../components/ui/Global/button";
@@ -6,56 +8,56 @@ import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
 
 //Later add toast or warnings saying to pick more than 1 you need to sign up
 const CompareContainer = styled.main`
-  padding: 2rem;
-  background-color: ${({ theme }) => theme.colors.backgroundAlt};
-  color: ${({ theme }) => theme.colors.text};
-  font-family: "Open Sans", sans-serif;
-  line-height: 1.6;
-  max-width: 1200px;
-  margin: 2rem auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	padding: 2rem;
+	background-color: ${({ theme }) => theme.colors.backgroundAlt};
+	color: ${({ theme }) => theme.colors.text};
+	font-family: "Open Sans", sans-serif;
+	line-height: 1.6;
+	max-width: 1200px;
+	margin: 2rem auto;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
 const SectionTitle = styled.h2`
-  font-family: "Libre Baskerville", serif;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: ${({ theme }) => theme.colors.accent};
-  text-align: center;
+	font-family: "Libre Baskerville", serif;
+	font-size: 2rem;
+	margin-bottom: 1.5rem;
+	color: ${({ theme }) => theme.colors.accent};
+	text-align: center;
 `;
 
 const FormField = styled.div`
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
+	margin-bottom: 1rem;
+	display: flex;
+	flex-direction: column;
 
-  label {
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-  }
-  input,
-  select {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-  }
+	label {
+		margin-bottom: 0.5rem;
+		font-weight: bold;
+	}
+	input,
+	select {
+		padding: 0.5rem;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		font-size: 1rem;
+	}
 `;
 
 const PlanCard = styled.div`
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.background};
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+	padding: 1.5rem;
+	margin-bottom: 1.5rem;
+	border-radius: 8px;
+	background-color: ${({ theme }) => theme.colors.background};
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 `;
 
 const PlanInfo = styled.div`
-  flex-grow: 1;
+	flex-grow: 1;
 `;
 
 const PlanTitle = styled.h3`
@@ -77,7 +79,7 @@ const PlanTitle = styled.h3`
 `;
 
 const MarketPlacePage = () => {
-	const [plans, setPlans] = useState([]); 
+	const [plans, setPlans] = useState([]);
 	const [sortKey, setSortKey] = useState("premium");
 	const [sortOrder, setSortOrder] = useState("asc");
 	const isSignedIn = false; // Temporary placeholder, useAuth();
@@ -98,7 +100,7 @@ const MarketPlacePage = () => {
 	});
 	const [loading, setLoading] = useState(false);
 
-  const handlePlanToggle = (plan) => {
+	const handlePlanToggle = (plan) => {
 		const isAlreadySelected = selectedPlans.find((p) => p.id === plan.id);
 
 		if (isAlreadySelected) {
@@ -110,7 +112,7 @@ const MarketPlacePage = () => {
 		}
 	};
 
-  const handleSort = (key) => {
+	const handleSort = (key) => {
 		if (sortKey === key) {
 			setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
 		} else {
@@ -388,7 +390,7 @@ const MarketPlacePage = () => {
 					)}
 				</div>
 			)}
-			{/* Button for Medications */}
+			{/* button for Medications */}
 			<div style={{ marginTop: "2rem", textAlign: "center" }}>
 				<Button
 					as={Link}
@@ -396,12 +398,10 @@ const MarketPlacePage = () => {
 					state={{ selectedPlans }}
 					disabled={selectedPlans.length === 0}
 					style={{
-						backgroundColor: selectedPlans.length === 0 ? "#ccc" : "",
+						backgroundColor: selectedPlans.length === 0 ? "navy" : "",
 						pointerEvents: selectedPlans.length === 0 ? "none" : "auto",
 						marginTop: "2rem",
-					}}>
-					Ensure Your Medications Are Covered
-				</Button>
+					}}></Button>
 				{selectedPlans.length === 0 && (
 					<p style={{ color: "red", textAlign: "center", marginTop: "1rem" }}>
 						<b>Please select at least one plan to continue.</b>

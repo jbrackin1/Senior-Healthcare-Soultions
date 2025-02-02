@@ -6,7 +6,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Button from "../../components/ui/Global/button";
+import button from "../../components/ui/Global/button";
 
 // Styled Components
 const ResourcesContainer = styled.main`
@@ -159,14 +159,14 @@ const Resources = () => {
 				<SectionTitle>Downloads</SectionTitle>
 				<DownloadList>
 					<DownloadItem>
-						<Button as="a" href="/downloads/insurance-checklist.pdf" download>
+						<button as="a" href="/downloads/insurance-checklist.pdf" download>
 							Download Insurance Comparison Checklist
-						</Button>
+						</button>
 					</DownloadItem>
 					<DownloadItem>
-						<Button as="a" href="/downloads/healthcare-guide.pdf" download>
+						<button as="a" href="/downloads/healthcare-guide.pdf" download>
 							Download Healthcare Guide
-						</Button>
+						</button>
 					</DownloadItem>
 				</DownloadList>
 			</Section>
