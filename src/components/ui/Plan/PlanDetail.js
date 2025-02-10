@@ -3,13 +3,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
-import button from "../Global/button";
+import { fetchPlanDetails } from "../../../utils/api/fetchPlanDetails";
+import Button from "../Global/button";
 import { formatDetailedInsInfo } from "../../../utils/formatters/formatDetailedInsInfo";
-import {
-	formatCurrency,
-	formatDate,
-	formatPlanType,
-} from "../../../utils/formatters/formatData";
 
 const DetailContainer = styled.div`
 	padding: 2rem;
@@ -27,28 +23,48 @@ const PlanDetail = ({ addToFavorites, addToComparison, isSignedIn }) => {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		const fetchPlanDetails = async () => {
+		console.log("📌 Plan Detail Page Loaded");
+
+		if (!planId) {
+			console.error("❌ No plan ID provided!");
+			setLoading(false);
+			return;
+		}
+
+		console.log("🔎 Extracted Plan ID from URL:", planId);
+
+		const loadPlanDetails = async () => {
 			try {
-				const response = await fetch(
-					`https://marketplace.api.healthcare.gov/api/v1/plans/${planId}?apikey=${process.env.REACT_APP_MARKETPLACE_API_KEY}`
-				);
-				const data = await response.json();
-				setPlan(data); // Set the fetched plan data
+				console.log("📡 Fetching details for Plan ID:", planId);
+				const rawData = await fetchPlanDetails(planId);
+				if (!rawData) {
+					console.error("❌ No data returned from API.");
+					return;
+				}
+				const formattedPlan = formatDetailedInsInfo(rawData);
+				console.log("✅ Formatted Plan Data:", formattedPlan);
+				setPlan(formattedPlan);
 			} catch (error) {
-				console.error("Error fetching plan details:", error);
+				console.error("❌ Error fetching plan:", error);
 			} finally {
 				setLoading(false);
 			}
 		};
 
-		fetchPlanDetails();
-	}, [planId]);
+		loadPlanDetails();
+	}, [planId]); 
 
 	if (loading) return <p>Loading...</p>;
 	if (!plan) return <p>No plan details available.</p>;
+	console.log("🔎 Extracted Plan ID from URL:", planId);
+	if (!planId) {
+		console.error("❌ Plan ID is missing! Check routing.");
+	}
+
 
 	// Format the plan data for detailed view
 	const formattedPlan = formatDetailedInsInfo(plan);
+	console.log("Formatted Plan Data:", formattedPlan);
 
 	return (
 		<DetailContainer>
@@ -130,18 +146,6 @@ const PlanDetail = ({ addToFavorites, addToComparison, isSignedIn }) => {
 			</div>
 
 			<div>
-				<h3>
-					<b>Disease Management Programs:</b>
-				</h3>
-				<ul>
-					{formattedPlan.diseaseMgmtPrograms.length > 0 ? (
-						formattedPlan.diseaseMgmtPrograms.map((program, index) => (
-							<li key={index}>{program}</li>
-						))
-					) : (
-						<p>No disease management programs available.</p>
-					)}
-				</ul>
 			</div>
 
 			<div>
@@ -205,39 +209,27 @@ const PlanDetail = ({ addToFavorites, addToComparison, isSignedIn }) => {
 			</div>
 
 			<div>
-				<h3>
-					<b>Limitations:</b>
-				</h3>
-				<ul>
-					{formattedPlan.limitations.length > 0 ? (
-						formattedPlan.limitations.map((limitation, index) => (
-							<li key={index}>{limitation}</li>
-						))
-					) : (
-						<p>No limitations specified.</p>
-					)}
-				</ul>
 			</div>
 
 			<div>
 				<div style={{ display: "flex", gap: "1rem" }}>
-					<button onClick={() => addToFavorites?.(plan)}>
+					<Button onClick={() => addToFavorites?.(plan)}>
 						Add to Favorites
-					</button>
-					<button onClick={() => addToComparison?.(plan)}>
+					</Button>
+					<Button onClick={() => addToComparison?.(plan)}>
 						Add to Comparison
-					</button>
+					</Button>
 				</div>
 
 				{isSignedIn ? (
-					<button onClick={() => navigate("/comparison")}>
+					<Button onClick={() => navigate("/comparison")}>
 						Go to Comparison
-					</button>
+					</Button>
 				) : (
 					<p>You need to sign up to compare plans.</p>
 				)}
 
-				<button onClick={() => navigate(-1)}>Back</button>
+				<Button onClick={() => navigate(-1)}>Back</Button>
 			</div>
 		</DetailContainer>
 	);

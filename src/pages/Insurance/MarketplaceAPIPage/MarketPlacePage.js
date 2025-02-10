@@ -89,6 +89,7 @@ const MarketPlacePage = () => {
 	const maxPlans = isSignedIn ? 4 : 1;
 	const [state, setState] = useState("");
 	const [zipCode, setZipCode] = useState("");
+	const navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		income: 52000,
 		age: 27,
@@ -283,6 +284,18 @@ const MarketPlacePage = () => {
 	//   const filtered = plans.filter((plan) => plan.hsa_eligible);
 	//   setFilteredPlans(filtered);
 	// };
+	 const handleNavigateToDrugCoverage = () => {
+			if (selectedPlans.length === 0) {
+				alert("Please select at least one plan.");
+				return;
+			}
+
+			// Navigate to the Drug Coverage page, passing selected plans in the state
+			navigate("/drug-coverage", {
+				state: { selectedPlans },
+			});
+		};
+
 
 	return (
 		<CompareContainer>
@@ -398,7 +411,7 @@ const MarketPlacePage = () => {
 					state={{ selectedPlans }}
 					disabled={selectedPlans.length === 0}
 					style={{
-						backgroundColor: selectedPlans.length === 0 ? "navy" : "",
+						backgroundColor: selectedPlans.length === 0 ? "#add8e6" : "",
 						pointerEvents: selectedPlans.length === 0 ? "none" : "auto",
 						marginTop: "2rem",
 					}}>Check if your medication is covered</Button>

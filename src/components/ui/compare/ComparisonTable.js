@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import propTypes from "prop-types";
+import { Link } from "react-router-dom"; // Import Link for navigation
 
 const Table = styled.table`
 	width: 100%;
@@ -21,16 +22,14 @@ const TableHeader = styled.th`
 	cursor: pointer;
 	position: relative;
 	text-align: left;
-	
 `;
 
 const HeaderContent = styled.span`
-	display: inline-flex; 
-	align-items: center; 
-	gap: 6px; 
-	white-space: nowrap; 
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	white-space: nowrap;
 `;
-
 
 const Tooltip = styled.div`
 	position: absolute;
@@ -136,27 +135,28 @@ const ComparisonTable = ({ plans, selectedPlans = [], onTogglePlan }) => {
 					</TableHeader>
 					<TableHeader onClick={() => handleSort("hsa_eligible")}>
 						<HeaderContent>
-            HSA Eligible <InfoIcon> ⓘ</InfoIcon>
-            </HeaderContent>
+							HSA Eligible <InfoIcon> ⓘ</InfoIcon>
+						</HeaderContent>
 						<Tooltip>Click to sort by HSA eligibility.</Tooltip>
 					</TableHeader>
 				</tr>
 			</thead>
 			<tbody>
 				{sortedPlans.map((plan) => (
-					<tr
-						key={plan.id}
-						onClick={() => (window.location.href = `/plan/${plan.id}`)}
-						style={{ cursor: "pointer" }}>
+					<tr key={plan.id}>
 						<td>
+							{/* Checkbox to select/deselect the plan */}
 							<input
 								type="checkbox"
-								checked={selectedPlans.some((p) => p.id === plan.id)}
-								onChange={() => onTogglePlan(plan)}
+								checked={selectedPlans.includes(plan)}
+								onChange={() => onTogglePlan(plan)} // Toggle plan selection
 							/>
 						</td>
 						<td>
-							<b>{plan.name || "N/A"}</b>
+							{/* Navigate to Plan Details page when plan name is clicked */}
+							<Link to={`/plan/${plan.id}`}>
+								<b>{plan.name || "N/A"}</b>
+							</Link>
 						</td>
 						<td>{plan.premium !== undefined ? `$${plan.premium}` : "N/A"}</td>
 						<td>${plan.deductibles?.[0]?.amount || "N/A"}</td>

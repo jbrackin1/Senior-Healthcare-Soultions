@@ -1,7 +1,7 @@
 /** @format */
 
 export const fetchDrugSuggestions = async (inputValue) => {
-	if (!inputValue) return []; // Return an empty array if no input is provided
+	if (!inputValue) return []; 
 
 	try {
 		const response = await fetch(
@@ -13,20 +13,20 @@ export const fetchDrugSuggestions = async (inputValue) => {
 		}
 
 		const data = await response.json();
-		console.log("Raw Suggestions Data:", data); // Debug raw response
+		console.log("Raw Suggestions Data:", data); 
 
-		// Filter out suggestions without a valid name
+
 		const validSuggestions = data.approximateGroup.candidate.filter(
-			(item) => item.name && item.name.trim() !== "" // Ensure name exists and is not an empty string
+			(item) => item.name && item.name.trim() !== "" 
 		);
 
-		// Map valid suggestions into the format expected by AsyncSelect
+
 		return validSuggestions.map((item) => ({
-			label: item.name, // Display the drug name
-			value: item.rxcui, // Use the RxCUI as the value
+			label: item.name, 
+			value: item.rxcui, 
 		}));
 	} catch (error) {
 		console.error("Error fetching drug suggestions:", error.message);
-		throw error; // Throw the error so the calling component can handle it
+		throw error;
 	}
 };

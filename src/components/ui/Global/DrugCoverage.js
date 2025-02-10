@@ -1,13 +1,12 @@
 /** @format */
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom"; 
 import styled from "styled-components";
-import { fetchDrugSuggestions } from "../../../utils/api/fetchDrugSuggestions";
-import { fetchDrugCoverage } from "../../../utils/api/fetchDrugCoverage"; // Correct import path
+import { fetchDrugSuggestions } from "../../../utils/api/fetchDrugSuggestions"; 
+import { fetchDrugCoverage } from "../../../utils/api/fetchDrugCoverage";
+import Button from "./button"; 
+import DrugCoverageDetail from "../Plan/DrugCoverageDetail"; 
 import AsyncSelect from "react-select/async";
-import button from "./button";
-import DrugCoverageDetail from "../Plan/DrugCoverageDetail"; // Assuming DrugCoverageDetail is correctly imported
-
 // Styled components for layout
 const CoverageContainer = styled.div`
 	padding: 2rem;
@@ -42,78 +41,75 @@ const SpacedDiv = styled.div`
 
 const DrugCoverage = ({ isAuthenticated }) => {
 	const location = useLocation();
-	const selectedPlans = location.state?.selectedPlans || [];
-
-	// State hooks for handling RxCUI, coverage data, and errors
-	const [drugRxCuis, setDrugRxCuis] = useState(""); // Capture and store RxCUI
+	const navigate = useNavigate(); // For page navigation
+	const [selectedPlans, setSelectedPlans] = useState(
+		location.state?.selectedPlans || []
+	);
+	const [drugRxCuis, setDrugRxCuis] = useState(""); 
 	const [coverageData, setCoverageData] = useState([]);
-	const [fetchCostData, setFetchCostData] = useState(null);
-	const [error, setError] = useState("");
+	const [selectedDrug, setSelectedDrug] = useState(null); 
+	const [error, setError] = useState(""); // To display error messages
 
 	useEffect(() => {
-		console.log("Initial selectedPlans: ", selectedPlans); // For debugging selectedPlans
+		console.log("Selected plans:", selectedPlans); // Debug selected plans
 	}, [selectedPlans]);
 
-	// Handle fetching coverage and cost data
+	// Handle searching for drugs by name or RxCUI
+	const handleSearchDrug = async (inputValue) => {
+		if (!inputValue) return []; // Do not search if input is empty
+
+		try {
+			// Query Marketplace API first
+			const marketplaceResults = await fetchMarketplaceAutocomplete(inputValue);
+			console.log("Marketplace Suggestions:", marketplaceResults);
+
+			// If Marketplace has results, return them
+			if (marketplaceResults.length > 0) {
+				return marketplaceResults.map((item) => ({
+					label: item.name,
+					value: item.rxcui,
+				}));
+			}
+
+			// If Marketplace has no results, fallback to NIH RxNorm API
+			const nihResults = await fetchNIHAutocomplete(inputValue);
+			console.log("NIH Suggestions:", nihResults);
+
+			// Combine and return results (if needed)
+			const combinedResults = [...marketplaceResults, ...nihResults].map(
+				(item) => ({
+					label: item.name,
+					value: item.rxcui,
+				})
+			);
+
+			return combinedResults;
+		} catch (error) {
+			console.error("Error fetching drug suggestions:", error);
+			return [];
+		}
+	};
+
+
+	// Handle fetching coverage data for selected plans and drug RxCUI
 	const handleFetchCoverage = async () => {
 		if (selectedPlans.length === 0 || !drugRxCuis) {
-			setError(
-				"Please select at least one plan and provide a drug identifier."
-			);
+			setError("Please select a plan and provide a drug identifier.");
 			return;
 		}
 
 		try {
-			// Fetch coverage data for selected plans
-			const data = await fetchDrugCoverage({
-				planIds: selectedPlans.map((plan) => plan.id), // Passing the selected plan IDs
-				drugRxCuis, // Sending RxCUI securely in the API call
+			// Pass setCoverageData and setError as arguments
+			await fetchDrugCoverage({
+				planIds: selectedPlans.map((plan) => plan.id),
+				drugRxCuis,
 				setCoverageData,
 				setError,
 			});
-			setCoverageData(data);
-			setError(""); // Clear any previous errors
-
-			// Fetch drug cost for the selected plan and drug (for now, we're using the first plan)
-			const cost = await fetchDrugCost(selectedPlans[0]?.id, drugRxCuis); // Fetching cost for the first plan
-			setFetchCostData(cost);
 		} catch (err) {
-			console.error("API Error: ", err.message);
-			setError("Failed to fetch drug coverage or cost data. Please try again.");
+			console.error("API Error:", err.message);
+			setError("Failed to fetch drug coverage. Please try again.");
 		}
-	};
-
-	// API call to fetch drug cost (using the backend endpoint for drug cost)
-	const fetchDrugCost = async (planId, drugRxCui) => {
-		try {
-			const response = await fetch(`/api/drug-cost`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ planId, drugRxCui }), // Send RxCUI securely in the API call
-			});
-
-			if (!response.ok) {
-				throw new Error("Failed to fetch drug cost");
-			}
-
-			const data = await response.json();
-			return data; // Assuming backend returns cost details
-		} catch (err) {
-			console.error("Cost API Error: ", err.message);
-			throw err;
-		}
-	};
-
-	const getColorByIndex = (index) => {
-		const colors = ["#1E90FF", "#800080", "#FF7F50", "#008080"];
-		return colors[index % colors.length];
-	};
-
-	// Function to check if a value is valid (not unavailable or undefined)
-	const isValidValue = (value) => {
-		return value !== "unavailable" && value !== undefined && value !== null;
 	};
 
 	return (
@@ -125,47 +121,26 @@ const DrugCoverage = ({ isAuthenticated }) => {
 
 			<SpacedDiv>
 				{error && <p style={{ color: "red" }}>{error}</p>}
+				{/* Search bar to look up drugs */}
 				<AsyncSelect
 					cacheOptions
-					loadOptions={async (inputValue) => {
-						try {
-							const suggestions = await fetchDrugSuggestions(inputValue);
-							// Log suggestions to inspect the structure
-							console.log("Fetched Suggestions:", suggestions);
-
-							// Filter and map suggestions to remove invalid ones
-							const filteredSuggestions = suggestions.filter((suggestion) => {
-								const validLabel =
-									suggestion.label && suggestion.label.trim() !== "";
-								const validValue =
-									suggestion.value && suggestion.value.trim() !== "";
-								return validLabel && validValue;
-							});
-
-							// Map the filtered suggestions to display only valid ones
-							const mappedSuggestions = filteredSuggestions.map(
-								(suggestion) => ({
-									label: suggestion.label.replace(/(\d+)\s*-\s*(.*)/, "$2"), // Remove rxcui from label
-									value: suggestion.value, // Keep rxcui as value for API calls
-								})
-							);
-
-							setError(""); // Clear any previous errors
-							return mappedSuggestions; // Return cleaned suggestions for dropdown display
-						} catch (err) {
-							setError("Failed to fetch drug suggestions. Please try again.");
-							return []; // Return an empty array if there's an error
-						}
+					loadOptions={handleSearchDrug} // Fetch suggestions as the user types
+					onChange={(selectedOption) => {
+						setSelectedDrug(selectedOption); // Store the full drug object (name and RxCUI)
+						setDrugRxCuis(selectedOption.value); // Store RxCUI separately for API calls
 					}}
-					onChange={(option) => setDrugRxCuis(option.value)} // Store the RxCUI
-					placeholder="Search for a drug..."
+					value={selectedDrug} // Display the selected drug name in the search bar
+					placeholder="Enter Drug Name or RxCUI"
+					noOptionsMessage={() => "No suggestions found"}
+					getOptionLabel={(e) => `${e.label}`} // Display drug name only
 				/>
 			</SpacedDiv>
 
 			<SpacedDiv>
-				<button onClick={handleFetchCoverage}>Fetch Coverage</button>
+				<Button onClick={handleFetchCoverage}>Check Drug Coverage</Button>
 			</SpacedDiv>
 
+			{/* Display coverage data if available */}
 			{coverageData?.coverage?.length > 0 && (
 				<ResultsTable>
 					<thead>
@@ -178,18 +153,11 @@ const DrugCoverage = ({ isAuthenticated }) => {
 					</thead>
 					<tbody>
 						{coverageData.coverage.map((entry, index) => (
-							<tr key={index} style={{ color: getColorByIndex(index) }}>
-								{/* Plan Name */}
-								<td>{selectedPlans[index]?.name || "N/A"}</td> {/* Drug Name */}
-								<td>{entry.drugName || "Drug name not provided"}</td>{" "}
-								{/* Coverage Status */}
-								<td>
-									{entry.coverage && entry.coverage !== "DataNotProvided"
-										? entry.coverage
-										: "Coverage not available"}
-								</td>{" "}
-								{/* Details */}
-								<td>{entry.details || "Details not provided"}</td>{" "}
+							<tr key={index}>
+								<td>{selectedPlans[index]?.name || "N/A"}</td>
+								<td>{entry.drugName || "Drug name not provided"}</td>
+								<td>{entry.coverage || "Coverage not available"}</td>
+								<td>{entry.details || "Details not provided"}</td>
 							</tr>
 						))}
 					</tbody>
@@ -200,3 +168,5 @@ const DrugCoverage = ({ isAuthenticated }) => {
 };
 
 export default DrugCoverage;
+
+// EXAMPLE planid 11512NC0100028
