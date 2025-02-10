@@ -1,30 +1,31 @@
 /** @format */
 
 export const fetchDrugSuggestions = async (inputValue) => {
-	if (!inputValue) return []; 
+	if (!inputValue) return [];
 
 	try {
-		const response = await fetch(
-			`https://rxnav.nlm.nih.gov/REST/approximateTerm.json?term=${inputValue}`
+		
+		const marketplaceResponse = await fetch(
+			`https://marketplace.api.healthcare.gov/api/v1/drugs/autocomplete?q=${inputValue}&apikey=${process.env.REACT_APP_MARKETPLACE_API_KEY}`
 		);
 
-		if (!response.ok) {
-			throw new Error(`API error: ${response.status} ${response.statusText}`);
+		let marketplaceSuggestions = [];
+		if (marketplaceResponse.ok) {
+			const marketplaceData = await marketplaceResponse.json();
+			console.log("Marketplace Suggestions:", marketplaceData);
+
+			marketplaceSuggestions = marketplaceData.map((item) => ({
+				label: item.name,
+				strength: item.strength || "",
+				value: item.rxcui,
+			}));
 		}
 
-		const data = await response.json();
-		console.log("Raw Suggestions Data:", data); 
+		// If Marketplace API returned suggestions, use them
+		if (marketplaceSuggestions.length > 0) {
+			return marketplaceSuggestions;
+		}
 
-
-		const validSuggestions = data.approximateGroup.candidate.filter(
-			(item) => item.name && item.name.trim() !== "" 
-		);
-
-
-		return validSuggestions.map((item) => ({
-			label: item.name, 
-			value: item.rxcui, 
-		}));
 	} catch (error) {
 		console.error("Error fetching drug suggestions:", error.message);
 		throw error;

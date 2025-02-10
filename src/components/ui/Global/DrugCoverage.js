@@ -56,40 +56,22 @@ const DrugCoverage = ({ isAuthenticated }) => {
 
 	// Handle searching for drugs by name or RxCUI
 	const handleSearchDrug = async (inputValue) => {
-		if (!inputValue) return []; // Do not search if input is empty
+		if (!inputValue) return []; 
 
 		try {
-			// Query Marketplace API first
-			const marketplaceResults = await fetchMarketplaceAutocomplete(inputValue);
-			console.log("Marketplace Suggestions:", marketplaceResults);
+			const suggestions = await fetchDrugSuggestions(inputValue); 
+			console.log("Drug suggestions:", suggestions);
 
-			// If Marketplace has results, return them
-			if (marketplaceResults.length > 0) {
-				return marketplaceResults.map((item) => ({
-					label: item.name,
-					value: item.rxcui,
-				}));
-			}
-
-			// If Marketplace has no results, fallback to NIH RxNorm API
-			const nihResults = await fetchNIHAutocomplete(inputValue);
-			console.log("NIH Suggestions:", nihResults);
-
-			// Combine and return results (if needed)
-			const combinedResults = [...marketplaceResults, ...nihResults].map(
-				(item) => ({
-					label: item.name,
-					value: item.rxcui,
-				})
-			);
-
-			return combinedResults;
+			// Return suggestions in the format that AsyncSelect expects
+			return suggestions.map((item) => ({
+				label: `${item.label}${item.strength ? ` - ${item.strength}` : ""}`,
+				value: item.value,
+			}));
 		} catch (error) {
 			console.error("Error fetching drug suggestions:", error);
-			return [];
+			return []; // Return an empty array if there's an error
 		}
 	};
-
 
 	// Handle fetching coverage data for selected plans and drug RxCUI
 	const handleFetchCoverage = async () => {
@@ -109,6 +91,21 @@ const DrugCoverage = ({ isAuthenticated }) => {
 		} catch (err) {
 			console.error("API Error:", err.message);
 			setError("Failed to fetch drug coverage. Please try again.");
+		}
+	};
+
+	const formatCoverageStatus = (coverage, generic_rxcui) => {
+		switch (coverage) {
+			case "Covered":
+				return "Covered by Plan";
+			case "NotCovered":
+				return "Not Covered by Plan";
+			case "GenericCovered":
+				return `Generic Version Covered (RxCUI: ${generic_rxcui})`;
+			case "DataNotProvided":
+				return "Coverage Data Not Available";
+			default:
+				return "Coverage Unknown";
 		}
 	};
 
@@ -147,16 +144,22 @@ const DrugCoverage = ({ isAuthenticated }) => {
 						<tr>
 							<th>Plan</th>
 							<th>Drug Name</th>
-							<th>Coverage</th>
-							<th>Details</th>
+							<th>Strength</th>
+							<th>Coverage</th> <th>Details</th>
 						</tr>
 					</thead>
 					<tbody>
 						{coverageData.coverage.map((entry, index) => (
 							<tr key={index}>
 								<td>{selectedPlans[index]?.name || "N/A"}</td>
-								<td>{entry.drugName || "Drug name not provided"}</td>
-								<td>{entry.coverage || "Coverage not available"}</td>
+								<td>
+									{entry.full_name || entry.name || "Drug name not provided"}
+								</td>
+								<td>{entry.strength || "Strength not provided"}</td>
+								<td>
+									{formatCoverageStatus(entry.coverage, entry.generic_rxcui)}
+								</td>{" "}
+								<td>{entry.cost || "Cost not provided"}</td>
 								<td>{entry.details || "Details not provided"}</td>
 							</tr>
 						))}

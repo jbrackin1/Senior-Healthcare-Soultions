@@ -6,12 +6,13 @@ export const fetchDrugCoverage = async ({
 	drugRxCuis,
 	setCoverageData,
 	setError,
+	year = new Date().getFullYear(),
 }) => {
 	try {
 		const response = await fetch(
 			`https://marketplace.api.healthcare.gov/api/v1/drugs/covered?apikey=${
 				process.env.REACT_APP_MARKETPLACE_API_KEY
-			}&year=2019&drugs=${drugRxCuis}&planids=${planIds.join(",")}`,
+			}&year=${year}&drugs=${drugRxCuis}&planids=${planIds.join(",")}`,
 			{
 				method: "GET",
 				headers: { "Content-Type": "application/json" },
@@ -24,11 +25,9 @@ export const fetchDrugCoverage = async ({
 			);
 		}
 
-
-		
 		const data = await response.json();
 		console.log("Coverage Data:", data);
-		setCoverageData(data); 
+		setCoverageData(data);
 		setError("");
 		return data;
 	} catch (err) {
