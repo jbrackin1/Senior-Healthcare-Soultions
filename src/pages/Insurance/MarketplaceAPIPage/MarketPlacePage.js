@@ -370,8 +370,12 @@ const MarketPlacePage = () => {
 								<PlanInfo>
 									<PlanTitle>
 										<Link
-											to={`/plan/${plan.id}`}
-											style={{ textDecoration: "underline", color: "blue" }}>
+											to={{
+												style: { textDecoration: "underline", color: "blue" },
+												pathname: `/plan/${plan.id}`,
+												state: { planData: plan }, // Pass the plan data here
+											}}>
+											
 											{plan.name}
 										</Link>
 										<span
@@ -414,7 +418,9 @@ const MarketPlacePage = () => {
 						backgroundColor: selectedPlans.length === 0 ? "#add8e6" : "",
 						pointerEvents: selectedPlans.length === 0 ? "none" : "auto",
 						marginTop: "2rem",
-					}}>Check if your medication is covered</Button>
+					}}>
+					Check if your medication is covered
+				</Button>
 				{selectedPlans.length === 0 && (
 					<p style={{ color: "red", textAlign: "center", marginTop: "1rem" }}>
 						<b>Please select at least one plan to continue.</b>
