@@ -2,6 +2,8 @@
 
 const API_BASE_URL = "https://marketplace.api.healthcare.gov/api/v1/plans";
 const API_KEY = process.env.REACT_APP_MARKETPLACE_API_KEY;
+console.log("🔑 API KEY:", process.env.REACT_APP_MARKETPLACE_API_KEY);
+
 
 /**
  * Fetch plan details from the Marketplace API.
@@ -14,7 +16,7 @@ export const fetchPlanDetails = async (planId) => {
 		throw new Error("Plan ID is required");
 	}
 
-	const url = `${API_BASE_URL}/${planId}?apikey=${API_KEY}`;
+	const url = `${API_BASE_URL}/${planId}?apikey=${process.env.REACT_APP_MARKETPLACE_API_KEY}`;
 	console.log(`📡 Fetching details for Plan ID: ${planId} from ${url}`);
 
 	try {

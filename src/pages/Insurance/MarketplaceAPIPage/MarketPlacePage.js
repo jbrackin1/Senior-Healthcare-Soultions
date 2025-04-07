@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Button from "../../../components/ui/Global/button";
 import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
+import StateSelector from "../../../components/ui/Global/StateSlector";
 
 //Later add toast or warnings saying to pick more than 1 you need to sign up
 const CompareContainer = styled.main`
@@ -96,9 +97,10 @@ const MarketPlacePage = () => {
 		gender: "Female",
 		usesTobacco: false,
 		countyfips: "37057", // Default value
-		state: "",
+		state: "NC",
 		zipcode: "27360", // Default value
 	});
+	
 	const [loading, setLoading] = useState(false);
 
 	const handlePlanToggle = (plan) => {
@@ -284,18 +286,17 @@ const MarketPlacePage = () => {
 	//   const filtered = plans.filter((plan) => plan.hsa_eligible);
 	//   setFilteredPlans(filtered);
 	// };
-	 const handleNavigateToDrugCoverage = () => {
-			if (selectedPlans.length === 0) {
-				alert("Please select at least one plan.");
-				return;
-			}
+	const handleNavigateToDrugCoverage = () => {
+		if (selectedPlans.length === 0) {
+			alert("Please select at least one plan.");
+			return;
+		}
 
-			// Navigate to the Drug Coverage page, passing selected plans in the state
-			navigate("/drug-coverage", {
-				state: { selectedPlans },
-			});
-		};
-
+		// Navigate to the Drug Coverage page, passing selected plans in the state
+		navigate("/drug-coverage", {
+			state: { selectedPlans },
+		});
+	};
 
 	return (
 		<CompareContainer>
@@ -341,6 +342,16 @@ const MarketPlacePage = () => {
 				</FormField>
 
 				<FormField>
+					<label htmlFor="state">State</label>
+					<StateSelector
+						onSelectState={(selectedState) =>
+							setFormData((prev) => ({ ...prev, state: selectedState }))
+						}
+						selectedState={formData.state}
+					/>
+				</FormField>
+
+				<FormField>
 					<label htmlFor="zipcode">Zip Code</label>
 					<input
 						type="text"
@@ -375,7 +386,6 @@ const MarketPlacePage = () => {
 												pathname: `/plan/${plan.id}`,
 												state: { planData: plan }, // Pass the plan data here
 											}}>
-											
 											{plan.name}
 										</Link>
 										<span

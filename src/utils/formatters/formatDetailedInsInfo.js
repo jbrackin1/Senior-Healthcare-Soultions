@@ -6,7 +6,7 @@ import { formatDate } from "./formatData";
 
 export const formatDetailedInsInfo = (rawData) => {
 	const planData = rawData?.plan || rawData;
-
+console.log("Formatted Plan Data:", planData);
 	return {
 		// ✅ Basic Information
 		name: planData?.planName || planData?.name || "Unknown Plan",
