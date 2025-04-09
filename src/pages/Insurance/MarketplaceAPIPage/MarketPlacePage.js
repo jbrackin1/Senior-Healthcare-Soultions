@@ -60,6 +60,31 @@ const MarketPlacePage = () => {
 		zipcode: "",
 	});
 
+	const loadFormData = () => {
+		const savedData = localStorage.getItem('formData');
+		if (savedData) {
+			
+			const parsedData = JSON.parse(savedData);
+	
+			
+			setFormData({
+				income: parsedData.household.income.toString(),
+				age: parsedData.household.people[0].age.toString(),
+				gender: parsedData.household.people[0].gender,
+				usesTobacco: parsedData.household.people[0].uses_tobacco,
+				countyfips: parsedData.place.countyfips,
+				state: parsedData.place.state,
+				zipcode: parsedData.place.zipcode,
+				year: parsedData.year,
+			});
+		}
+	};
+	
+	
+	useEffect(() => {
+		loadFormData();
+	}, []);
+
 	const fetchFipsCode = async () => {
 		const apiKey = process.env.REACT_APP_MARKETPLACE_API_KEY;
 		console.log("Fetching FIPS code for ZIP:", formData.zipcode);
@@ -97,7 +122,8 @@ const MarketPlacePage = () => {
 		}
 	
 		setLoading(true);
-	
+		const currentYear = new Date().getFullYear(); 
+
 		const requestData = {
 			household: {
 				income: parseFloat(formData.income), // Ensure income is a number
@@ -116,9 +142,9 @@ const MarketPlacePage = () => {
 				state: formData.state,
 				zipcode: formData.zipcode,
 			},
-			year: 2019,
+			currentYear,
 		};
-	
+		localStorage.setItem('formData', JSON.stringify(requestData));
 		// Log request data for debugging
 		console.log("Request Data: ", requestData);
 	
@@ -274,7 +300,7 @@ const MarketPlacePage = () => {
 
 					
 					{clickedCheckMedication && selectedPlans.length === 0 && (
-						<p style={{ color: "red", textAlign: "center", marginTop: "1rem" }}>
+							<p style={{ color: "red", textAlign: "center", marginTop: "1rem" }}>
 							<b>Please select at least one plan to continue.</b>
 						</p>
 					)}
