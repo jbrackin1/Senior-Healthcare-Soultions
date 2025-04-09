@@ -48,6 +48,7 @@ const MarketPlacePage = () => {
 	const [selectedPlans, setSelectedPlans] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [isProcessing, setIsProcessing] = useState(false);
+	const [searchCompleted, setSearchCompleted] = useState(false);
 	const [formData, setFormData] = useState({
 		income: "",
 		age: "",
@@ -157,11 +158,13 @@ const MarketPlacePage = () => {
 			alert("There was an error while fetching data. Please try again.");
 		} finally {
 			setLoading(false); // Always turn off the loading state
+			setSearchCompleted(true);  // Set searchCompleted to true after fetching
 		}
 	};
 
 	const handleFormSubmit = (e) => {
 		e.preventDefault();
+		setSearchCompleted(false);  // Set searchCompleted to true after fetching
 		fetchMarketplaceData();
 	};
 
@@ -242,30 +245,41 @@ const MarketPlacePage = () => {
 				<Button type="submit">{loading ? "Loading..." : "Search Plans"}</Button>
 			</form>
 
-			<ComparisonTable
-				plans={plans}
-				onTogglePlan={handlePlanToggle}
-				selectedPlans={selectedPlans}
-			/>
+			{!loading && plans.length > 0 && (
+			<>
+				<ComparisonTable
+					plans={plans}
+					onTogglePlan={handlePlanToggle}
+					selectedPlans={selectedPlans}
+				/>
 
-			<div style={{ marginTop: "2rem", textAlign: "center" }}>
-				<Button
-					as={Link}
-					to="/drug-coverage"
-					state={{ selectedPlans }}
-					style={{
-						backgroundColor: selectedPlans.length === 0 ? "#add8e6" : "",
-						pointerEvents: selectedPlans.length === 0 ? "none" : "auto",
-					}}
-				>
-					Check if your medication is covered
-				</Button>
-				{selectedPlans.length === 0 && (
-					<p style={{ color: "red", textAlign: "center", marginTop: "1rem" }}>
-						<b>Please select at least one plan to continue.</b>
-					</p>
-				)}
-			</div>
+				<div style={{ marginTop: "2rem", textAlign: "center" }}>
+					<Button
+						as={Link}
+						to="/drug-coverage"
+						state={{ selectedPlans }}
+						style={{
+							backgroundColor: selectedPlans.length === 0 ? "#add8e6" : "",
+							pointerEvents: selectedPlans.length === 0 ? "none" : "auto",
+						}}
+					>
+						Check if your medication is covered
+					</Button>
+					{selectedPlans.length === 0 && (
+						<p style={{ color: "red", textAlign: "center", marginTop: "1rem" }}>
+							<b>Please select at least one plan to continue.</b>
+						</p>
+					)}
+				</div>
+			</>
+		)}
+
+			{/* Show message if no plans were found */}
+			{!loading && searchCompleted && plans.length === 0 && (
+				<p style={{ textAlign: "center", color: "red" }}>
+					No plans found for the provided parameters.
+				</p>
+			)}
 		</CompareContainer>
 	);
 };
