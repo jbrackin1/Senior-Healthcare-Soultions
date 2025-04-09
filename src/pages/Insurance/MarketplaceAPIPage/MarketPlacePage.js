@@ -49,6 +49,7 @@ const MarketPlacePage = () => {
 	const [loading, setLoading] = useState(false);
 	const [isProcessing, setIsProcessing] = useState(false);
 	const [searchCompleted, setSearchCompleted] = useState(false);
+	const [clickedCheckMedication, setClickedCheckMedication] = useState(false); 
 	const [formData, setFormData] = useState({
 		income: "",
 		age: "",
@@ -179,8 +180,12 @@ const MarketPlacePage = () => {
 			}
 			return [...prevSelectedPlans, planId];
 		});
-
 		setIsProcessing(false);
+	};
+
+
+	const handleCheckMedicationClick = () => {
+		setClickedCheckMedication(true);  // Mark the button as clicked
 	};
 
 	return (
@@ -258,14 +263,17 @@ const MarketPlacePage = () => {
 						as={Link}
 						to="/drug-coverage"
 						state={{ selectedPlans }}
+						onClick={handleCheckMedicationClick} // Mark button as clicked
 						style={{
-							backgroundColor: selectedPlans.length === 0 ? "#add8e6" : "",
+							backgroundColor: selectedPlans.length === 0 ? "#add8e6" : "#51BFE4",
 							pointerEvents: selectedPlans.length === 0 ? "none" : "auto",
 						}}
 					>
 						Check if your medication is covered
 					</Button>
-					{selectedPlans.length === 0 && (
+
+					
+					{clickedCheckMedication && selectedPlans.length === 0 && (
 						<p style={{ color: "red", textAlign: "center", marginTop: "1rem" }}>
 							<b>Please select at least one plan to continue.</b>
 						</p>
