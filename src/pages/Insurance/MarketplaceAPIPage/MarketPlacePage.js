@@ -1,13 +1,10 @@
-/** @format */
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Button from "../../../components/ui/Global/button";
 import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
 import StateSelector from "../../../components/ui/Global/StateSlector";
 
-//Later add toast or warnings saying to pick more than 1 you need to sign up
 const CompareContainer = styled.main`
 	padding: 2rem;
 	background-color: ${({ theme }) => theme.colors.backgroundAlt};
@@ -46,199 +43,65 @@ const FormField = styled.div`
 	}
 `;
 
-const PlanCard = styled.div`
-	padding: 1.5rem;
-	margin-bottom: 1.5rem;
-	border-radius: 8px;
-	background-color: ${({ theme }) => theme.colors.background};
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-`;
-
-const PlanInfo = styled.div`
-	flex-grow: 1;
-`;
-
-const PlanTitle = styled.h3`
-	font-size: 1.5rem;
-	margin-bottom: 0.5rem;
-	color: ${({ theme }) => theme.colors.primary};
-	cursor: pointer; // Add pointer cursor to show it's clickable
-
-	a {
-		text-decoration: underline; // Make the link visually distinct
-		color: inherit;
-	}
-
-	span {
-		margin-left: 0.5rem;
-		font-size: 0.9rem;
-		color: gray;
-	}
-`;
-
 const MarketPlacePage = () => {
 	const [plans, setPlans] = useState([]);
-	const [sortKey, setSortKey] = useState("premium");
-	const [sortOrder, setSortOrder] = useState("asc");
-	const isSignedIn = false; // Temporary placeholder, useAuth();
-	console.log("MarketPlacePage Render: isSignedIn =", isSignedIn);
 	const [selectedPlans, setSelectedPlans] = useState([]);
-	const { planId } = useParams();
-	const maxPlans = isSignedIn ? 4 : 1;
-	const [state, setState] = useState("");
-	const [zipCode, setZipCode] = useState("");
-	const navigate = useNavigate();
-	const [formData, setFormData] = useState({
-		income: 52000,
-		age: 27,
-		gender: "Female",
-		usesTobacco: false,
-		countyfips: "37057", // Default value
-		state: "NC",
-		zipcode: "27360", // Default value
-	});
-	
 	const [loading, setLoading] = useState(false);
+	const [isProcessing, setIsProcessing] = useState(false);
+	const [formData, setFormData] = useState({
+		income: "",
+		age: "",
+		gender: "",
+		usesTobacco: null,
+		countyfips: "",
+		state: "",
+		zipcode: "",
+	});
 
-	const handlePlanToggle = (plan) => {
-		const isAlreadySelected = selectedPlans.find((p) => p.id === plan.id);
-
-		if (isAlreadySelected) {
-			setSelectedPlans(selectedPlans.filter((p) => p.id !== plan.id));
-		} else if (selectedPlans.length < maxPlans) {
-			setSelectedPlans([...selectedPlans, plan]);
-		} else {
-			alert(`You can only select up to ${maxPlans} plan(s).`);
-		}
-	};
-
-	const handleSort = (key) => {
-		if (sortKey === key) {
-			setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
-		} else {
-			setSortKey(key);
-			setSortOrder("asc");
-		}
-	};
-
-	const handleInputChange = (e) => {
-		const { name, value } = e.target;
-		setFormData((prevData) => ({ ...prevData, [name]: value }));
-	};
-
-	const getState = async (zipcode) => {
+	const fetchFipsCode = async () => {
 		const apiKey = process.env.REACT_APP_MARKETPLACE_API_KEY;
+		console.log("Fetching FIPS code for ZIP:", formData.zipcode);
 		try {
 			const response = await fetch(
-				`https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${zipcode}?apikey=${apiKey}`
+				`https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${formData.zipcode}?apikey=${apiKey}`
 			);
 			const fipsData = await response.json();
-			setState(fipsData.counties[0].state);
-			console.log(state);
-
-			//   const fipsFromZips = fipsData.counties.filter((fipsInstance) => {
-			//     return fipsInstance[0].fips[0];
-			//   })
-			//   console.log(fipsFromZips);
-
-			console.log(fipsData); // Log to check the response
-			if (response.ok && fipsData.counties && fipsData.counties.length > 0) {
-				return fipsData.counties[0].state;
+			if (fipsData && fipsData.counties.length > 0) {
+				setFormData((prevData) => ({
+					...prevData,
+					countyfips: fipsData.counties[0].fips,
+					state: fipsData.counties[0].state,
+				}));
+				console.log("FIPS Code:", fipsData.counties[0].fips);
 			} else {
-				console.error("Error fetching FIPS code:", fipsData);
-				return null;
+				console.error("No counties found for the provided ZIP code.");
 			}
 		} catch (error) {
 			console.error("Error fetching FIPS code:", error);
-			return null;
 		}
 	};
 
-	const getFipsCode = async (zipcode) => {
-		const apiKey = process.env.REACT_APP_MARKETPLACE_API_KEY;
-		try {
-			const response = await fetch(
-				`https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${zipcode}?apikey=${apiKey}`
-			);
-			const fipsData = await response.json();
-			const zipArray = fipsData.counties[0].zipcode;
-			console.log(zipArray);
-			//   const fipsFromZips = fipsData.counties.filter((fipsInstance) => {
-			//     return fipsInstance[0].fips[0];
-			//   })
-			//   console.log(fipsFromZips);
-			console.log(fipsData); // Log to check the response
-			if (response.ok && fipsData.counties && fipsData.counties.length > 0) {
-				return fipsData.counties[0].fips;
-			} else {
-				console.error("Error fetching FIPS code:", fipsData);
-				return null;
-			}
-		} catch (error) {
-			console.error("Error fetching FIPS code:", error);
-			return null;
+	useEffect(() => {
+		if (formData.zipcode) {
+			fetchFipsCode();
 		}
-	};
-
-	const getZipsFromFips = async (zipcode) => {
-		const apiKey = process.env.REACT_APP_MARKETPLACE_API_KEY;
-		try {
-			const response = await fetch(
-				`https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${zipcode}?apikey=${apiKey}`
-			);
-			const fipsData = await response.json();
-			const ZipCode = fipsData.counties[0].zipcode;
-			setZipCode(ZipCode);
-
-			//   const fipsFromZips = fipsData.counties.filter((fipsInstance) => {
-			//     return fipsInstance[0].fips[0];
-			//   })
-			//   console.log(fipsFromZips);
-			console.log(fipsData); // Log to check the response
-			if (response.ok && fipsData.counties && fipsData.counties.length > 0) {
-				return fipsData.counties.zipcode;
-			} else {
-				console.error("Error fetching FIPS code:", fipsData);
-				return null;
-			}
-		} catch (error) {
-			console.error("Error fetching FIPS code:", error);
-			return null;
-		}
-	};
-
-	const getStateFromZip = async () => {
-		const data = fetchMarketplaceData();
-		console.log(data);
-	};
-
-	//   useEffect(() => {
-	//     getStateFromZip();
-	//   }, []);
+	}, [formData.zipcode]);
 
 	const fetchMarketplaceData = async () => {
-		setLoading(true); // Set loading to true
-		const fipsCode = await getFipsCode(formData.zipcode);
-		const users_state = await getState(formData.zipcode);
-
-		console.log(users_state);
-		// const zipCodes = await getZipsFromFips(formData.zipCode);
-
-		if (!fipsCode) {
-			alert("Could not retrieve FIPS code for the provided ZIP code.");
-			setLoading(false); // Set loading to false after handling error
+		// Ensure all required fields are filled before sending the request
+		if (!formData.countyfips || !formData.state || !formData.zipcode || !formData.income) {
+			alert("Please fill in all required fields before submitting.");
 			return;
 		}
-
+	
+		setLoading(true);
+	
 		const requestData = {
 			household: {
-				income: parseFloat(formData.income),
+				income: parseFloat(formData.income), // Ensure income is a number
 				people: [
 					{
-						age: formData.age,
+						age: parseFloat(formData.age),
 						aptc_eligible: true,
 						gender: formData.gender,
 						uses_tobacco: formData.usesTobacco,
@@ -247,14 +110,18 @@ const MarketPlacePage = () => {
 			},
 			market: "Individual",
 			place: {
-				countyfips: fipsCode,
-				state: state,
+				countyfips: formData.countyfips,
+				state: formData.state,
 				zipcode: formData.zipcode,
 			},
 			year: 2019,
 		};
-
+	
+		// Log request data for debugging
+		console.log("Request Data: ", requestData);
+	
 		try {
+			// Make the API request
 			const response = await fetch(
 				`https://marketplace.api.healthcare.gov/api/v1/plans/search?apikey=${process.env.REACT_APP_MARKETPLACE_API_KEY}`,
 				{
@@ -265,48 +132,59 @@ const MarketPlacePage = () => {
 					body: JSON.stringify(requestData),
 				}
 			);
-			const data = await response.json();
-			console.log(data);
-			setPlans(data.plans || []);
+	
+			// Check if the response is ok (status 200)
+			if (response.ok) {
+				const data = await response.json();
+				console.log("API Response Data:", data); // Log the response
+	
+				// Check if the API returned any plans
+				if (data.plans && data.plans.length > 0) {
+					setPlans(data.plans); // Set plans in state
+				} else {
+					console.log("No plans found for the provided parameters.");
+					alert("No plans found. Please check your inputs.");
+				}
+			} else {
+				// Log error response if not ok
+				const errorData = await response.json();
+				console.error("API Error Response:", errorData);
+				alert("Failed to fetch plans. Error: " + (errorData.message || "Unknown error"));
+			}
 		} catch (error) {
+			// Catch any errors during the fetch
 			console.error("Error fetching marketplace data:", error);
+			alert("There was an error while fetching data. Please try again.");
 		} finally {
-			setLoading(false); // Set loading to false after API call is complete
+			setLoading(false); // Always turn off the loading state
 		}
 	};
 
-	const formattedPlanId = planId ? planId.toUpperCase() : "";
+	const handleFormSubmit = (e) => {
+		e.preventDefault();
+		fetchMarketplaceData();
+	};
 
-	//   const sortPlansByPremium = () => {
-	//   const sorted = [...filteredPlans].sort((a, b) => a.premium - b.premium);
-	//   setFilteredPlans(sorted);
-	// };
+	const handlePlanToggle = (planId) => {
+		if (isProcessing) return;
 
-	// const filterByHSAEligible = () => {
-	//   const filtered = plans.filter((plan) => plan.hsa_eligible);
-	//   setFilteredPlans(filtered);
-	// };
-	const handleNavigateToDrugCoverage = () => {
-		if (selectedPlans.length === 0) {
-			alert("Please select at least one plan.");
-			return;
-		}
+		setIsProcessing(true);
 
-		// Navigate to the Drug Coverage page, passing selected plans in the state
-		navigate("/drug-coverage", {
-			state: { selectedPlans },
+		setSelectedPlans((prevSelectedPlans) => {
+			if (prevSelectedPlans.includes(planId)) {
+				return prevSelectedPlans.filter((id) => id !== planId);
+			}
+			return [...prevSelectedPlans, planId];
 		});
+
+		setIsProcessing(false);
 	};
 
 	return (
 		<CompareContainer>
 			<SectionTitle>Compare Insurance Plans</SectionTitle>
 
-			<form
-				onSubmit={(e) => {
-					e.preventDefault();
-					fetchMarketplaceData();
-				}}>
+			<form onSubmit={handleFormSubmit}>
 				<FormField>
 					<label htmlFor="income">Household Income</label>
 					<input
@@ -314,7 +192,7 @@ const MarketPlacePage = () => {
 						id="income"
 						name="income"
 						value={formData.income}
-						onChange={handleInputChange}
+						onChange={(e) => setFormData({ ...formData, income: e.target.value })}
 					/>
 				</FormField>
 
@@ -325,7 +203,7 @@ const MarketPlacePage = () => {
 						id="age"
 						name="age"
 						value={formData.age}
-						onChange={handleInputChange}
+						onChange={(e) => setFormData({ ...formData, age: e.target.value })}
 					/>
 				</FormField>
 
@@ -335,7 +213,8 @@ const MarketPlacePage = () => {
 						id="gender"
 						name="gender"
 						value={formData.gender}
-						onChange={handleInputChange}>
+						onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+					>
 						<option value="Female">Female</option>
 						<option value="Male">Male</option>
 					</select>
@@ -344,9 +223,7 @@ const MarketPlacePage = () => {
 				<FormField>
 					<label htmlFor="state">State</label>
 					<StateSelector
-						onSelectState={(selectedState) =>
-							setFormData((prev) => ({ ...prev, state: selectedState }))
-						}
+						onSelectState={(selectedState) => setFormData({ ...formData, state: selectedState })}
 						selectedState={formData.state}
 					/>
 				</FormField>
@@ -358,77 +235,29 @@ const MarketPlacePage = () => {
 						id="zipcode"
 						name="zipcode"
 						value={formData.zipcode}
-						onChange={handleInputChange}
+						onChange={(e) => setFormData({ ...formData, zipcode: e.target.value })}
 					/>
 				</FormField>
 
-				<Button type="submit">Search Plans</Button>
+				<Button type="submit">{loading ? "Loading..." : "Search Plans"}</Button>
 			</form>
 
-			{loading ? (
-				<p>Loading...</p>
-			) : plans.length > 0 ? (
-				<ComparisonTable
-					plans={plans}
-					onTogglePlan={handlePlanToggle}
-					selectedPlans={selectedPlans}
-				/>
-			) : (
-				<div>
-					{plans.length > 0 ? (
-						plans.map((plan) => (
-							<PlanCard key={plan.id}>
-								<PlanInfo>
-									<PlanTitle>
-										<Link
-											to={{
-												style: { textDecoration: "underline", color: "blue" },
-												pathname: `/plan/${plan.id}`,
-												state: { planData: plan }, // Pass the plan data here
-											}}>
-											{plan.name}
-										</Link>
-										<span
-											style={{
-												marginLeft: "0.5rem",
-												color: "gray",
-												fontSize: "0.9rem",
-											}}>
-											(Click to view details)
-										</span>
-										<b>
-											<Link
-												to={`/plan/${plan.id}`}
-												onClick={() =>
-													console.log("Navigating to:", `/plan/${plan.id}`)
-												}>
-												{plan.name}
-											</Link>
-											console.log("Navigating to plan ID:", planId);
-											console.log("Plan ID:", plan.id);
-										</b>
-									</PlanTitle>
-									<p>{plan.description}</p>
-								</PlanInfo>
-							</PlanCard>
-						))
-					) : (
-						<p>No plans available.</p>
-					)}
-				</div>
-			)}
-			{/* button for Medications */}
+			<ComparisonTable
+				plans={plans}
+				onTogglePlan={handlePlanToggle}
+				selectedPlans={selectedPlans}
+			/>
+
 			<div style={{ marginTop: "2rem", textAlign: "center" }}>
 				<Button
 					as={Link}
 					to="/drug-coverage"
 					state={{ selectedPlans }}
-					disabled={selectedPlans.length === 0}
 					style={{
 						backgroundColor: selectedPlans.length === 0 ? "#add8e6" : "",
 						pointerEvents: selectedPlans.length === 0 ? "none" : "auto",
-						marginTop: "2rem",
-					}}>
+					}}
+				>
 					Check if your medication is covered
 				</Button>
 				{selectedPlans.length === 0 && (

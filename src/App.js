@@ -39,17 +39,17 @@ import { getCignaToken } from "./services/Api/Cigna/getCignaToken";
 function App() {
 	const [isDarkMode, setIsDarkMode] = useState(false);
 
-	useEffect(() => {
-		const fetchToken = async () => {
-			try {
-				const token = await getCignaToken();
-				console.log("Cigna Token:", token);
-			} catch (error) {
-				console.error("Failed to fetch token:", error);
-			}
-		};
-		fetchToken();
-	}, []);
+	// useEffect(() => {
+	// 	const fetchToken = async () => {
+	// 		try {
+	// 			const token = await getCignaToken();
+	// 			console.log("Cigna Token:", token);
+	// 		} catch (error) {
+	// 			console.error("Failed to fetch token:", error);
+	// 		}
+	// 	};
+	// 	fetchToken();
+	// }, []);
 
 	return (
 		<AuthProvider>

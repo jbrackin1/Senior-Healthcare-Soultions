@@ -38,24 +38,3 @@ export const fetchPlanDetails = async (planId) => {
 		throw error;
 	}
 };
-
-export const fetchWithRetry = async (planId, retries = 3, delay = 1000) => {
-	let attempt = 0;
-
-	while (attempt < retries) {
-		try {
-			const data = await fetchPlanDetails(planId);
-			if (data) return data; // Success: return data
-		} catch (error) {
-			attempt++;
-			console.error(`⚠️ Attempt ${attempt} failed:`, error);
-
-			if (attempt >= retries) {
-				console.error("❌ Max retries reached. Please try again later.");
-				return null;
-			}
-
-			await new Promise((res) => setTimeout(res, delay * attempt));
-		}
-	}
-};

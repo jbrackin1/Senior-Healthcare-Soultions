@@ -22,14 +22,14 @@ const PlanDetail = ({ addToFavorites, addToComparison, isSignedIn }) => {
 	const location = useLocation();
 
 	const [plan, setPlan] = useState(null);
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
 
 	useEffect(() => {
 		const fetchData = async () => {
 			if (!planId) {
 				setError("No plan ID provided.");
-				setLoading(false);
+				setLoading(true);
 				return;
 			}
 
@@ -54,7 +54,7 @@ const PlanDetail = ({ addToFavorites, addToComparison, isSignedIn }) => {
 		};
 
 		fetchData();
-	}, [planId, location.state]);
+	}, []);
 
 	if (loading) return <p>Loading...</p>;
 	if (error) return <p style={{ color: "red" }}>{error}</p>;
