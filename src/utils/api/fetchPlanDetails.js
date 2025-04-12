@@ -2,7 +2,7 @@
 
 const API_BASE_URL = "https://marketplace.api.healthcare.gov/api/v1/plans";
 const API_KEY = process.env.REACT_APP_MARKETPLACE_API_KEY;
-console.log("🔑 API KEY:", process.env.REACT_APP_MARKETPLACE_API_KEY);
+// console.log("🔑 API KEY:", process.env.REACT_APP_MARKETPLACE_API_KEY);
 
 
 /**

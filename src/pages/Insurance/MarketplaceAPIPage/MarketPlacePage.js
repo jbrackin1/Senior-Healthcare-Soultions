@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Button from "../../../components/ui/Global/button";
 import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
-import StateSelector from "../../../components/ui/Global/StateSlector";
 
 const CompareContainer = styled.main`
 	padding: 2rem;
@@ -126,7 +125,7 @@ const MarketPlacePage = () => {
 
 		const requestData = {
 			household: {
-				income: parseFloat(formData.income), // Ensure income is a number
+				income: parseFloat(formData.income),
 				people: [
 					{
 						age: parseFloat(formData.age),
@@ -145,7 +144,7 @@ const MarketPlacePage = () => {
 			currentYear,
 		};
 		localStorage.setItem('formData', JSON.stringify(requestData));
-		// Log request data for debugging
+		
 		console.log("Request Data: ", requestData);
 	
 		try {
@@ -161,7 +160,7 @@ const MarketPlacePage = () => {
 				}
 			);
 	
-			// Check if the response is ok (status 200)
+			// Check if the response is 200
 			if (response.ok) {
 				const data = await response.json();
 				console.log("API Response Data:", data); // Log the response
@@ -170,7 +169,7 @@ const MarketPlacePage = () => {
 				if (data.plans && data.plans.length > 0) {
 					setPlans(data.plans); // Set plans in state
 				} else {
-					console.log("No plans found for the provided parameters.");
+					// Handle case where no plans are found
 					alert("No plans found. Please check your inputs.");
 				}
 			} else {
@@ -253,15 +252,6 @@ const MarketPlacePage = () => {
 						<option value="Male">Male</option>
 					</select>
 				</FormField>
-
-				<FormField>
-					<label htmlFor="state">State</label>
-					<StateSelector
-						onSelectState={(selectedState) => setFormData({ ...formData, state: selectedState })}
-						selectedState={formData.state}
-					/>
-				</FormField>
-
 				<FormField>
 					<label htmlFor="zipcode">Zip Code</label>
 					<input
