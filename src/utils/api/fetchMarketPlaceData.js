@@ -9,7 +9,6 @@ const fetchMarketplaceData = async ({ formData, fipsCode, users_state }) => {
 
 	console.log("📍 ZIP:", formData.zipcode);
 	console.log("📍 FIPS Code:", fipsCode);
-	console.log("📍 State:", users_state); // Confirm it’s populated
 
 	if (!fipsCode || !users_state) {
 		alert("Could not retrieve location info. Please check your ZIP code.");

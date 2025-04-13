@@ -90,10 +90,10 @@ const TopBannerComponent = () => {
 						<DropdownItem to="/privacy-policy">Privacy Policy</DropdownItem>
 						<DropdownItem to="/terms-of-service">Terms of Service</DropdownItem>
 						<DropdownItem to="/testimonials">Testimonials</DropdownItem>
+						<DropdownItem to="/Resources">FAQ</DropdownItem>
 					</DropdownMenu>
 				</DropdownToggle>
 
-				
 				<DropdownToggle>
 					User
 					<DropdownMenu>
