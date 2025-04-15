@@ -3,7 +3,9 @@ import styled from "styled-components";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Button from "../../../components/ui/Global/button";
 import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
-
+import UserPreference from "../../Forms/UserPreference";
+import Collapsible from "../../../components/ui/Global/CollapsableButton";
+import Toggle from "../../../components/ui/Global/Toggle";
 const CompareContainer = styled.main`
 	padding: 2rem;
 	background-color: ${({ theme }) => theme.colors.backgroundAlt};
@@ -215,6 +217,15 @@ const MarketPlacePage = () => {
 
 	return (
 		<CompareContainer>
+
+			<Collapsible title="Step 1: Customize Your Preferences">
+				<UserPreference
+					formData={formData}
+					setFormData={setFormData}
+					facetGroups={[]} // or pass actual data when you're ready
+				/>
+			</Collapsible>
+
 			<SectionTitle>Compare Insurance Plans</SectionTitle>
 
 			<form onSubmit={handleFormSubmit}>
@@ -225,7 +236,9 @@ const MarketPlacePage = () => {
 						id="income"
 						name="income"
 						value={formData.income}
-						onChange={(e) => setFormData({ ...formData, income: e.target.value })}
+						onChange={(e) =>
+							setFormData({ ...formData, income: e.target.value })
+						}
 					/>
 				</FormField>
 
@@ -246,8 +259,9 @@ const MarketPlacePage = () => {
 						id="gender"
 						name="gender"
 						value={formData.gender}
-						onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-					>
+						onChange={(e) =>
+							setFormData({ ...formData, gender: e.target.value })
+						}>
 						<option value="Female">Female</option>
 						<option value="Male">Male</option>
 					</select>
@@ -259,7 +273,9 @@ const MarketPlacePage = () => {
 						id="zipcode"
 						name="zipcode"
 						value={formData.zipcode}
-						onChange={(e) => setFormData({ ...formData, zipcode: e.target.value })}
+						onChange={(e) =>
+							setFormData({ ...formData, zipcode: e.target.value })
+						}
 					/>
 				</FormField>
 
@@ -267,36 +283,40 @@ const MarketPlacePage = () => {
 			</form>
 
 			{!loading && plans.length > 0 && (
-			<>
-				<ComparisonTable
-					plans={plans}
-					onTogglePlan={handlePlanToggle}
-					selectedPlans={selectedPlans}
-				/>
+				<>
+					<ComparisonTable
+						plans={plans}
+						onTogglePlan={handlePlanToggle}
+						selectedPlans={selectedPlans}
+					/>
 
-				<div style={{ marginTop: "2rem", textAlign: "center" }}>
-					<Button
-						as={Link}
-						to="/drug-coverage"
-						state={{ selectedPlans }}
-						onClick={handleCheckMedicationClick} // Mark button as clicked
-						style={{
-							backgroundColor: selectedPlans.length === 0 ? "#add8e6" : "#51BFE4",
-							pointerEvents: selectedPlans.length === 0 ? "none" : "auto",
-						}}
-					>
-						Check if your medication is covered
-					</Button>
+					<div style={{ marginTop: "2rem", textAlign: "center" }}>
+						<Button
+							as={Link}
+							to="/drug-coverage"
+							state={{ selectedPlans }}
+							onClick={handleCheckMedicationClick} // Mark button as clicked
+							style={{
+								backgroundColor:
+									selectedPlans.length === 0 ? "#add8e6" : "#51BFE4",
+								pointerEvents: selectedPlans.length === 0 ? "none" : "auto",
+							}}>
+							Check if your medication is covered
+						</Button>
 
-					
-					{clickedCheckMedication && selectedPlans.length === 0 && (
-							<p style={{ color: "red", textAlign: "center", marginTop: "1rem" }}>
-							<b>Please select at least one plan to continue.</b>
-						</p>
-					)}
-				</div>
-			</>
-		)}
+						{clickedCheckMedication && selectedPlans.length === 0 && (
+							<p
+								style={{
+									color: "red",
+									textAlign: "center",
+									marginTop: "1rem",
+								}}>
+								<b>Please select at least one plan to continue.</b>
+							</p>
+						)}
+					</div>
+				</>
+			)}
 
 			{/* Show message if no plans were found */}
 			{!loading && searchCompleted && plans.length === 0 && (
