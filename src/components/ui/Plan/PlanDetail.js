@@ -90,7 +90,6 @@ const PlanDetailExpanded = () => {
 				userPreferences={false}
 				momMode={enabled}
 			/>
-			<h3>Core Medical Benefits</h3>
 			<div>
 				<h3>
 					<b>Core Medical Benefits:</b>
