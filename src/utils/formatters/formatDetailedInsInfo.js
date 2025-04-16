@@ -47,10 +47,7 @@ export const formatDetailedInsInfo = (rawData) => {
 		return "Covered — check details";
 	};
 
-	
-
 	const groupBenefitsByCategory = (allBenefits = []) => {
-		
 		const categoryMap = {
 			"Mental Health & Substance Use": ["mental", "behavioral", "substance"],
 			"Dental & Vision": ["dental", "vision", "eye", "orthodontia"],

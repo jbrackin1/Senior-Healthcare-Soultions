@@ -1,8 +1,8 @@
 /** @format */
-
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { fetchPlanDetails } from "../../../utils/api/fetchPlanDetails";
 import { formatDetailedInsInfo } from "../../../utils/formatters/formatDetailedInsInfo";
 import Button from "../Global/button";
@@ -18,42 +18,25 @@ const DetailContainer = styled.div`
 	margin: auto;
 `;
 
-const AccordionToggle = styled.button`
-	width: 100%;
-	text-align: left;
-	padding: 1rem;
-	background-color: ${({ theme }) => theme.colors.accent};
-	color: white;
-	border: none;
-	cursor: pointer;
-	font-weight: bold;
-	border-radius: 4px;
-`;
-
-const AccordionContent = styled.div`
-	padding: 1rem;
-	background-color: ${({ theme }) => theme.colors.backgroundAlt};
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	margin-top: 0.5rem;
-`;
-
-const passedPlan = location.state?.plan;
-
 const PlanDetailExpanded = () => {
 	const { planId } = useParams();
 	const navigate = useNavigate();
+	const location = useLocation();
+	const passedPlan = location.state?.plan;
+
 	const [plan, setPlan] = useState(null);
+	const [rawData, setRawData] = useState(null);
 	const [loading, setLoading] = useState(true);
-	const [expanded, setExpanded] = useState(false);
-	const { enabled } = useMomMode(); // ✅ this defines 'enabled'; still needs logic finished
-	
+	const { enabled } = useMomMode();
 
 	useEffect(() => {
 		const loadPlanDetails = async () => {
 			if (!planId) return;
-			const rawData = await fetchPlanDetails(planId);
-			if (rawData) setPlan(formatDetailedInsInfo(rawData));
+			const result = await fetchPlanDetails(planId);
+			if (result) {
+				setRawData(result);
+				setPlan(formatDetailedInsInfo(result));
+			}
 			setLoading(false);
 		};
 
@@ -63,11 +46,29 @@ const PlanDetailExpanded = () => {
 	if (loading) return <p>Loading...</p>;
 	if (!plan) return <p>No plan details available.</p>;
 
+	const premium =
+		typeof passedPlan?.premium === "number" && passedPlan.premium > 0
+			? passedPlan.premium
+			: rawData?.plan?.ehb_premium > 0
+			? rawData.plan.ehb_premium
+			: rawData?.plan?.premium > 0
+			? rawData.plan.premium
+			: rawData?.plan?.aptc_eligible_premium > 0
+			? rawData.plan.aptc_eligible_premium
+			: "N/A";
+
 	return (
 		<DetailContainer>
 			<h2>{plan.name}</h2>
+
 			<p>
-				<b>Premium:</b> {plan.premium}
+				<b>Premium:</b>{" "}
+				<p>
+					<b>Monthly Premium:</b>{" "}
+					{passedPlan?.premium
+						? `$${passedPlan.premium.toFixed(2)}`
+						: "Not Available"}
+				</p>
 			</p>
 			<p>
 				<b>Plan Type:</b> {plan.type}
@@ -84,13 +85,47 @@ const PlanDetailExpanded = () => {
 			<p>
 				<b>HSA Eligible:</b> {plan.hsaEligible}
 			</p>
-
 			<BenefitAccordion
 				benefits={plan.categorizedBenefits}
-				userPreferences={false} // Need to pass user preferences here
-				momMode={enabled} // Finish Mom mode and pass it here
+				userPreferences={false}
+				momMode={enabled}
 			/>
-			<BenefitAccordion />
+			<h3>Core Medical Benefits</h3>
+			<div>
+				<h3>
+					<b>Core Medical Benefits:</b>
+				</h3>
+				{plan?.benefits?.map((benefit, index) => (
+					<div
+						key={index}
+						style={{
+							border: "1px solid #ccc",
+							padding: "1rem",
+							marginBottom: "1rem",
+							backgroundColor: benefit.covered ? "#e6f4ea" : "#fcebea",
+							borderLeft: benefit.covered ? "4px solid green" : "4px solid red",
+						}}>
+						<h4>
+							{benefit.name} – {benefit.covered ? "Covered" : "Not Covered"}
+						</h4>
+						{benefit.explanation && (
+							<p style={{ fontStyle: "italic", color: "#555" }}>
+								{benefit.explanation}
+							</p>
+						)}
+						{benefit.cost_sharings?.map((share, i) => (
+							<p key={i}>
+								<b>{share.network_tier}:</b> {share.display_string}
+							</p>
+						))}
+						{benefit.has_limits && (
+							<p style={{ color: "orange" }}>
+								⚠️ This benefit has coverage limits.
+							</p>
+						)}
+					</div>
+				))}
+			</div>
 
 			<h3>Quality Ratings</h3>
 			<ul>
@@ -98,7 +133,6 @@ const PlanDetailExpanded = () => {
 				<li>Experience: {plan.enrollee_experience_rating || "N/A"}</li>
 				<li>Efficiency: {plan.plan_efficiency_rating || "N/A"}</li>
 				<li>
-					{" "}
 					Clinical Quality: {plan.clinical_quality_management_rating || "N/A"}
 				</li>
 			</ul>
@@ -113,24 +147,44 @@ const PlanDetailExpanded = () => {
 			<h3>Resources</h3>
 			<ul>
 				<li>
-					<a href={plan.brochureUrl} target="_blank" rel="noreferrer">
-						Brochure
-					</a>
+					<b>Brochure:</b>{" "}
+					{plan.brochureUrl ? (
+						<a href={plan.brochureUrl} target="_blank" rel="noreferrer">
+							View
+						</a>
+					) : (
+						"Not Available"
+					)}
 				</li>
 				<li>
-					<a href={plan.benefitsUrl} target="_blank" rel="noreferrer">
-						Benefits Document
-					</a>
+					<b>Benefits:</b>{" "}
+					{plan.benefitsUrl ? (
+						<a href={plan.benefitsUrl} target="_blank" rel="noreferrer">
+							View
+						</a>
+					) : (
+						"Not Available"
+					)}
 				</li>
 				<li>
-					<a href={plan.networkUrl} target="_blank" rel="noreferrer">
-						Network Info
-					</a>
+					<b>Network:</b>{" "}
+					{plan.networkUrl ? (
+						<a href={plan.networkUrl} target="_blank" rel="noreferrer">
+							View
+						</a>
+					) : (
+						"Not Available"
+					)}
 				</li>
 				<li>
-					<a href={plan.formularyUrl} target="_blank" rel="noreferrer">
-						Drug Formulary
-					</a>
+					<b>Formulary:</b>{" "}
+					{plan.formularyUrl ? (
+						<a href={plan.formularyUrl} target="_blank" rel="noreferrer">
+							View
+						</a>
+					) : (
+						"Not Available"
+					)}
 				</li>
 			</ul>
 
