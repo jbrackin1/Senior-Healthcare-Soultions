@@ -18,10 +18,6 @@ const DetailContainer = styled.div`
 	margin: auto;
 `;
 
-const AccordionSection = styled.div`
-	margin-top: 1rem;
-`;
-
 const AccordionToggle = styled.button`
 	width: 100%;
 	text-align: left;
@@ -41,6 +37,8 @@ const AccordionContent = styled.div`
 	border-radius: 4px;
 	margin-top: 0.5rem;
 `;
+
+const passedPlan = location.state?.plan;
 
 const PlanDetailExpanded = () => {
 	const { planId } = useParams();
@@ -92,44 +90,16 @@ const PlanDetailExpanded = () => {
 				userPreferences={false} // Need to pass user preferences here
 				momMode={enabled} // Finish Mom mode and pass it here
 			/>
-
-			<AccordionSection>
-				<AccordionToggle onClick={() => setExpanded(!expanded)}>
-					{expanded ? "-" : "+"} Benefits List
-				</AccordionToggle>
-				{expanded && (
-					<AccordionContent>
-						<ul>
-							{plan.benefits.map((benefit, index) => (
-								<li key={index}>
-									<b>{benefit.name}</b> -{" "}
-									{benefit.covered ? "Covered" : "Not Covered"}
-									<br />
-									{benefit.cost_sharings?.map((cost, i) => (
-										<div key={i}>
-											• {cost.network_tier}: ${cost.copay_amount} copay,{" "}
-											{cost.coinsurance_options}
-										</div>
-									))}
-									{benefit.explanation && (
-										<p>
-											<i>{benefit.explanation}</i>
-										</p>
-									)}
-								</li>
-							))}
-						</ul>
-					</AccordionContent>
-				)}
-			</AccordionSection>
+			<BenefitAccordion />
 
 			<h3>Quality Ratings</h3>
 			<ul>
 				<li>Overall: {plan.qualityRating}</li>
 				<li>Experience: {plan.enrollee_experience_rating || "N/A"}</li>
 				<li>Efficiency: {plan.plan_efficiency_rating || "N/A"}</li>
-				<li> Clinical Quality:{" "}
-					{plan.clinical_quality_management_rating || "N/A"}
+				<li>
+					{" "}
+					Clinical Quality: {plan.clinical_quality_management_rating || "N/A"}
 				</li>
 			</ul>
 

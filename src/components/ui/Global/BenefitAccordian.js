@@ -19,6 +19,16 @@ const BenefitItem = styled.li`
 	position: relative;
 `;
 
+const CollapsibleWrapper = styled.div`
+	margin-bottom: 1.5rem;
+	border-radius: 12px;
+	border: 2px solid ${({ theme }) => theme.colors.border || "#ccc"};
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.06);
+	background: linear-gradient(to bottom right, #fefefe, #fafafa);
+	overflow: hidden;
+`;
+
+
 const Checkmark = styled.span`
 	color: black;
 	font-weight: bold;
