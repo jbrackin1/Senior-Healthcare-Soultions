@@ -6,6 +6,7 @@ import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
 import UserPreference from "../../Forms/UserPreference";
 import Collapsible from "../../../components/ui/Global/CollapsableButton";
 import Toggle from "../../../components/ui/Global/Toggle";
+
 const CompareContainer = styled.main`
 	padding: 2rem;
 	background-color: ${({ theme }) => theme.colors.backgroundAlt};

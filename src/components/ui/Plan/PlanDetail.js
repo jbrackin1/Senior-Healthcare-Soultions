@@ -1,200 +1,172 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
-import Button from "../Global/button";
-import { formatDetailedInsInfo } from "../../../utils/formatters/formatDetailedInsInfo";
+import { useParams, useNavigate } from "react-router-dom";
 import { fetchPlanDetails } from "../../../utils/api/fetchPlanDetails";
+import { formatDetailedInsInfo } from "../../../utils/formatters/formatDetailedInsInfo";
+import Button from "../Global/button";
+import BenefitAccordion from "../Global/BenefitAccordian";
+import useMomMode from "../Feedback/MomMode";
 
 const DetailContainer = styled.div`
 	padding: 2rem;
 	background-color: ${({ theme }) => theme.colors.background};
 	border-radius: 8px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	max-width: 800px;
+	max-width: 900px;
 	margin: auto;
 `;
 
-const PlanDetail = ({ addToFavorites, addToComparison, isSignedIn }) => {
+const AccordionSection = styled.div`
+	margin-top: 1rem;
+`;
+
+const AccordionToggle = styled.button`
+	width: 100%;
+	text-align: left;
+	padding: 1rem;
+	background-color: ${({ theme }) => theme.colors.accent};
+	color: white;
+	border: none;
+	cursor: pointer;
+	font-weight: bold;
+	border-radius: 4px;
+`;
+
+const AccordionContent = styled.div`
+	padding: 1rem;
+	background-color: ${({ theme }) => theme.colors.backgroundAlt};
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	margin-top: 0.5rem;
+`;
+
+const PlanDetailExpanded = () => {
 	const { planId } = useParams();
 	const navigate = useNavigate();
-	const location = useLocation();
-
 	const [plan, setPlan] = useState(null);
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState("");
+	const [loading, setLoading] = useState(true);
+	const [expanded, setExpanded] = useState(false);
+	const { enabled } = useMomMode(); // ✅ this defines 'enabled'; still needs logic finished
+	
 
 	useEffect(() => {
-		const fetchData = async () => {
-			if (!planId) {
-				setError("No plan ID provided.");
-				setLoading(true);
-				return;
-			}
-
-			if (location.state?.planData) {
-				setPlan(location.state.planData);
-				setLoading(false);
-			} else {
-				try {
-					const data = await fetchPlanDetails(planId);
-					if (!data) {
-						setError("Plan not found.");
-					} else {
-						setPlan(data);
-					}
-				} catch (err) {
-					console.error(err);
-					setError("An error occurred while fetching the plan details.");
-				} finally {
-					setLoading(false);
-				}
-			}
+		const loadPlanDetails = async () => {
+			if (!planId) return;
+			const rawData = await fetchPlanDetails(planId);
+			if (rawData) setPlan(formatDetailedInsInfo(rawData));
+			setLoading(false);
 		};
 
-		fetchData();
-	}, []);
+		loadPlanDetails();
+	}, [planId]);
 
 	if (loading) return <p>Loading...</p>;
-	if (error) return <p style={{ color: "red" }}>{error}</p>;
 	if (!plan) return <p>No plan details available.</p>;
-
-	const formattedPlan = formatDetailedInsInfo(plan);
 
 	return (
 		<DetailContainer>
-			<h2>{formattedPlan.name}</h2>
-
+			<h2>{plan.name}</h2>
 			<p>
-				<b>Premium:</b> {formattedPlan.premium}
+				<b>Premium:</b> {plan.premium}
 			</p>
 			<p>
-				<b>Plan Type:</b> {formattedPlan.type}
+				<b>Plan Type:</b> {plan.type}
 			</p>
 			<p>
-				<b>Deductible:</b> {formattedPlan.deductible}
+				<b>Deductible:</b> {plan.deductible}
 			</p>
 			<p>
-				<b>Metal Level:</b> {formattedPlan.metalLevel}
+				<b>Metal Level:</b> {plan.metalLevel}
 			</p>
 			<p>
-				<b>Maximum Out-of-Pocket (MOOP):</b> {formattedPlan.moop}
+				<b>Maximum Out-of-Pocket:</b> {plan.moop}
 			</p>
 			<p>
-				<b>HSA Eligible:</b> {formattedPlan.hsaEligible}
+				<b>HSA Eligible:</b> {plan.hsaEligible}
 			</p>
 
-			<h3>
-				<b>Coverage Details:</b>
-			</h3>
-			<ul>
-				<li>
-					<b>General Co-Pay:</b> {formattedPlan.coPay.general}
-				</li>
-				<li>
-					<b>Specialist Co-Pay:</b> {formattedPlan.coPay.specialist}
-				</li>
-				<li>
-					<b>Hospital Co-Pay:</b> {formattedPlan.coPay.hospital}
-				</li>
-				<li>
-					<b>Network Coverage:</b> {formattedPlan.networkCoverage}
-				</li>
-				<li>
-					<b>Medicare Eligible:</b> {formattedPlan.medicareEligible}
-				</li>
-				<li>
-					<b>Medicaid Eligible:</b> {formattedPlan.medicaidEligible}
-				</li>
-			</ul>
+			<BenefitAccordion
+				benefits={plan.categorizedBenefits}
+				userPreferences={false} // Need to pass user preferences here
+				momMode={enabled} // Finish Mom mode and pass it here
+			/>
 
-			<h3>
-				<b>Additional Benefits:</b>
-			</h3>
-			{formattedPlan.additionalBenefits.length > 0 ? (
-				<ul>
-					{formattedPlan.additionalBenefits.map((benefit, index) => (
-						<li key={index}>{benefit}</li>
-					))}
-				</ul>
-			) : (
-				<p>No additional benefits available.</p>
-			)}
-
-			<h3>
-				<b>Plan Resources:</b>
-			</h3>
-			<ul>
-				<li>
-					<b>Brochure:</b>{" "}
-					{formattedPlan.brochureUrl !== "Not Available" ? (
-						<a
-							href={formattedPlan.brochureUrl}
-							target="_blank"
-							rel="noreferrer">
-							View Brochure
-						</a>
-					) : (
-						"Not Available"
-					)}
-				</li>
-				<li>
-					<b>Benefits:</b>{" "}
-					{formattedPlan.benefitsUrl !== "Not Available" ? (
-						<a
-							href={formattedPlan.benefitsUrl}
-							target="_blank"
-							rel="noreferrer">
-							View Benefits
-						</a>
-					) : (
-						"Not Available"
-					)}
-				</li>
-				<li>
-					<b>Network:</b>{" "}
-					{formattedPlan.networkUrl !== "Not Available" ? (
-						<a href={formattedPlan.networkUrl} target="_blank" rel="noreferrer">
-							View Network
-						</a>
-					) : (
-						"Not Available"
-					)}
-				</li>
-				<li>
-					<b>Formulary:</b>{" "}
-					{formattedPlan.formularyUrl !== "Not Available" ? (
-						<a
-							href={formattedPlan.formularyUrl}
-							target="_blank"
-							rel="noreferrer">
-							View Formulary
-						</a>
-					) : (
-						"Not Available"
-					)}
-				</li>
-			</ul>
-
-			<div style={{ display: "flex", gap: "1rem", marginTop: "1.5rem" }}>
-				<Button onClick={() => addToFavorites?.(plan)}>Add to Favorites</Button>
-				<Button onClick={() => addToComparison?.(plan)}>
-					Add to Comparison
-				</Button>
-			</div>
-
-			<div style={{ marginTop: "1.5rem" }}>
-				{isSignedIn ? (
-					<Button onClick={() => navigate("/compare")}>Go to Comparison</Button>
-				) : (
-					<p>You need to sign up to compare plans.</p>
+			<AccordionSection>
+				<AccordionToggle onClick={() => setExpanded(!expanded)}>
+					{expanded ? "-" : "+"} Benefits List
+				</AccordionToggle>
+				{expanded && (
+					<AccordionContent>
+						<ul>
+							{plan.benefits.map((benefit, index) => (
+								<li key={index}>
+									<b>{benefit.name}</b> -{" "}
+									{benefit.covered ? "Covered" : "Not Covered"}
+									<br />
+									{benefit.cost_sharings?.map((cost, i) => (
+										<div key={i}>
+											• {cost.network_tier}: ${cost.copay_amount} copay,{" "}
+											{cost.coinsurance_options}
+										</div>
+									))}
+									{benefit.explanation && (
+										<p>
+											<i>{benefit.explanation}</i>
+										</p>
+									)}
+								</li>
+							))}
+						</ul>
+					</AccordionContent>
 				)}
+			</AccordionSection>
 
-				<Button onClick={() => navigate(-1)}>Back</Button>
-			</div>
+			<h3>Quality Ratings</h3>
+			<ul>
+				<li>Overall: {plan.qualityRating}</li>
+				<li>Experience: {plan.enrollee_experience_rating || "N/A"}</li>
+				<li>Efficiency: {plan.plan_efficiency_rating || "N/A"}</li>
+				<li> Clinical Quality:{" "}
+					{plan.clinical_quality_management_rating || "N/A"}
+				</li>
+			</ul>
+
+			<h3>Disease Management Programs</h3>
+			<ul>
+				{(plan.disease_mgmt_programs || []).map((item, i) => (
+					<li key={i}>{item}</li>
+				))}
+			</ul>
+
+			<h3>Resources</h3>
+			<ul>
+				<li>
+					<a href={plan.brochureUrl} target="_blank" rel="noreferrer">
+						Brochure
+					</a>
+				</li>
+				<li>
+					<a href={plan.benefitsUrl} target="_blank" rel="noreferrer">
+						Benefits Document
+					</a>
+				</li>
+				<li>
+					<a href={plan.networkUrl} target="_blank" rel="noreferrer">
+						Network Info
+					</a>
+				</li>
+				<li>
+					<a href={plan.formularyUrl} target="_blank" rel="noreferrer">
+						Drug Formulary
+					</a>
+				</li>
+			</ul>
+
+			<Button onClick={() => navigate(-1)}>Back</Button>
 		</DetailContainer>
 	);
 };
 
-export default PlanDetail;
+export default PlanDetailExpanded;

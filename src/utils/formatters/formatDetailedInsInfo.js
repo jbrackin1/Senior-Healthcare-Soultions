@@ -6,7 +6,47 @@ import { formatDate } from "./formatData";
 
 export const formatDetailedInsInfo = (rawData) => {
 	const planData = rawData?.plan || rawData;
-console.log("Formatted Plan Data:", planData);
+	console.log("Formatted Plan Data:", planData);
+
+	const getCopayAmount = (planData, keyword) => {
+		const match = planData?.benefits?.find((b) =>
+			b.name?.toLowerCase().includes(keyword.toLowerCase())
+		);
+		return typeof match?.cost_sharings?.[0]?.copay_amount === "number"
+			? `$${match.cost_sharings[0].copay_amount.toFixed(2)}`
+			: "N/A";
+	};
+
+	const getHospitalCostShare = (planData) => {
+		const hospitalBenefit = planData?.benefits?.find((b) =>
+			b.name?.toLowerCase().includes("inpatient hospital")
+		);
+
+		if (!hospitalBenefit) return "N/A";
+
+		const inNetwork = hospitalBenefit.cost_sharings?.find(
+			(c) => c.network_tier?.toLowerCase() === "in-network"
+		);
+
+		if (!inNetwork) return "N/A";
+
+		if (inNetwork.copay_amount && inNetwork.copay_amount > 0) {
+			return `$${inNetwork.copay_amount.toFixed(2)} per stay`;
+		}
+
+		if (
+			inNetwork.coinsurance_rate &&
+			inNetwork.coinsurance_rate > 0 &&
+			inNetwork.coinsurance_options?.toLowerCase().includes("after deductible")
+		) {
+			return `${Math.round(
+				inNetwork.coinsurance_rate * 100
+			)}% after deductible`;
+		}
+
+		return "Covered — check details";
+	};
+
 	return {
 		// ✅ Basic Information
 		name: planData?.planName || planData?.name || "Unknown Plan",
@@ -28,15 +68,9 @@ console.log("Formatted Plan Data:", planData);
 
 		// ✅ Co-Pays
 		coPay: {
-			general: planData?.benefits?.[0]?.cost_sharings?.[0]?.copay_amount
-				? formatCurrency(planData.benefits[0].cost_sharings[0].copay_amount)
-				: "N/A",
-			specialist: planData?.benefits?.[1]?.cost_sharings?.[0]?.copay_amount
-				? formatCurrency(planData.benefits[1].cost_sharings[0].copay_amount)
-				: "N/A",
-			hospital: planData?.benefits?.[2]?.cost_sharings?.[0]?.copay_amount
-				? formatCurrency(planData.benefits[2].cost_sharings[0].copay_amount)
-				: "N/A",
+			general: getCopayAmount(planData, "Primary Care"),
+			specialist: getCopayAmount(planData, "Specialist"),
+			hospital: getHospitalCostShare(planData),
 		},
 
 		// ✅ Network and Eligibility
@@ -46,6 +80,7 @@ console.log("Formatted Plan Data:", planData);
 		medicaidEligible: planData?.isMedicaidEligible ? "Yes" : "No",
 
 		// ✅ Additional Benefits
+		benefits: Array.isArray(planData?.benefits) ? planData.benefits : [],
 		additionalBenefits: Array.isArray(planData?.benefits)
 			? planData.benefits.map((benefit) => benefit.name)
 			: [],
@@ -58,6 +93,12 @@ console.log("Formatted Plan Data:", planData);
 
 		// ✅ Quality Ratings
 		qualityRating: planData?.quality_rating?.global_rating || "Not Rated",
+		enrollee_experience_rating:
+			planData?.quality_rating?.enrollee_experience_rating || "N/A",
+		plan_efficiency_rating:
+			planData?.quality_rating?.plan_efficiency_rating || "N/A",
+		clinical_quality_management_rating:
+			planData?.quality_rating?.clinical_quality_management_rating || "N/A",
 
 		// ✅ HSA Eligibility
 		hsaEligible: planData?.hsa_eligible ? "Yes" : "No",
@@ -72,5 +113,8 @@ console.log("Formatted Plan Data:", planData);
 
 		// ✅ Metal Level
 		metalLevel: planData?.metal_level || "Not Specified",
+
+		// ✅ Disease Management
+		disease_mgmt_programs: planData?.disease_mgmt_programs || [],
 	};
 };

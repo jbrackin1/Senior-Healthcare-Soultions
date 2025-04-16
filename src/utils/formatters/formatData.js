@@ -1,6 +1,6 @@
 /** @format */
 
-// src/utils/formatData.js
+// nicoles-app/src/utils/formatters/formatData.js
 
 
 // Helper to format dates in a readable way (MM/DD/YYYY)

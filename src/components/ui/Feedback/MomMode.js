@@ -55,6 +55,7 @@ Unique enough to anchor marketing around
 */
 //nicoles-app/src/components/ui/Feedback/MomMode.js
 
+
 import { useState } from "react";
 
 const useMomMode = () => {
@@ -78,3 +79,4 @@ const useMomMode = () => {
 		translate,
 	};
 };
+export default useMomMode;
