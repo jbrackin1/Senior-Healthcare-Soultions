@@ -3,7 +3,7 @@
 // HomePage.js
 import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "../../components/ui/Global/button";
+import button from "../../components/ui/Global/button";
 import Input from "../../components/ui/Global/Input";
 import Modal from "../../components/ui/Global/modal";
 import { Link } from "react-router-dom";
@@ -67,7 +67,7 @@ const StyledLink = styled(Link)`
 	text-decoration: none;
 `;
 
-const LinkButton = styled(Button)`
+const Linkbutton = styled(button)`
 	margin-bottom: 1rem;
 `;
 
@@ -144,7 +144,7 @@ const TestimonialAuthor = styled.p`
 const HomePage = () => {
 	const [isModalOpen, setModalOpen] = useState(false);
 
-	const handleButtonClick = () => {
+	const handlebuttonClick = () => {
 		setModalOpen(true);
 	};
 
@@ -155,29 +155,28 @@ const HomePage = () => {
 	return (
 		<PageWrapper>
 			<HeroSection>
-				<img
-					src={DarkLogoSHS}
-					alt="SHS Logo"
-					style={{ width: "400px" }}
-				/>
+				<img src={DarkLogoSHS} alt="SHS Logo" style={{ width: "400px" }} />
 
 				{/* <HeroTitle>Senior Healthcare Solutions</HeroTitle> */}
 				<HeroDescription>
 					Find the best insurance plans tailored to your needs.
 				</HeroDescription>
-				<Button onClick={handleButtonClick}>Sign Up Now</Button>
+				<button onClick={handlebuttonClick}>Sign Up Now</button>
 			</HeroSection>
 
 			<MiddleContent>
 				<QuickLinks>
+					<StyledLink to="/find-plan">
+						<Linkbutton Find The Right Plan For You></Linkbutton>
+					</StyledLink>
 					<StyledLink to="/compare">
-						<LinkButton>Compare Plans</LinkButton>
+						<Linkbutton>Compare Plans</Linkbutton>
 					</StyledLink>
 					<StyledLink to="/resources">
-						<LinkButton>Resources</LinkButton>
+						<Linkbutton>Resources</Linkbutton>
 					</StyledLink>
 					<StyledLink to="/contact">
-						<LinkButton>Contact Us</LinkButton>
+						<Linkbutton>Contact Us</Linkbutton>
 					</StyledLink>
 				</QuickLinks>
 
@@ -206,7 +205,7 @@ const HomePage = () => {
 					<div>Sign up with your contact details to</div>
 					<div>receive offers customized just for you.</div>
 					<Input placeholder="Enter your email" />
-					<Button onClick={handleCloseModal}>Close</Button>
+					<button onClick={handleCloseModal}>Close</button>
 				</Modal>
 			)}
 		</PageWrapper>

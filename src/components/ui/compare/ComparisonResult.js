@@ -38,7 +38,7 @@ const ComparisonResults = ({ resultsData }) => {
 				))}
 			</div>
 
-			{/* Buttons to print or email results */}
+			{/* buttons to print or email results */}
 			<button onClick={handlePrint}>Print Results</button>
 			<button onClick={handleEmail}>Email Results</button>
 		</div>

@@ -21,7 +21,7 @@ const Input = styled.input`
 	border-radius: 4px;
 `;
 
-const Button = styled.button`
+const button = styled.button`
 	padding: 10px 20px;
 	background-color: #333;
 	color: white;
@@ -56,7 +56,7 @@ function EmailSignup() {
 					onChange={(e) => setEmail(e.target.value)}
 					required
 				/>
-				<Button type="submit">Subscribe</Button>
+				<button type="submit">Subscribe</button>
 			</form>
 		</SignupContainer>
 	);

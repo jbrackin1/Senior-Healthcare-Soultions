@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState } from "react";
-import Button from "../../components/ui/Global/button";
+import Button from "../../../components/ui/Global/button";
 
 const BasicInfoForm = ({ onNext }) => {
 	const [age, setAge] = useState("");
@@ -32,9 +32,9 @@ const BasicInfoForm = ({ onNext }) => {
 					required
 				/>
 			</label>
-			<Button type="button" onClick={() => setShowAgeInfo(!showAgeInfo)}>
+			<button type="button" onClick={() => setShowAgeInfo(!showAgeInfo)}>
 				Why do we ask this?
-			</Button>
+			</button>
 			{showAgeInfo && (
 				<p className="info-text">
 					Age is essential in determining eligibility and calculating potential
@@ -53,9 +53,9 @@ const BasicInfoForm = ({ onNext }) => {
 					<option value="preferNotToSay">Prefer not to say</option>
 				</select>
 			</label>
-			<Button type="button" onClick={() => setShowSexInfo(!showSexInfo)}>
+			<button type="button" onClick={() => setShowSexInfo(!showSexInfo)}>
 				Why do we ask this?
-			</Button>
+			</button>
 			{showSexInfo && (
 				<p className="info-text">
 					Sex can influence coverage options and costs due to different health

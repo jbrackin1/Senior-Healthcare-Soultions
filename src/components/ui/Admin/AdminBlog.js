@@ -3,7 +3,7 @@
 // Users/ash/Desktop/NicolesProject/nicoles-app/src/components/ui/Admin/AdminBlog.js
 import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "../Global/button";
+import button from "../Global/button";
 import Input from "../Global/Input";
 
 // Styled Components
@@ -68,7 +68,7 @@ const BlogTextarea = styled.textarea`
 	resize: vertical;
 `;
 
-const StyledButton = styled(Button)`
+const Styledbutton = styled(button)`
 	background-color: ${({ theme }) => theme.colors.primary};
 	color: ${({ theme }) => theme.colors.backgroundAlt};
 	&:hover {
@@ -113,7 +113,6 @@ const AdminBlog = () => {
 		setPreviewMode(!previewMode);
 	};
 
-
 	return (
 		<AdminBlogContainer>
 			<SectionTitle>Admin Blog Management</SectionTitle>
@@ -135,7 +134,7 @@ const AdminBlog = () => {
 					onChange={handleInputChange}
 					required
 				/>
-				<StyledButton type="submit">Add Blog Post</StyledButton>
+				<Styledbutton type="submit">Add Blog Post</Styledbutton>
 			</BlogForm>
 
 			{/* Display blog posts with admin controls */}
@@ -146,9 +145,9 @@ const AdminBlog = () => {
 					<BlogPostContainer key={index}>
 						<BlogPostTitle>{post.title}</BlogPostTitle>
 						<BlogPostContent>{post.content}</BlogPostContent>
-						<StyledButton onClick={() => handleDeletePost(index)}>
+						<Styledbutton onClick={() => handleDeletePost(index)}>
 							Delete Post
-						</StyledButton>
+						</Styledbutton>
 					</BlogPostContainer>
 				))
 			)}

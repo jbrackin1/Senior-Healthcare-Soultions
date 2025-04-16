@@ -3,7 +3,7 @@
 // src/components/Plan/PlanCard.js
 import React from "react";
 import styled from "styled-components";
-import Button from "../ui/button";
+import button from "../ui/button";
 
 const CardContainer = styled.div`
 	padding: 1.5rem;
@@ -39,9 +39,9 @@ const PlanCard = ({ plan, onFavoriteToggle, isFavorite }) => {
 				<p>Network Coverage: {plan.networkCoverage}</p>
 				<p>Additional Benefits: {plan.additionalBenefits.join(", ")}</p>
 			</PlanInfo>
-			<Button onClick={() => onFavoriteToggle(plan.id)}>
+			<button onClick={() => onFavoriteToggle(plan.id)}>
 				{isFavorite ? "❤️" : "♡"}
-			</Button>
+			</button>
 		</CardContainer>
 	);
 };

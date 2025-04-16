@@ -1,6 +1,7 @@
 /** @format */
 
 import React from "react";
+import Button from "../../../components/ui/Global/button";
 
 const FinalStep = ({ onSubmit, onSignup }) => {
 	return (
@@ -10,8 +11,8 @@ const FinalStep = ({ onSubmit, onSignup }) => {
 			{/* Add a summary of form data here if needed */}
 
 			<div className="action-buttons">
-				<button onClick={onSubmit}>Continue as Guest</button>
-				<button onClick={onSignup}>Sign Up to Save</button>
+				<Button onClick={onSubmit}>Continue as Guest</Button>
+				<Button onClick={onSignup}>Sign Up to Save</Button>
 			</div>
 		</div>
 	);

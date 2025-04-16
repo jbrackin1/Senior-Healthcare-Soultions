@@ -92,3 +92,6 @@
 // };
 
 // export default PractitionerPage;
+//FUTURE PlAN AFTER THEY SIGNUP AND 
+// PICK A PLAN SO THEY CAN SEE IF THEIR DR
+// IS ON THAT INSC...Hopefully

@@ -2,10 +2,9 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "../../components/ui/Global/button";
+import button from "../../components/ui/Global/button";
 import Input from "../../components/ui/Global/Input";
 import Dropdowns from "../../components/ui/Global/Dropdowns";
-
 
 // Styled Components
 
@@ -60,7 +59,7 @@ const NotificationSettingsSection = styled.div`
 	background-color: ${({ theme }) => theme.colors.background};
 `;
 
-// const StyledButton = styled(Button)`
+// const Styledbutton = styled(button)`
 // 	background-color: ${({ theme }) => theme.colors.primary};
 // 	color: ${({ theme }) => theme.colors.backgroundAlt};
 // 	margin-top: 1rem;
@@ -200,7 +199,7 @@ function Profile() {
 						/>
 						<span>Are you a veteran? (Check the box if yes)</span>
 					</label>
-					<Button type="submit">Update Profile</Button>
+					<button type="submit">Update Profile</button>
 				</ProfileForm>
 
 				{/* <SavedComparisonsSection>
@@ -217,7 +216,7 @@ function Profile() {
 						gap: "0.5rem",
 						margin: "1rem 0",
 					}}>
-					<Button onClick={handleLogout}>Logout</Button>
+					<button onClick={handleLogout}>Logout</button>
 				</div>
 			</ProfileContainer>
 		</BackgroundContainer>
@@ -225,3 +224,26 @@ function Profile() {
 }
 
 export default Profile;
+
+// TO DO:
+// Logic for User Information:
+
+// Missing state or logic to fetch and display user details (e.g., name, email, saved plan IDs).
+// Could benefit from integrating an API call to retrieve user profile data.
+// Authentication Check:
+
+// Likely needs logic to verify if the user is signed in.
+// If not signed in, it should redirect to a login page or show limited functionality.
+// Plan ID Management:
+
+// Should include logic to display and manage saved plan IDs.
+// Options to add, remove, or view plan IDs if authenticated.
+// Error Handling:
+
+// Needs error messages or feedback for issues like "no profile data found."
+// Mobile Responsiveness:
+
+// While styled-components are used, mobile-specific styles (e.g., media queries) should be reviewed for accessibility.
+// Integration:
+
+// Needs to connect with state management (e.g., Context API, Redux) or backend API for real-time updates.

@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 import { useTable } from "react-table";
 import styled from "styled-components";
-import Button from "../Global/button";
+import button from "../Global/button";
 
 const UserManagementContainer = styled.div`
 	padding: 2rem;
@@ -57,12 +57,12 @@ const UserManagement = () => {
 				accessor: "id",
 				Cell: ({ row }) => (
 					<div>
-						<Button onClick={() => handleRoleChange(row.original.id, "Admin")}>
+						<button onClick={() => handleRoleChange(row.original.id, "Admin")}>
 							Make Admin
-						</Button>
-						<Button onClick={() => handleRoleChange(row.original.id, "User")}>
+						</button>
+						<button onClick={() => handleRoleChange(row.original.id, "User")}>
 							Make User
-						</Button>
+						</button>
 					</div>
 				),
 			},
