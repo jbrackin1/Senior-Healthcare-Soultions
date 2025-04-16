@@ -25,6 +25,13 @@ Add a toggle to the nav:
   onChange={toggleMomMode}
   label="Mom Mode™"
 />
+
+**To ensure it stays clear we can have a toggle and if it’s on,
+ it will display an icon with word definitions and recomendations.
+** all defs will be a tooltip that pops up when you hover 
+over the word. 
+Icons will show up where mom mode is present 
+so it can easily be added/removed in or taken out with an || statment
 Then wrap any <Tooltip> or UI chunk with a translate() call when Mom Mode is active.
 
 🧠 Pitch:
@@ -46,7 +53,8 @@ Trademarkable (name & branding)
 Potentially patentable as a UX assistive system
 Unique enough to anchor marketing around
 */
-//backend/src/components/ui/Feedback/MomMode.js
+//nicoles-app/src/components/ui/Feedback/MomMode.js
+
 
 import { useState } from "react";
 
@@ -71,3 +79,4 @@ const useMomMode = () => {
 		translate,
 	};
 };
+export default useMomMode;
