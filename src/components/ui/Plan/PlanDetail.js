@@ -65,7 +65,19 @@ const PlanDetailExpanded = () => {
 		<DetailContainer>
 			<h2>{plan.name}</h2>
 			<p>
-				<b>Premium:</b> {plan.premium}
+				<b>Premium:</b> ${plan.premium || "See tiers below"}
+				{plan.premium_w_credit && (
+					<>
+						<br />
+						<small>After Credit: ${plan.premium_w_credit}</small>
+					</>
+				)}
+				{plan.ehb_premium && (
+					<>
+						<br />
+						<small>EHB Only: ${plan.ehb_premium}</small>
+					</>
+				)}
 			</p>
 			<p>
 				<b>Plan Type:</b> {plan.type}
@@ -88,49 +100,15 @@ const PlanDetailExpanded = () => {
 				userPreferences={false}
 				momMode={enabled}
 			/>
-			<div>
-				<h3>
-					<b>Core Medical Benefits:</b>
-				</h3>
-				{plan?.benefits?.map((benefit, index) => (
-					<div
-						key={index}
-						style={{
-							border: "1px solid #ccc",
-							padding: "1rem",
-							marginBottom: "1rem",
-							backgroundColor: benefit.covered ? "#e6f4ea" : "#fcebea",
-							borderLeft: benefit.covered ? "4px solid green" : "4px solid red",
-						}}>
-						<h4>
-							{benefit.name} – {benefit.covered ? "Covered" : "Not Covered"}
-						</h4>
-						{benefit.explanation && (
-							<p style={{ fontStyle: "italic", color: "#555" }}>
-								{benefit.explanation}
-							</p>
-						)}
-						{benefit.cost_sharings?.map((share, i) => (
-							<p key={i}>
-								<b>{share.network_tier}:</b> {share.display_string}
-							</p>
-						))}
-						{benefit.has_limits && (
-							<p style={{ color: "orange" }}>
-								⚠️ This benefit has coverage limits.
-							</p>
-						)}
-					</div>
-				))}
-			</div>
 
 			<h3>Quality Ratings</h3>
 			<ul>
 				<li>Overall: {plan.qualityRating}</li>
 				<li>Experience: {plan.enrollee_experience_rating || "N/A"}</li>
 				<li>Efficiency: {plan.plan_efficiency_rating || "N/A"}</li>
-				<li> Clinical Quality:{" "}
-					{plan.clinical_quality_management_rating || "N/A"}
+				<li>
+					{" "}
+					Clinical Quality: {plan.clinical_quality_management_rating || "N/A"}
 				</li>
 			</ul>
 

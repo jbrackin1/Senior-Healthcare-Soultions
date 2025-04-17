@@ -15,6 +15,8 @@ const BenefitItem = styled.li`
 	background-color: ${({ theme }) => theme.colors.backgroundAlt || "#f9f9f9"};
 	border-radius: 4px;
 	position: relative;
+	margin-bottom: 0.75rem;
+	padding: 0.5rem;
 `;
 
 const BenefitTitle = styled.h3`
@@ -33,7 +35,6 @@ const CollapsibleWrapper = styled.div`
 	overflow: hidden;
 `;
 
-
 const Checkmark = styled.span`
 	color: black;
 	font-weight: bold;
@@ -46,7 +47,6 @@ const Explanation = styled.div`
 	margin-top: 0.25rem;
 `;
 
-
 const BenefitAccordion = ({
 	benefits = {},
 	userPreferences = {},
@@ -56,7 +56,6 @@ const BenefitAccordion = ({
 
 	const isUserInterested = (title) => {
 		if (!userPreferences || typeof userPreferences !== "object") return false;
-
 		const allPrefs = [
 			...(userPreferences?.lifestylePrograms || []),
 			...(userPreferences?.dentalCoverage ? ["Dental Coverage"] : []),
@@ -65,9 +64,53 @@ const BenefitAccordion = ({
 		return allPrefs.includes(title);
 	};
 
+	const coreMedical = benefits["Core Medical"];
+	const rest = Object.entries(benefits).filter(
+		([category]) => category !== "Core Medical"
+	);
+
 	return (
 		<div>
-			{Object.entries(benefits).map(([category, items]) => (
+			{coreMedical && (
+				<Collapsible title="Core Medical Benefits">
+					<BenefitList>
+						{coreMedical.map((benefit, i) => (
+							<BenefitItem key={i} $covered={benefit.covered}>
+								<BenefitTitle $covered={benefit.covered}>
+									{momMode ? translate(benefit.name) : benefit.name} –{" "}
+									{benefit.covered ? "Covered" : "Not Covered"}
+								</BenefitTitle>
+								{benefit.cost_sharings?.length > 0 && (
+									<Explanation>
+										{benefit.cost_sharings.map((cost, j) => (
+											<div key={j}>
+												{cost.network_tier}:{" "}
+												{cost.copay_amount
+													? `$${cost.copay_amount.toFixed(2)} copay`
+													: cost.coinsurance_rate
+													? `${Math.round(
+															cost.coinsurance_rate * 100
+													  )}% coinsurance`
+													: "No cost info"}{" "}
+												{cost.coinsurance_options
+													? `– ${cost.coinsurance_options}`
+													: ""}
+											</div>
+										))}
+									</Explanation>
+								)}
+								{benefit.explanation && (
+									<Explanation>
+										<em>{benefit.explanation}</em>
+									</Explanation>
+								)}
+							</BenefitItem>
+						))}
+					</BenefitList>
+				</Collapsible>
+			)}
+
+			{rest.map(([category, items]) => (
 				<Collapsible
 					key={category}
 					title={
@@ -75,11 +118,10 @@ const BenefitAccordion = ({
 							{showCheckmarks && isUserInterested(category) && (
 								<Checkmark>✓</Checkmark>
 							)}
-							{category} {/* Keeps category as section title */}
+							{category}
 						</>
 					}
-					toggleSymbols={{ open: "−", closed: "+" }} // Update toggle symbols
-				>
+					toggleSymbols={{ open: "−", closed: "+" }}>
 					<BenefitList>
 						{items.map((benefit, i) => (
 							<BenefitItem key={i} $covered={benefit.covered}>
