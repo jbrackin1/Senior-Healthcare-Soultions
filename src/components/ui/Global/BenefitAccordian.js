@@ -11,12 +11,17 @@ const BenefitList = styled.ul`
 `;
 
 const BenefitItem = styled.li`
-	margin-bottom: 0.75rem;
-	padding: 0.5rem;
-	border-left: 3px solid ${({ covered }) => (covered ? "#1b5e20" : "#ccc")};
+	border-left: 3px solid ${({ $covered }) => ($covered ? "#1b5e20" : "#ccc")};
 	background-color: ${({ theme }) => theme.colors.backgroundAlt || "#f9f9f9"};
 	border-radius: 4px;
 	position: relative;
+`;
+
+const BenefitTitle = styled.h3`
+	font-size: 1.1rem;
+	margin: 0;
+	font-weight: bold;
+	color: ${({ $covered }) => ($covered ? "#000" : "crimson")};
 `;
 
 const CollapsibleWrapper = styled.div`
@@ -41,12 +46,6 @@ const Explanation = styled.div`
 	margin-top: 0.25rem;
 `;
 
-const BenefitTitle = styled.h3`
-	font-size: 1.1rem;
-	margin: 0;
-	font-weight: bold;
-	color: ${({ covered }) => (covered ? "#000" : "crimson")};
-`;
 
 const BenefitAccordion = ({
 	benefits = {},
@@ -83,8 +82,8 @@ const BenefitAccordion = ({
 				>
 					<BenefitList>
 						{items.map((benefit, i) => (
-							<BenefitItem key={i} covered={benefit.covered}>
-								<BenefitTitle covered={benefit.covered}>
+							<BenefitItem key={i} $covered={benefit.covered}>
+								<BenefitTitle $covered={benefit.covered}>
 									{momMode ? translate(benefit.name) : benefit.name} –{" "}
 									{benefit.covered ? "Covered" : "Not Covered"}
 								</BenefitTitle>
@@ -92,8 +91,17 @@ const BenefitAccordion = ({
 									<Explanation>
 										{benefit.cost_sharings.map((cost, j) => (
 											<div key={j}>
-												{cost.network_tier}: ${cost.copay_amount || 0} copay,{" "}
-												{cost.coinsurance_options}
+												{cost.network_tier}:{" "}
+												{cost.copay_amount
+													? `$${cost.copay_amount.toFixed(2)} copay`
+													: cost.coinsurance_rate
+													? `${Math.round(
+															cost.coinsurance_rate * 100
+													  )}% coinsurance`
+													: "No cost info"}{" "}
+												{cost.coinsurance_options
+													? `– ${cost.coinsurance_options}`
+													: ""}
 											</div>
 										))}
 									</Explanation>

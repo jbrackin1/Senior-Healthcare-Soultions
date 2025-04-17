@@ -1,8 +1,8 @@
 /** @format */
+
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { fetchPlanDetails } from "../../../utils/api/fetchPlanDetails";
 import { formatDetailedInsInfo } from "../../../utils/formatters/formatDetailedInsInfo";
 import Button from "../Global/button";
@@ -18,25 +18,40 @@ const DetailContainer = styled.div`
 	margin: auto;
 `;
 
+const AccordionToggle = styled.button`
+	width: 100%;
+	text-align: left;
+	padding: 1rem;
+	background-color: ${({ theme }) => theme.colors.accent};
+	color: white;
+	border: none;
+	cursor: pointer;
+	font-weight: bold;
+	border-radius: 4px;
+`;
+
+const AccordionContent = styled.div`
+	padding: 1rem;
+	background-color: ${({ theme }) => theme.colors.backgroundAlt};
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	margin-top: 0.5rem;
+`;
+
 const PlanDetailExpanded = () => {
 	const { planId } = useParams();
 	const navigate = useNavigate();
-	const location = useLocation();
-	const passedPlan = location.state?.plan;
-
 	const [plan, setPlan] = useState(null);
-	const [rawData, setRawData] = useState(null);
 	const [loading, setLoading] = useState(true);
-	const { enabled } = useMomMode();
+	const [expanded, setExpanded] = useState(false);
+	const { enabled } = useMomMode(); // ✅ this defines 'enabled'; still needs logic finished
+	
 
 	useEffect(() => {
 		const loadPlanDetails = async () => {
 			if (!planId) return;
-			const result = await fetchPlanDetails(planId);
-			if (result) {
-				setRawData(result);
-				setPlan(formatDetailedInsInfo(result));
-			}
+			const rawData = await fetchPlanDetails(planId);
+			if (rawData) setPlan(formatDetailedInsInfo(rawData));
 			setLoading(false);
 		};
 
@@ -46,29 +61,11 @@ const PlanDetailExpanded = () => {
 	if (loading) return <p>Loading...</p>;
 	if (!plan) return <p>No plan details available.</p>;
 
-	const premium =
-		typeof passedPlan?.premium === "number" && passedPlan.premium > 0
-			? passedPlan.premium
-			: rawData?.plan?.ehb_premium > 0
-			? rawData.plan.ehb_premium
-			: rawData?.plan?.premium > 0
-			? rawData.plan.premium
-			: rawData?.plan?.aptc_eligible_premium > 0
-			? rawData.plan.aptc_eligible_premium
-			: "N/A";
-
 	return (
 		<DetailContainer>
 			<h2>{plan.name}</h2>
-
 			<p>
-				<b>Premium:</b>{" "}
-				<p>
-					<b>Monthly Premium:</b>{" "}
-					{passedPlan?.premium
-						? `$${passedPlan.premium.toFixed(2)}`
-						: "Not Available"}
-				</p>
+				<b>Premium:</b> {plan.premium}
 			</p>
 			<p>
 				<b>Plan Type:</b> {plan.type}
@@ -85,6 +82,7 @@ const PlanDetailExpanded = () => {
 			<p>
 				<b>HSA Eligible:</b> {plan.hsaEligible}
 			</p>
+
 			<BenefitAccordion
 				benefits={plan.categorizedBenefits}
 				userPreferences={false}
@@ -131,8 +129,8 @@ const PlanDetailExpanded = () => {
 				<li>Overall: {plan.qualityRating}</li>
 				<li>Experience: {plan.enrollee_experience_rating || "N/A"}</li>
 				<li>Efficiency: {plan.plan_efficiency_rating || "N/A"}</li>
-				<li>
-					Clinical Quality: {plan.clinical_quality_management_rating || "N/A"}
+				<li> Clinical Quality:{" "}
+					{plan.clinical_quality_management_rating || "N/A"}
 				</li>
 			</ul>
 
@@ -146,44 +144,24 @@ const PlanDetailExpanded = () => {
 			<h3>Resources</h3>
 			<ul>
 				<li>
-					<b>Brochure:</b>{" "}
-					{plan.brochureUrl ? (
-						<a href={plan.brochureUrl} target="_blank" rel="noreferrer">
-							View
-						</a>
-					) : (
-						"Not Available"
-					)}
+					<a href={plan.brochureUrl} target="_blank" rel="noreferrer">
+						Brochure
+					</a>
 				</li>
 				<li>
-					<b>Benefits:</b>{" "}
-					{plan.benefitsUrl ? (
-						<a href={plan.benefitsUrl} target="_blank" rel="noreferrer">
-							View
-						</a>
-					) : (
-						"Not Available"
-					)}
+					<a href={plan.benefitsUrl} target="_blank" rel="noreferrer">
+						Benefits Document
+					</a>
 				</li>
 				<li>
-					<b>Network:</b>{" "}
-					{plan.networkUrl ? (
-						<a href={plan.networkUrl} target="_blank" rel="noreferrer">
-							View
-						</a>
-					) : (
-						"Not Available"
-					)}
+					<a href={plan.networkUrl} target="_blank" rel="noreferrer">
+						Network Info
+					</a>
 				</li>
 				<li>
-					<b>Formulary:</b>{" "}
-					{plan.formularyUrl ? (
-						<a href={plan.formularyUrl} target="_blank" rel="noreferrer">
-							View
-						</a>
-					) : (
-						"Not Available"
-					)}
+					<a href={plan.formularyUrl} target="_blank" rel="noreferrer">
+						Drug Formulary
+					</a>
 				</li>
 			</ul>
 

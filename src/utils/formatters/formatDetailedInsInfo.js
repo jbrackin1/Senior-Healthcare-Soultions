@@ -1,5 +1,3 @@
-/** @format */
-
 import { formatPlanType } from "./formatData";
 import { formatCurrency } from "./formatData";
 import { formatDate } from "./formatData";
@@ -8,40 +6,27 @@ export const formatDetailedInsInfo = (rawData) => {
 	const planData = rawData?.plan || rawData;
 	console.log("Formatted Plan Data:", planData);
 
-	const getCopayAmount = (planData, keyword) => {
+	// --- SMART COST SHARING LOOKUP ---
+	const getCostSharingDescription = (keyword) => {
 		const match = planData?.benefits?.find((b) =>
 			b.name?.toLowerCase().includes(keyword.toLowerCase())
 		);
-		return typeof match?.cost_sharings?.[0]?.copay_amount === "number"
-			? `$${match.cost_sharings[0].copay_amount.toFixed(2)}`
-			: "N/A";
-	};
 
-	const getHospitalCostShare = (planData) => {
-		const hospitalBenefit = planData?.benefits?.find((b) =>
-			b.name?.toLowerCase().includes("inpatient hospital")
-		);
+		if (!match) return "N/A";
 
-		if (!hospitalBenefit) return "N/A";
+		const sharing = match.cost_sharings?.[0];
+		if (!sharing) return "N/A";
 
-		const inNetwork = hospitalBenefit.cost_sharings?.find(
-			(c) => c.network_tier?.toLowerCase() === "in-network"
-		);
-
-		if (!inNetwork) return "N/A";
-
-		if (inNetwork.copay_amount && inNetwork.copay_amount > 0) {
-			return `$${inNetwork.copay_amount.toFixed(2)} per stay`;
+		if (sharing.copay_amount && sharing.copay_amount > 0) {
+			return `$${sharing.copay_amount.toFixed(2)}`;
 		}
 
 		if (
-			inNetwork.coinsurance_rate &&
-			inNetwork.coinsurance_rate > 0 &&
-			inNetwork.coinsurance_options?.toLowerCase().includes("after deductible")
+			sharing.coinsurance_rate &&
+			sharing.coinsurance_rate > 0 &&
+			sharing.coinsurance_options?.toLowerCase().includes("after deductible")
 		) {
-			return `${Math.round(
-				inNetwork.coinsurance_rate * 100
-			)}% after deductible`;
+			return `${Math.round(sharing.coinsurance_rate * 100)}% after deductible`;
 		}
 
 		return "Covered — check details";
@@ -124,11 +109,14 @@ export const formatDetailedInsInfo = (rawData) => {
 			planData?.effectiveDate && !isNaN(new Date(planData.effectiveDate))
 				? formatDate(planData.effectiveDate)
 				: "N/A",
+
+		// ✅ Updated Copay Formatting
 		coPay: {
-			general: getCopayAmount(planData, "Primary Care"),
-			specialist: getCopayAmount(planData, "Specialist"),
-			hospital: getHospitalCostShare(planData),
+			general: getCostSharingDescription("primary care"),
+			specialist: getCostSharingDescription("specialist"),
+			hospital: getCostSharingDescription("inpatient hospital"),
 		},
+
 		networkCoverage:
 			planData?.network_url || planData?.networkCoverage || "Not Specified",
 		medicareEligible: planData?.isMedicareEligible ? "Yes" : "No",
