@@ -223,7 +223,7 @@ const MarketPlacePage = () => {
 				<UserPreference
 					formData={formData}
 					setFormData={setFormData}
-					facetGroups={[]} // or pass actual data when you're ready
+					facetGroups={[]} // pass actual data when you're ready
 				/>
 			</Collapsible>
 

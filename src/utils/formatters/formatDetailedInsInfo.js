@@ -6,7 +6,6 @@ export const formatDetailedInsInfo = (rawData) => {
 	const planData = rawData?.plan || rawData;
 	console.log("Formatted Plan Data:", planData);
 
-	// --- SMART COST SHARING LOOKUP ---
 	const getCostSharingDescription = (keyword) => {
 		const match = planData?.benefits?.find((b) =>
 			b.name?.toLowerCase().includes(keyword.toLowerCase())
@@ -110,7 +109,6 @@ export const formatDetailedInsInfo = (rawData) => {
 				? formatDate(planData.effectiveDate)
 				: "N/A",
 
-		// ✅ Updated Copay Formatting
 		coPay: {
 			general: getCostSharingDescription("primary care"),
 			specialist: getCostSharingDescription("specialist"),
