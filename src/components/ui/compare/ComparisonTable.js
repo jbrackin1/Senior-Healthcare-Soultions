@@ -162,7 +162,21 @@ const ComparisonTable = ({
 						</td>
 						<td>
 							<div>
-								<b>${plan.premium || "N/A"}</b>
+								<td>
+									<div>
+										<b>${plan.premium}</b>
+									</div>
+									{plan.premium_w_credit !== undefined && (
+										<div style={{ fontSize: "0.85rem", color: "#555" }}>
+											After credit: ${plan.premium_w_credit}
+										</div>
+									)}
+									{plan.ehb_premium !== undefined && (
+										<div style={{ fontSize: "0.85rem", color: "#555" }}>
+											EHB Only: ${plan.ehb_premium}
+										</div>
+									)}
+								</td>
 							</div>
 						</td>
 						<td>{renderTiers(plan.tiered_deductibles)}</td>
