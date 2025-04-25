@@ -18,6 +18,7 @@ const DetailContainer = styled.div`
 	max-width: 900px;
 	margin: auto;
 `;
+
 const MetadataRow = styled.div`
 	display: flex;
 	flex-wrap: wrap;
@@ -31,7 +32,6 @@ const MetadataRow = styled.div`
 		min-width: 120px;
 	}
 `;
-
 
 const PlanDetailExpanded = () => {
 	const { planId } = useParams();
@@ -51,15 +51,27 @@ const PlanDetailExpanded = () => {
 			try {
 				const rawData = await fetchPlanDetails(planId);
 
-				// Use fallback only if primary fetch has missing premium
-				const fallbackData =
-					fallbackPlan && (!rawData?.premium || rawData?.premium === 0)
-						? fallbackPlan
-						: rawData;
+				const mergedData = {
+					...rawData,
+					...(fallbackPlan || {}),
+					tiered_deductibles:
+						(fallbackPlan?.tiered_deductibles?.length || 0) >
+						(rawData?.tiered_deductibles?.length || 0)
+							? fallbackPlan.tiered_deductibles
+							: rawData.tiered_deductibles,
+					tiered_moops:
+						(fallbackPlan?.tiered_moops?.length || 0) >
+						(rawData?.tiered_moops?.length || 0)
+							? fallbackPlan.tiered_moops
+							: rawData.tiered_moops,
+					tiered_premiums:
+						(fallbackPlan?.tiered_premiums?.length || 0) >
+						(rawData?.tiered_premiums?.length || 0)
+							? fallbackPlan.tiered_premiums
+							: rawData.tiered_premiums,
+				};
 
-				if (fallbackData) {
-					setPlan(formatDetailedInsInfo(fallbackData));
-				}
+				setPlan(formatDetailedInsInfo(mergedData));
 			} catch (error) {
 				console.error("Error fetching plan details:", error);
 			} finally {
@@ -76,10 +88,10 @@ const PlanDetailExpanded = () => {
 	return (
 		<DetailContainer>
 			<h2>{plan.name}</h2>
+
 			<TieredPlanInfoTable title="Deductibles" data={plan.tiered_deductibles} />
 			<TieredPlanInfoTable title="Max Out-of-Pocket" data={plan.tiered_moops} />
 			<TieredPlanInfoTable title="Premium" data={plan.tiered_premiums} />
-			
 
 			<MetadataRow>
 				{plan.premium && (

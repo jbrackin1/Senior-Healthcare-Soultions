@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
+const FAMILY_ORDER = ["Individual", "Family Per Person", "Family"];
+
 const TableWrapper = styled.div`
 	margin-bottom: 2rem;
 `;
@@ -51,14 +53,16 @@ const TieredPlanInfoTable = ({ title, data }) => {
 
 	if (!data || data.length === 0) return null;
 
-	// Unique family types found in this dataset
-	const familyTypes = Array.from(
-		new Set(data.map((d) => d.family_cost || "Unknown"))
-	);
+	const availableTypes = Array.from(new Set(data.map((d) => d.family_cost)))
+		.filter(Boolean)
+		.sort((a, b) => FAMILY_ORDER.indexOf(a) - FAMILY_ORDER.indexOf(b));
 
-	// Filter rows based on dropdown
-	const filteredData =
-		filter === "all" ? data : data.filter((row) => row.family_cost === filter);
+	const filteredData = (
+		filter === "all" ? data : data.filter((row) => row.family_cost === filter)
+	).sort(
+		(a, b) =>
+			FAMILY_ORDER.indexOf(a.family_cost) - FAMILY_ORDER.indexOf(b.family_cost)
+	);
 
 	return (
 		<TableWrapper>
@@ -68,8 +72,8 @@ const TieredPlanInfoTable = ({ title, data }) => {
 					value={filter}
 					onChange={(e) => setFilter(e.target.value)}>
 					<option value="all">Show All</option>
-					{familyTypes.map((type, i) => (
-						<option key={i} value={type}>
+					{availableTypes.map((type) => (
+						<option key={type} value={type}>
 							{type}
 						</option>
 					))}
@@ -93,8 +97,7 @@ const TieredPlanInfoTable = ({ title, data }) => {
 									? `$${tier.amount.toLocaleString()}`
 									: "N/A"}
 							</TableCell>
-							<TableCell>{tier.family_cost || "N/A"}</TableCell>Individual
-							Family Per Person Family
+							<TableCell>{tier.family_cost || "N/A"}</TableCell>
 						</tr>
 					))}
 				</tbody>
