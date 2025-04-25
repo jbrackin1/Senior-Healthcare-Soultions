@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import propTypes from "prop-types";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { Link } from "react-router-dom";
 
 const Table = styled.table`
 	width: 100%;
@@ -62,126 +62,141 @@ const InfoIcon = styled.span`
 	display: inline-block;
 	vertical-align: middle;
 `;
-const ComparisonTable = ({ plans, selectedPlans = [], onTogglePlan, loading }) => {
+
+const ComparisonTable = ({
+	plans,
+	selectedPlans = [],
+	onTogglePlan,
+	loading,
+}) => {
 	const [sortKey, setSortKey] = useState("premium");
 	const [sortOrder, setSortOrder] = useState("asc");
-  
-	if (loading) {
-	  return <p>Loading plans...</p>; // Show loading message while fetching
-	}
-  
-	// if (!plans || !plans.length) {
-	//   return <p>No plans available.</p>; // Show this message if no plans exist after fetching
-	// }
-  
-	// Sorting logic
-	const sortedPlans = [...plans].sort((a, b) => {
-	  let aValue = a[sortKey];
-	  let bValue = b[sortKey];
-  
-	  if (sortKey === "deductibles") {
-		aValue = a.deductibles?.[0]?.amount || 0;
-		bValue = b.deductibles?.[0]?.amount || 0;
-	  } else if (sortKey === "moops") {
-		aValue = a.moops?.[0]?.amount || 0;
-		bValue = b.moops?.[0]?.amount || 0;
-	  }
-  
-	  if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
-	  if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
-	  return 0;
-	});
-  
+
+	if (loading) return <p>Loading plans...</p>;
+
 	const handleSort = (key) => {
-	  if (sortKey === key) {
-		setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
-	  } else {
-		setSortKey(key);
-		setSortOrder("asc");
-	  }
+		if (sortKey === key) {
+			setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
+		} else {
+			setSortKey(key);
+			setSortOrder("asc");
+		}
 	};
-  
+
+	const sortedPlans = [...plans].sort((a, b) => {
+		let aValue = a[sortKey];
+		let bValue = b[sortKey];
+
+		if (sortKey === "deductibles") {
+			aValue = a.deductibles?.[0]?.amount || 0;
+			bValue = b.deductibles?.[0]?.amount || 0;
+		} else if (sortKey === "moops") {
+			aValue = a.moops?.[0]?.amount || 0;
+			bValue = b.moops?.[0]?.amount || 0;
+		}
+
+		if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
+		if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
+		return 0;
+	});
+
+	const renderTiers = (tiers = []) => {
+		const rendered = tiers.map((tier, idx) => {
+			const label = tier.network_tier || `Tier ${idx + 1}`;
+			return (
+				<div
+					key={idx}
+					style={{
+						fontSize: idx === 0 ? "1rem" : "0.85rem",
+						fontWeight: idx === 0 ? "bold" : "normal",
+					}}>
+					{label}: ${tier.amount}
+				</div>
+			);
+		});
+
+		return rendered.length > 0 ? (
+			rendered
+		) : (
+			<div style={{ fontSize: "0.9rem" }}>N/A</div>
+		);
+	};
+
 	return (
-	  <Table>
-		<thead>
-		  <tr>
-			<TableHeader>Choose</TableHeader>
-			<TableHeader onClick={() => handleSort("name")}>
-			  <HeaderContent>
-				Plan Name <InfoIcon>ⓘ</InfoIcon>
-			  </HeaderContent>
-			  <Tooltip>Click to sort plans alphabetically.</Tooltip>
-			</TableHeader>
-			<TableHeader onClick={() => handleSort("premium")}>
-			  <HeaderContent>
-				Premium <InfoIcon>ⓘ</InfoIcon>
-			  </HeaderContent>
-			  <Tooltip>Click to sort by monthly premium.</Tooltip>
-			</TableHeader>
-			<TableHeader onClick={() => handleSort("deductibles")}>
-			  <HeaderContent>
-				Deductible<InfoIcon> ⓘ</InfoIcon>
-			  </HeaderContent>
-			  <Tooltip>Click to sort by deductible amount.</Tooltip>
-			</TableHeader>
-			<TableHeader onClick={() => handleSort("moops")}>
-			  <HeaderContent>
-				Out of Pocket Max <InfoIcon> ⓘ</InfoIcon>
-			  </HeaderContent>
-			  <Tooltip>Click to sort by max out-of-pocket cost.</Tooltip>
-			</TableHeader>
-			<TableHeader onClick={() => handleSort("network_tier")}>
-			  <HeaderContent>
-				Network <InfoIcon> ⓘ</InfoIcon>
-				<Tooltip>Click to sort by network type.</Tooltip>
-			  </HeaderContent>
-			</TableHeader>
-			<TableHeader onClick={() => handleSort("hsa_eligible")}>
-			  <HeaderContent>
-				HSA Eligible <InfoIcon> ⓘ</InfoIcon>
-			  </HeaderContent>
-			  <Tooltip>Click to sort by HSA eligibility.</Tooltip>
-			</TableHeader>
-		  </tr>
-		</thead>
-		<tbody>
-		  {sortedPlans.map((plan) => (
-			<tr key={plan.id}>
-			  <td>
-				{/* Checkbox to select/deselect the plan */}
-				<input
-				  type="checkbox"
-				  checked={selectedPlans.includes(plan)}
-				  onChange={() => onTogglePlan(plan)} // Toggle plan selection
-				/>
-			  </td>
-			  <td>
-				{/* Navigate to Plan Details page when plan name is clicked */}
-				<Link to={`/plan/${plan.id}`}>
-				  <b>{plan.name || "N/A"}</b>
-				</Link>
-			  </td>
-			  <td>{plan.premium !== undefined ? `$${plan.premium}` : "N/A"}</td>
-			  <td>${plan.deductibles?.[0]?.amount || "N/A"}</td>
-			  <td>${plan.moops?.[0]?.amount || "N/A"}</td>
-			  <td>{plan.network_tier || "N/A"}</td>
-			  <td>{plan.hsa_eligible ? "Yes" : "No"}</td>
-			</tr>
-		  ))}
-		</tbody>
-	  </Table>
+		<Table>
+			<thead>
+				<tr>
+					<TableHeader>Choose</TableHeader>
+					<TableHeader onClick={() => handleSort("name")}>
+						Plan Name <InfoIcon>ⓘ</InfoIcon>
+						<Tooltip>Click to sort plans alphabetically.</Tooltip>
+					</TableHeader>
+					<TableHeader onClick={() => handleSort("premium")}>
+						Premium <InfoIcon>ⓘ</InfoIcon>
+						<Tooltip>Click to sort by monthly premium.</Tooltip>
+					</TableHeader>
+					<TableHeader onClick={() => handleSort("deductibles")}>
+						Deductible <InfoIcon>ⓘ</InfoIcon>
+						<Tooltip>Click to sort by deductible amount.</Tooltip>
+					</TableHeader>
+					<TableHeader onClick={() => handleSort("moops")}>
+						Out of Pocket Max <InfoIcon>ⓘ</InfoIcon>
+						<Tooltip>Click to sort by max out-of-pocket cost.</Tooltip>
+					</TableHeader>
+				</tr>
+			</thead>
+			<tbody>
+				{sortedPlans.map((plan) => (
+					<tr key={plan.id}>
+						<td>
+							<input
+								type="checkbox"
+								checked={selectedPlans.includes(plan)}
+								onChange={() => onTogglePlan(plan)}
+							/>
+						</td>
+						<td>
+							<Link to={`/plan/${plan.id}`}>
+								<b>{plan.name || "N/A"}</b>
+							</Link>
+						</td>
+						<td>
+							<div>
+								<td>
+									<div>
+										<b>${plan.premium}</b>
+									</div>
+									{plan.premium_w_credit !== undefined && (
+										<div style={{ fontSize: "0.85rem", color: "#555" }}>
+											After credit: ${plan.premium_w_credit}
+										</div>
+									)}
+									{plan.ehb_premium !== undefined && (
+										<div style={{ fontSize: "0.85rem", color: "#555" }}>
+											EHB Only: ${plan.ehb_premium}
+										</div>
+									)}
+								</td>
+							</div>
+						</td>
+						<td>{renderTiers(plan.tiered_deductibles)}</td>
+						<td>{renderTiers(plan.tiered_moops)}</td>
+					</tr>
+				))}
+			</tbody>
+		</Table>
 	);
-  };
-  
-  ComparisonTable.propTypes = {
+};
+
+ComparisonTable.propTypes = {
 	plans: propTypes.array.isRequired,
 	selectedPlans: propTypes.array,
 	onTogglePlan: propTypes.func.isRequired,
-	loading: propTypes.bool.isRequired, // Ensure that loading state is passed as prop
-  };
-  
-  ComparisonTable.defaultProps = {
+	loading: propTypes.bool.isRequired,
+};
+
+ComparisonTable.defaultProps = {
 	selectedPlans: [],
-  };
-  
-  export default ComparisonTable;
+};
+
+export default ComparisonTable;
