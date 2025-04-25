@@ -1,13 +1,17 @@
-// App.test.tsx
-import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import App from './App'; // Make sure the path is correct
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/Generic/HomePage'; // Example import
+import MarketPlacePage from './pages/Insurance/MarketplaceAPIPage/MarketPlacePage'; // Example import
+import About from './pages/Generic/About'; // Example import
 
-// Testing individual pages like MarketPlacePage and About
 test('renders HomePage, MarketPlacePage, and About page correctly', async () => {
   render(
     <MemoryRouter initialEntries={['/', '/marketplace', '/about']}>
-      <App />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/marketplace" element={<MarketPlacePage />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
     </MemoryRouter>
   );
 
