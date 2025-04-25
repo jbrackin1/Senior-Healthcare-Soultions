@@ -33,9 +33,17 @@ jobs:
         chmod 600 private-key.pem
                   
     - name: Deploy to EC2
-      if: github.ref == 'refs/heads/main'
       run: |
-        ssh -o StrictHostKeyChecking=no -i private-key.pem ec2-user@${{ secrets.EC2_HOST }} 'cd "${{ secrets.EC2_PATH }}" && git pull origin main && npm install && pm2 restart app'
-
+          set -x
+          ssh -o StrictHostKeyChecking=no -i private-key.pem ec2-user@${{ secrets.EC2_HOST }} \
+            "cd /home/ec2-user/app &&
+             echo '✅ Connected to EC2' &&
+             git pull origin main &&
+             echo '📦 Git pull complete' &&
+             npm install &&
+             echo '🚀 NPM install complete' &&
+             pm2 restart app &&
+             echo '🔥 App restarted'"
+             
     - name: Clean up SSH key
       run: rm -f private-key.pem 
