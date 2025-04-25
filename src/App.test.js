@@ -28,7 +28,7 @@ test('renders HomePage, MarketPlacePage, and About page correctly', async () => 
   );
 
   // HomePage route
-  expect(screen.getByText(/Welcome to HomePage/i)).toBeInTheDocument();
+  expect(screen.getByText(/Find the best insurance plans tailored to your needs./i)).toBeInTheDocument();
 
   // Navigate to MarketPlacePage route
   expect(screen.queryByText(/MarketPlacePage/i)).toBeInTheDocument();
