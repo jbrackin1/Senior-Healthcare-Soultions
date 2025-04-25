@@ -36,9 +36,9 @@ jobs:
       run: |
           echo "EC2 Path: '${{ secrets.EC2_PATH }}'"
 
-          - name: Debug and Deploy to EC2
-          if: github.ref == 'refs/heads/main'
-          run: |
+    - name: Debug and Deploy to EC2
+      if: github.ref == 'refs/heads/main'
+      run: |
             # Print out the raw value of EC2_PATH
             echo "Raw EC2 Path: '${{ secrets.EC2_PATH }}'"
             
