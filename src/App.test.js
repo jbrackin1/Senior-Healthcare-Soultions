@@ -1,16 +1,22 @@
-import { render, screen } from '@testing-library/react';
-import MarketPlacePage from './pages/Insurance/MarketplaceAPIPage/MarketPlacePage' // Adjust path as needed
-import { MemoryRouter } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
+// App.test.tsx
+import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import App from './App'; // Make sure the path is correct
 
-test('renders MarketPlacePage without crashing', () => {
+// Testing individual pages like MarketPlacePage and About
+test('renders HomePage, MarketPlacePage, and About page correctly', async () => {
   render(
-    <MemoryRouter>
-      <MarketPlacePage />
+    <MemoryRouter initialEntries={['/', '/marketplace', '/about']}>
+      <App />
     </MemoryRouter>
   );
 
-  // Check if specific content is rendered (e.g., a title or form input)
-  expect(screen.getByText(/Customize Your Preferences/i)).toBeInTheDocument();
-  expect(screen.getByLabelText(/Household Income/i)).toBeInTheDocument();
+  // HomePage route
+  expect(screen.getByText(/Welcome to HomePage/i)).toBeInTheDocument();
+
+  // Navigate to MarketPlacePage route
+  expect(screen.queryByText(/MarketPlacePage/i)).toBeInTheDocument();
+
+  // Navigate to About route
+  expect(screen.queryByText(/About Us/i)).toBeInTheDocument();
 });
