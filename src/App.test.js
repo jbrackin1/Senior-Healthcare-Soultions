@@ -40,7 +40,7 @@ test('renders MarketPlacePage correctly', () => {
     </MemoryRouter>
   );
 
-  expect(screen.queryByText(/MarketPlacePage/i)).toBeInTheDocument();
+  expect(screen.queryByText(/Compare Insurance Plans/i)).toBeInTheDocument();
 });
 
 test('renders About page correctly', () => {
