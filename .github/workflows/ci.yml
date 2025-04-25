@@ -19,7 +19,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14'
+        node-version: '22.9.0'
 
     - name: Install dependencies
       run: npm install
@@ -27,10 +27,16 @@ jobs:
     - name: Run tests
       run: npm test
 
+    - name: Create SSH key file
+      run: |
+        echo "${{ secrets.EC2_PEM_KEY }}" > private-key.pem
+        chmod 600 private-key.pem
+
     - name: Deploy to EC2
       if: github.ref == 'refs/heads/main'
       run: |
-        # Add your deploy script here (e.g., SSH into EC2 and deploy)
-        ssh -i /path/to/your/private-key.pem ec2-user@your-ec2-ip "cd /your/app/path && git pull origin main && npm install && pm2 restart app"
-      env:
-        PRIVATE_KEY: ${{ secrets.YOUR_PRIVATE_KEY }}
+        ssh -o StrictHostKeyChecking=no -i private-key.pem ec2-user@${{ secrets.EC2_HOST }} \
+          "cd ${{ secrets.EC2_PATH }} && git pull origin main && npm install && pm2 restart app" 
+
+    - name: Clean up SSH key
+      run: rm -f private-key.pem 
