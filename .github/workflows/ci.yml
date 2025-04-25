@@ -36,21 +36,23 @@ jobs:
       run: |
           echo "EC2 Path: '${{ secrets.EC2_PATH }}'"
 
-    - name: Deploy to EC2
-      if: github.ref == 'refs/heads/main'
-      run: |
-          echo "EC2 Host: ${{ secrets.EC2_HOST }}"
-          echo "EC2 Path: ${{ secrets.EC2_PATH }}"
-          ssh -o StrictHostKeyChecking=no -i private-key.pem ec2-user@${{ secrets.EC2_HOST }} '
-          cd "${{ secrets.EC2_PATH }}" 
-          && echo "✅ Connected to EC2" 
-          && git pull origin main
-          && echo "📦 Git pull complete"
-          && npm install
-          && echo "🚀 NPM install complete"
-          && pm2 restart app
-          && echo "🔥 App restarted"
-          '
+          - name: Debug and Deploy to EC2
+          if: github.ref == 'refs/heads/main'
+          run: |
+            # Print out the raw value of EC2_PATH
+            echo "Raw EC2 Path: '${{ secrets.EC2_PATH }}'"
+            
+            # Sanitize the EC2_PATH by trimming any extra newlines or spaces
+            sanitized_path=$(echo "${{ secrets.EC2_PATH }}" | tr -d '\n' | tr -d '\r' | xargs)
+            echo "Sanitized EC2 Path: '${sanitized_path}'"
+        
+            # Deploy to EC2
+            ssh -o StrictHostKeyChecking=no -i private-key.pem ec2-user@${{ secrets.EC2_HOST }} "
+              cd '${sanitized_path}' && echo '✅ Connected to EC2' && \
+              git pull origin main && echo '📦 Git pull complete' && \
+              npm install && echo '🚀 NPM install complete' && \
+              pm2 restart app && echo '🔥 App restarted'
+            "
 
     - name: Clean up SSH key
       run: rm -f private-key.pem 
