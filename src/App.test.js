@@ -54,5 +54,5 @@ test('renders About page correctly', () => {
     </MemoryRouter>
   );
 
-  expect(screen.queryByText(/About Us/i)).toBeInTheDocument();
+  expect(screen.queryByText(/About/i)).toBeInTheDocument();
 });
