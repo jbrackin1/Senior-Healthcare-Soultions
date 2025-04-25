@@ -51,7 +51,7 @@ jobs:
               cd '${sanitized_path}' && echo '✅ Connected to EC2' && \
               git pull origin main && echo '📦 Git pull complete' && \
               npm install && echo '🚀 NPM install complete' && \
-              pm2 restart app && echo '🔥 App restarted'
+              pm2 start npm --name "app" -- run start || pm2 restart app
             "
 
     - name: Clean up SSH key
