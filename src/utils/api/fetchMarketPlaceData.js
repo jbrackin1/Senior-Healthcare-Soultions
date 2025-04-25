@@ -34,7 +34,7 @@ const fetchMarketplaceData = async ({ formData, fipsCode, users_state }) => {
 			state: users_state, 
 			zipcode: formData.zipcode,
 		},
-		year: 2019,
+		year: 2025,
 	};
 
 	try {

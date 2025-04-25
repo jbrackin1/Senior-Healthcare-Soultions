@@ -69,6 +69,18 @@ const PlanDetailExpanded = () => {
 						(rawData?.tiered_premiums?.length || 0)
 							? fallbackPlan.tiered_premiums
 							: rawData.tiered_premiums,
+								premium:
+		typeof rawData?.premium === "number"
+			? rawData.premium
+			: fallbackPlan?.premium,
+	premium_w_credit:
+		typeof rawData?.premium_w_credit === "number"
+			? rawData.premium_w_credit
+			: fallbackPlan?.premium_w_credit,
+	ehb_premium:
+		typeof rawData?.ehb_premium === "number"
+			? rawData.ehb_premium
+			: fallbackPlan?.ehb_premium,
 				};
 
 				setPlan(formatDetailedInsInfo(mergedData));
