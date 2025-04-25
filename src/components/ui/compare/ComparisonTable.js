@@ -156,7 +156,7 @@ const ComparisonTable = ({
 							/>
 						</td>
 						<td>
-							<Link to={`/plan/${plan.id}`}>
+							<Link to={`/plan/${plan.id}`} state={{ plan }}>
 								<b>{plan.name || "N/A"}</b>
 							</Link>
 						</td>

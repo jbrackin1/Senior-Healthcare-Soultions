@@ -1,6 +1,6 @@
-import { formatPlanType } from "./formatData";
-import { formatCurrency } from "./formatData";
-import { formatDate } from "./formatData";
+/** @format */
+
+import { formatCurrency, formatPlanType, formatDate } from "./formatData";
 
 export const formatDetailedInsInfo = (rawData) => {
 	const planData = rawData?.plan || rawData;
@@ -92,42 +92,66 @@ export const formatDetailedInsInfo = (rawData) => {
 	};
 
 	return {
+		// ✅ Basic Info
 		name: planData?.planName || planData?.name || "Unknown Plan",
 		type: formatPlanType(
 			planData?.planType || planData?.type || "Not Specified"
 		),
 		premium:
-			planData?.premium !== undefined
-				? formatCurrency(planData.premium)
-				: "N/A",
+			planData?.premium !== undefined ? formatCurrency(planData.premium) : null,
+		premium_w_credit:
+			planData?.premium_w_credit !== undefined
+				? formatCurrency(planData.premium_w_credit)
+				: null,
+		ehb_premium:
+			planData?.ehb_premium !== undefined
+				? formatCurrency(planData.ehb_premium)
+				: null,
+
+		// ✅ Tiered Tables
+		tiered_deductibles: planData?.tiered_deductibles || [],
+		tiered_moops: planData?.tiered_moops || [],
+		tiered_premiums: planData?.tiered_premiums || [],
+
+		// ✅ Simple fallback summary values
 		deductible:
-			planData?.deductible !== undefined
-				? formatCurrency(planData.deductible)
+			planData?.tiered_deductibles?.[0]?.amount !== undefined
+				? formatCurrency(planData.tiered_deductibles[0].amount)
 				: "N/A",
+		moop:
+			planData?.tiered_moops?.[0]?.amount !== undefined
+				? formatCurrency(planData.tiered_moops[0].amount)
+				: planData?.out_of_pocket_max
+				? formatCurrency(planData.out_of_pocket_max)
+				: "N/A",
+
 		effectiveDate:
 			planData?.effectiveDate && !isNaN(new Date(planData.effectiveDate))
 				? formatDate(planData.effectiveDate)
 				: "N/A",
 
+		// ✅ Copay summaries
 		coPay: {
 			general: getCostSharingDescription("primary care"),
 			specialist: getCostSharingDescription("specialist"),
 			hospital: getCostSharingDescription("inpatient hospital"),
 		},
 
-		networkCoverage:
-			planData?.network_url || planData?.networkCoverage || "Not Specified",
-		medicareEligible: planData?.isMedicareEligible ? "Yes" : "No",
-		medicaidEligible: planData?.isMedicaidEligible ? "Yes" : "No",
+		// ✅ Grouped Benefits
 		benefits: Array.isArray(planData?.benefits) ? planData.benefits : [],
 		categorizedBenefits: groupBenefitsByCategory(planData?.benefits || []),
 		additionalBenefits: Array.isArray(planData?.benefits)
 			? planData.benefits.map((benefit) => benefit.name)
 			: [],
-		brochureUrl: planData?.brochure_url || "Not Available",
-		benefitsUrl: planData?.benefits_url || "Not Available",
-		networkUrl: planData?.network_url || "Not Available",
-		formularyUrl: planData?.formulary_url || "Not Available",
+
+		// ✅ Meta and URLs
+		networkCoverage: planData?.network_url || "Not Specified",
+		medicareEligible: planData?.isMedicareEligible ? "Yes" : "No",
+		medicaidEligible: planData?.isMedicaidEligible ? "Yes" : "No",
+		hsaEligible: planData?.hsa_eligible ? "Yes" : "No",
+		metalLevel: planData?.metal_level || "Not Specified",
+
+		// ✅ Ratings
 		qualityRating: planData?.quality_rating?.global_rating || "Not Rated",
 		enrollee_experience_rating:
 			planData?.quality_rating?.enrollee_experience_rating || "N/A",
@@ -135,14 +159,15 @@ export const formatDetailedInsInfo = (rawData) => {
 			planData?.quality_rating?.plan_efficiency_rating || "N/A",
 		clinical_quality_management_rating:
 			planData?.quality_rating?.clinical_quality_management_rating || "N/A",
-		hsaEligible: planData?.hsa_eligible ? "Yes" : "No",
-		moop:
-			planData?.moops?.[0]?.amount || planData?.out_of_pocket_max
-				? formatCurrency(
-						planData?.moops?.[0]?.amount || planData?.out_of_pocket_max
-				  )
-				: "N/A",
-		metalLevel: planData?.metal_level || "Not Specified",
+
+		// ✅ External Links
+		brochureUrl: planData?.brochure_url || "Not Available",
+		benefitsUrl: planData?.benefits_url || "Not Available",
+		networkUrl: planData?.network_url || "Not Available",
+		formularyUrl: planData?.formulary_url || "Not Available",
+
+		// ✅ Disease Programs
 		disease_mgmt_programs: planData?.disease_mgmt_programs || [],
 	};
 };
+export default formatDetailedInsInfo;
