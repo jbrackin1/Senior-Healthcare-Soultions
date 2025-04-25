@@ -31,12 +31,12 @@ jobs:
       run: |
         echo "${{ secrets.EC2_PEM_KEY }}" > private-key.pem
         chmod 600 private-key.pem
-          
+                  
     - name: Deploy to EC2
       if: github.ref == 'refs/heads/main'
       run: |
         ssh -o StrictHostKeyChecking=no -i private-key.pem ec2-user@${{ secrets.EC2_HOST }} \
-        'cd ${{ secrets.EC2_PATH }} && git pull origin main && npm install && pm2 restart app'    
+        'cd "${{ secrets.EC2_PATH }}" && git pull origin main && npm install && pm2 restart app'
 
     - name: Clean up SSH key
       run: rm -f private-key.pem 
