@@ -1,0 +1,36 @@
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
+
+    - name: Deploy to EC2
+      if: github.ref == 'refs/heads/main'
+      run: |
+        # Add your deploy script here (e.g., SSH into EC2 and deploy)
+        ssh -i /path/to/your/private-key.pem ec2-user@your-ec2-ip "cd /your/app/path && git pull origin main && npm install && pm2 restart app"
+      env:
+        PRIVATE_KEY: ${{ secrets.YOUR_PRIVATE_KEY }}
