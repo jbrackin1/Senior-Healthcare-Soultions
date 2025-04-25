@@ -1,0 +1,58 @@
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '22.9.0'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
+
+    - name: Create SSH key file
+      run: |
+        echo "${{ secrets.EC2_PEM_KEY }}" > private-key.pem
+        chmod 600 private-key.pem
+                  
+    - name: Debug EC2 Path
+      run: |
+          echo "EC2 Path: '${{ secrets.EC2_PATH }}'"
+
+    - name: Debug and Deploy to EC2
+      if: github.ref == 'refs/heads/main'
+      run: |
+            # Print out the raw value of EC2_PATH
+            echo "Raw EC2 Path: '${{ secrets.EC2_PATH }}'"
+            
+            # Sanitize the EC2_PATH by trimming any extra newlines or spaces
+            sanitized_path=$(echo "${{ secrets.EC2_PATH }}" | tr -d '\n' | tr -d '\r' | xargs)
+            echo "Sanitized EC2 Path: '${sanitized_path}'"
+        
+            # Deploy to EC2
+            ssh -o StrictHostKeyChecking=no -i private-key.pem ec2-user@${{ secrets.EC2_HOST }} "
+              cd '${sanitized_path}' && echo '✅ Connected to EC2' && \
+              git pull origin main && echo '📦 Git pull complete' && \
+              npm install && echo '🚀 NPM install complete' && \
+              pm2 start npm --name "app" -- run start || pm2 restart app
+            "
+
+    - name: Clean up SSH key
+      run: rm -f private-key.pem 
