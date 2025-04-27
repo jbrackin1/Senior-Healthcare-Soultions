@@ -9,6 +9,12 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
   }
+    html, body, #root {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+box-sizing: border-box;
+}
 
   body {
     font-family: 'Open Sans', sans-serif;

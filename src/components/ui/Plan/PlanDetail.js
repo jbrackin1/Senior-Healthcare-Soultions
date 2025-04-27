@@ -69,20 +69,22 @@ const PlanDetailExpanded = () => {
 						(rawData?.tiered_premiums?.length || 0)
 							? fallbackPlan.tiered_premiums
 							: rawData.tiered_premiums,
-								premium:
-		typeof rawData?.premium === "number"
-			? rawData.premium
-			: fallbackPlan?.premium,
-	premium_w_credit:
-		typeof rawData?.premium_w_credit === "number"
-			? rawData.premium_w_credit
-			: fallbackPlan?.premium_w_credit,
-	ehb_premium:
-		typeof rawData?.ehb_premium === "number"
-			? rawData.ehb_premium
-			: fallbackPlan?.ehb_premium,
+					premium:
+						rawData?.premium && rawData.premium > 0
+							? rawData.premium
+							: fallbackPlan?.premium || null,
+					premium_w_credit:
+						rawData?.premium_w_credit && rawData.premium_w_credit > 0
+							? rawData.premium_w_credit
+							: fallbackPlan?.premium_w_credit || null,
+					ehb_premium:
+						rawData?.ehb_premium && rawData.ehb_premium > 0
+							? rawData.ehb_premium
+							: fallbackPlan?.ehb_premium || null,
 				};
 
+				console.log("Merged Raw Plan:", mergedData); // ✅ INSIDE loadPlanDetails
+				console.log("Formatted Plan:", formatDetailedInsInfo(mergedData)); // ✅ INSIDE loadPlanDetails
 				setPlan(formatDetailedInsInfo(mergedData));
 			} catch (error) {
 				console.error("Error fetching plan details:", error);
@@ -93,6 +95,7 @@ const PlanDetailExpanded = () => {
 
 		loadPlanDetails();
 	}, [planId, fallbackPlan]);
+
 
 	if (loading) return <p>Loading...</p>;
 	if (!plan) return <p>No plan details available.</p>;
@@ -105,23 +108,6 @@ const PlanDetailExpanded = () => {
 			<TieredPlanInfoTable title="Max Out-of-Pocket" data={plan.tiered_moops} />
 			<TieredPlanInfoTable title="Premium" data={plan.tiered_premiums} />
 
-			<MetadataRow>
-				{plan.premium && (
-					<span>
-						<b>Premium:</b> {plan.premium}
-					</span>
-				)}
-				{plan.premium_w_credit && (
-					<span>
-						<b>After Credit:</b> {plan.premium_w_credit}
-					</span>
-				)}
-				{plan.ehb_premium && (
-					<span>
-						<b>EHB Only:</b> {plan.ehb_premium}
-					</span>
-				)}
-			</MetadataRow>
 
 			<MetadataRow>
 				<span>
