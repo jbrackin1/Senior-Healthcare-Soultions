@@ -1,8 +1,8 @@
 /** @format */
 
 import React, { useEffect, useState } from "react";
+import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { fetchPlanDetails } from "../../../utils/api/fetchPlanDetails";
 import { formatDetailedInsInfo } from "../../../utils/formatters/formatDetailedInsInfo";
 import Button from "../Global/button";
@@ -33,7 +33,10 @@ const MetadataRow = styled.div`
 		flex: 1;
 		min-width: 120px;
 	}
+		
 `;
+
+
 
 const PlanDetailExpanded = () => {
 	const { planId } = useParams();
@@ -105,11 +108,9 @@ const PlanDetailExpanded = () => {
 	return (
 		<DetailContainer>
 			<h2>{plan.name}</h2>
-
 			<TieredPlanInfoTable title="Deductibles" data={plan.tiered_deductibles} />
 			<TieredPlanInfoTable title="Max Out-of-Pocket" data={plan.tiered_moops} />
 			<TieredPlanInfoTable title="Premium" data={plan.tiered_premiums} />
-
 			<MetadataRow>
 				<span>
 					<b>Plan Type:</b> {plan.type}
@@ -121,18 +122,15 @@ const PlanDetailExpanded = () => {
 					<b>HSA Eligible:</b> {plan.hsaEligible}
 				</span>
 			</MetadataRow>
-
 			<BenefitAccordion
 				benefits={plan.categorizedBenefits}
 				userPreferences={false}
 				momMode={enabled}
 			/>
-
 			<ReusableTable
 				headers={["Program"]}
 				data={(plan.disease_mgmt_programs || []).map((program) => [program])}
 			/>
-
 			<ReusableTable
 				headers={["Category", "Rating"]}
 				data={[
@@ -145,7 +143,6 @@ const PlanDetailExpanded = () => {
 					],
 				]}
 			/>
-
 			<ReusableTable
 				headers={["Resource"]}
 				data={[
@@ -155,8 +152,15 @@ const PlanDetailExpanded = () => {
 					[{ label: "Drug Formulary", url: plan.formularyUrl }],
 				]}
 			/>
-
-			<Button onClick={() => navigate(-1)}>Back</Button>
+			<div style={{ marginTop: "2rem", textAlign: "center" }}>
+				<Button
+					onClick={() => navigate("/drug-coverage", { state: { planId } })}>
+					Check if your Medication is Covered
+				</Button>
+			</div>
+			<div style={{ marginTop: "2rem", textAlign: "center" }}>
+				<Button onClick={() => navigate(-1)}>Back</Button>
+			</div>
 		</DetailContainer>
 	);
 };

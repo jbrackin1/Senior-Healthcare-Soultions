@@ -6,8 +6,15 @@ import PropTypes from "prop-types";
 
 const FAMILY_ORDER = ["Individual", "Family Per Person", "Family"];
 
-const TableWrapper = styled.div`
-	margin-bottom: 2rem;
+export const TableWrapper = styled.div`
+	width: 100%;
+	overflow-x: auto;
+	margin-top: 1rem;
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+	}
 `;
 
 const TitleRow = styled.div`
@@ -15,7 +22,15 @@ const TitleRow = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 0.5rem;
+	flex-wrap: wrap;
+
+	@media (max-width: 768px) {
+		flex-direction: column;
+		align-items: flex-center;
+		gap: 0.5rem;
+	}
 `;
+
 
 const Title = styled.h4`
 	color: ${({ theme }) => theme.colors.accent};
@@ -48,6 +63,8 @@ const TableCell = styled.td`
 	border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
+
+
 const TieredPlanInfoTable = ({ title, data }) => {
 	const [filter, setFilter] = useState("all");
 
@@ -63,6 +80,8 @@ const TieredPlanInfoTable = ({ title, data }) => {
 		(a, b) =>
 			FAMILY_ORDER.indexOf(a.family_cost) - FAMILY_ORDER.indexOf(b.family_cost)
 	);
+
+	
 
 	return (
 		<TableWrapper>

@@ -5,18 +5,25 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 const TableWrapper = styled.div`
-	margin-bottom: 2rem;
+	width: 100%;
+	max-width: 100%;
 	overflow-x: auto;
+	margin: 1rem 0;
+	padding: 0;
+
+	@media (max-width: 768px) {
+		overflow-x: fixed;
+		padding: 0;
+	}
 `;
 
 const StyledTable = styled.table`
 	width: 100%;
 	border-collapse: collapse;
-	font-size: 1.2rem; /* Accessible text size */
+	font-size: 1.1rem;
 	font-family: "Open Sans", sans-serif;
-	color: ${({ theme }) => theme.colors.text || "#000"}; /* Black fallback */
 	background-color: ${({ theme }) => theme.colors.backgroundAlt || "#f8f9fa"};
-	min-width: 300px;
+	color: ${({ theme }) => theme.colors.text || "#000"};
 	margin-top: 1rem;
 	box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
 
@@ -25,12 +32,12 @@ const StyledTable = styled.table`
 		padding: 0.75rem 1rem;
 		text-align: left;
 		border-bottom: 1px solid ${({ theme }) => theme.colors.border || "#ccc"};
+		word-break: break-word; /* Prevent text from overflowing */
 	}
 
 	th {
 		background-color: ${({ theme }) => theme.colors.primary || "#007BFF"};
-		color: ${({ theme }) =>
-			theme.colors.textOnPrimary || "#add8e6"}; /* Light blue */
+		color: #13343E;
 		font-family: "Libre Baskerville", serif;
 		font-weight: bold;
 		font-size: 1.3rem;
@@ -41,19 +48,25 @@ const StyledTable = styled.table`
 	}
 
 	tr:hover {
-		background-color: ${({ theme }) =>
-			theme.colors.backgroundHover || "#eef6fb"};
+		background-color: ${({ theme }) => theme.colors.backgroundHover || "#eef6fb"};
 	}
 
 	a {
-		color: ${({ theme }) =>
-			theme.colors.accent || "#007BFF"}; /* Light blue links */
+		color: ${({ theme }) => theme.colors.accent || "#007BFF"};
 		text-decoration: underline;
 		font-weight: 500;
 
 		&:hover {
 			color: #add8e6;
 			text-decoration: underline;
+		}
+	}
+
+	@media (max-width: 768px) {
+		font-size: 1rem;
+		th,
+		td {
+			padding: 0.5rem 0.75rem;
 		}
 	}
 `;
@@ -74,7 +87,6 @@ const ReusableTable = ({ headers, data }) => {
 						<tr key={rowIdx}>
 							{row.map((cell, cellIdx) => (
 								<td key={cellIdx}>
-									{/* If the cell is an object with label and url, render a link */}
 									{typeof cell === "object" && cell.label && cell.url ? (
 										<a
 											href={cell.url}
@@ -83,7 +95,6 @@ const ReusableTable = ({ headers, data }) => {
 											{cell.label}
 										</a>
 									) : (
-										// Else render plain text
 										cell
 									)}
 								</td>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link, useParams, useNavigate } from "react-router-dom";
 import Button from "../../../components/ui/Global/button";
 import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
 import UserPreference from "../../Forms/UserPreference";
@@ -291,31 +290,6 @@ const MarketPlacePage = () => {
 						selectedPlans={selectedPlans}
 					/>
 
-					<div style={{ marginTop: "2rem", textAlign: "center" }}>
-						<Button
-							as={Link}
-							to="/drug-coverage"
-							state={{ selectedPlans }}
-							onClick={handleCheckMedicationClick} // Mark button as clicked
-							style={{
-								backgroundColor:
-									selectedPlans.length === 0 ? "#add8e6" : "#51BFE4",
-								pointerEvents: selectedPlans.length === 0 ? "none" : "auto",
-							}}>
-							Check if your medication is covered
-						</Button>
-
-						{clickedCheckMedication && selectedPlans.length === 0 && (
-							<p
-								style={{
-									color: "red",
-									textAlign: "center",
-									marginTop: "1rem",
-								}}>
-								<b>Please select at least one plan to continue.</b>
-							</p>
-						)}
-					</div>
 				</>
 			)}
 
