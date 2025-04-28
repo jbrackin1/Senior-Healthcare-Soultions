@@ -42,6 +42,7 @@ const FormField = styled.div`
 		border-radius: 4px;
 		font-size: 1rem;
 	}
+		
 `;
 
 const MarketPlacePage = () => {
@@ -80,7 +81,44 @@ const MarketPlacePage = () => {
 			});
 		}
 	};
-	
+
+	const filteredPlans = plans.filter((plan) => {
+		if (formData?.preferredPremium) {
+			return plan.premium <= formData.preferredPremium;
+		}
+		return true; // If no preferredPremium set, show all
+	});
+
+	const [toastMessage, setToastMessage] = useState("");
+const handleClearFilters = () => {
+	const hasFiltersToClear =
+		formData.preferredPremium ||
+		formData.metalLevel ||
+		formData.planType ||
+		formData.issuer ||
+		(formData.lifestylePrograms && formData.lifestylePrograms.length > 0) ||
+		formData.dentalCoverage ||
+		formData.visionCoverage;
+
+	if (hasFiltersToClear) {
+		setFormData((prevData) => ({
+			...prevData,
+			preferredPremium: "",
+			metalLevel: "",
+			planType: "",
+			issuer: "",
+			lifestylePrograms: [],
+			dentalCoverage: false,
+			visionCoverage: false,
+		}));
+
+		setToastMessage("Preferences cleared!");
+	} else {
+		setToastMessage("No preferences to clear.");
+	}
+
+	setTimeout(() => setToastMessage(""), 2000);
+};
 	
 	useEffect(() => {
 		loadFormData();
@@ -217,6 +255,24 @@ const MarketPlacePage = () => {
 
 	return (
 		<CompareContainer>
+			{toastMessage && (
+  <div style={{
+    position: "fixed",
+    top: "1rem",
+    left: "50%",
+    transform: "translateX(-50%)",
+    backgroundColor: "#add8e6", // Robin's Egg Blue!
+    color: "#13343E",
+    padding: "0.75rem 1.25rem",
+    borderRadius: "8px",
+    fontWeight: "bold",
+    boxShadow: "0px 4px 8px rgba(0,0,0,0.2)",
+    zIndex: 1000,
+    animation: "fadeInOut 2s forwards"
+  }}>
+    {toastMessage}
+  </div>
+)}
 
 			<Collapsible title="Step 1: Customize Your Preferences">
 				<UserPreference
@@ -225,6 +281,12 @@ const MarketPlacePage = () => {
 					facetGroups={[]} // pass actual data when you're ready
 				/>
 			</Collapsible>
+
+			<div style={{ textAlign: "center", margin: "1rem 0" }}>
+				<Button type="button" onClick={handleClearFilters}>
+					Clear All Filters
+				</Button>
+			</div>
 
 			<SectionTitle>Compare Insurance Plans</SectionTitle>
 
@@ -285,11 +347,10 @@ const MarketPlacePage = () => {
 			{!loading && plans.length > 0 && (
 				<>
 					<ComparisonTable
-						plans={plans}
+						plans={filteredPlans}
 						onTogglePlan={handlePlanToggle}
 						selectedPlans={selectedPlans}
 					/>
-
 				</>
 			)}
 

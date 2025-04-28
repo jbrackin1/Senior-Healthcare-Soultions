@@ -83,15 +83,27 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 		<PreferenceContainer>
 			<SectionTitle>Set Your Insurance Preferences</SectionTitle>
 
-			{/* RangeSlider for budget or amount */}
 			<Label>Preferred Monthly Premium</Label>
-			<RangeSlider
-				min={0}
-				max={2000}
-				step={10}
+			
+			<input
+				type="range"
+				min="0"
+				max="2000"
+				step="10"
 				value={formData?.preferredPremium || 100}
-				onChange={(val) => handleFilterChange("preferredPremium", val)}
+				onChange={(e) => handleFilterChange("preferredPremium", e.target.value)}
+				style={{ width: "100%", margin: "1rem 0" }}
 			/>
+			<div
+				style={{
+					display: "flex",
+					justifyContent: "space-between",
+					marginTop: "0.5rem",
+				}}>
+				<span>$0</span>
+				<span>${parseFloat(formData?.preferredPremium) || 100}</span>
+				<span>$2000</span>
+			</div>
 
 			{/* Filters for metalLevels, issuers, types */}
 			<FieldRow>
