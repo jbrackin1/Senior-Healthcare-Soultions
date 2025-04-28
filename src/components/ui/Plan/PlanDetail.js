@@ -9,6 +9,8 @@ import Button from "../Global/button";
 import BenefitAccordion from "../Global/BenefitAccordian";
 import useMomMode from "../Feedback/MomMode";
 import TieredPlanInfoTable from "../Plan/TieredPlanInfoTable";
+import ReusableTable from "../Global/ReusableTable";
+
 
 const DetailContainer = styled.div`
 	padding: 2rem;
@@ -108,7 +110,6 @@ const PlanDetailExpanded = () => {
 			<TieredPlanInfoTable title="Max Out-of-Pocket" data={plan.tiered_moops} />
 			<TieredPlanInfoTable title="Premium" data={plan.tiered_premiums} />
 
-
 			<MetadataRow>
 				<span>
 					<b>Plan Type:</b> {plan.type}
@@ -127,46 +128,33 @@ const PlanDetailExpanded = () => {
 				momMode={enabled}
 			/>
 
-			<h3>Quality Ratings</h3>
-			<ul>
-				<li>Overall: {plan.qualityRating}</li>
-				<li>Experience: {plan.enrollee_experience_rating || "N/A"}</li>
-				<li>Efficiency: {plan.plan_efficiency_rating || "N/A"}</li>
-				<li>
-					Clinical Quality: {plan.clinical_quality_management_rating || "N/A"}
-				</li>
-			</ul>
+			<ReusableTable
+				headers={["Program"]}
+				data={(plan.disease_mgmt_programs || []).map((program) => [program])}
+			/>
 
-			<h3>Disease Management Programs</h3>
-			<ul>
-				{(plan.disease_mgmt_programs || []).map((item, i) => (
-					<li key={i}>{item}</li>
-				))}
-			</ul>
+			<ReusableTable
+				headers={["Category", "Rating"]}
+				data={[
+					["Overall", plan.qualityRating],
+					["Experience", plan.enrollee_experience_rating || "N/A"],
+					["Efficiency", plan.plan_efficiency_rating || "N/A"],
+					[
+						"Clinical Quality",
+						plan.clinical_quality_management_rating || "N/A",
+					],
+				]}
+			/>
 
-			<h3>Resources</h3>
-			<ul>
-				<li>
-					<a href={plan.brochureUrl} target="_blank" rel="noreferrer">
-						Brochure
-					</a>
-				</li>
-				<li>
-					<a href={plan.benefitsUrl} target="_blank" rel="noreferrer">
-						Benefits Document
-					</a>
-				</li>
-				<li>
-					<a href={plan.networkUrl} target="_blank" rel="noreferrer">
-						Network Info
-					</a>
-				</li>
-				<li>
-					<a href={plan.formularyUrl} target="_blank" rel="noreferrer">
-						Drug Formulary
-					</a>
-				</li>
-			</ul>
+			<ReusableTable
+				headers={["Resource"]}
+				data={[
+					[{ label: "Brochure", url: plan.brochureUrl }],
+					[{ label: "Benefits Document", url: plan.benefitsUrl }],
+					[{ label: "Network Info", url: plan.networkUrl }],
+					[{ label: "Drug Formulary", url: plan.formularyUrl }],
+				]}
+			/>
 
 			<Button onClick={() => navigate(-1)}>Back</Button>
 		</DetailContainer>

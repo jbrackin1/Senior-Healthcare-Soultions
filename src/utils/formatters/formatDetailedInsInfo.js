@@ -81,9 +81,9 @@ export const formatDetailedInsInfo = (rawData) => {
 				}
 			}
 			if (!placed) {
-				if (!categorized.Uncategorized) categorized.Uncategorized = [];
-				categorized.Uncategorized.push(benefit);
-				unmatched.push(benefit.name);
+				if (!categorized["Other Covered Services"])
+					categorized["Other Covered Services"] = [];
+				categorized["Other Covered Services"].push(benefit);
 			}
 		}
 
