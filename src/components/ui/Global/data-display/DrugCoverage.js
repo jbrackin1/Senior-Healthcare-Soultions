@@ -2,10 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { fetchDrugSuggestions } from "../../../utils/api/fetchDrugSuggestions";
-import { fetchDrugCoverage } from "../../../utils/api/fetchDrugCoverage";
-import Button from "./button";
-import DrugCoverageDetail from "../Plan/DrugCoverageDetail";
+import { fetchDrugSuggestions } from "../../../../utils/api/fetchDrugSuggestions";
+import { fetchDrugCoverage } from "../../../../utils/api/fetchDrugCoverage";
+import Button from "../everywhere/button";
+import DrugCoverageDetail from "../../Plan/DrugCoverageDetail";
 import AsyncSelect from "react-select/async";
 
 // Styled components

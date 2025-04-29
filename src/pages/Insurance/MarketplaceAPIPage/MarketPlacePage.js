@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Button from "../../../components/ui/Global/button";
+import Button from "../../../components/ui/Global/everywhere/button";
 import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
 import UserPreference from "../../Forms/UserPreference";
-import Collapsible from "../../../components/ui/Global/CollapsableButton";
+import Collapsible from "../../../components/ui/Global/layout/CollapsableButton";
 
 
 const CompareContainer = styled.main`
