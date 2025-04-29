@@ -5,11 +5,11 @@ import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { fetchPlanDetails } from "../../../utils/api/fetchPlanDetails";
 import { formatDetailedInsInfo } from "../../../utils/formatters/formatDetailedInsInfo";
-import Button from "../Global/button";
-import BenefitAccordion from "../Global/BenefitAccordian";
+import Button from "../Global/everywhere/button";
+import BenefitAccordion from "../Global/data-display/BenefitAccordian";
 import useMomMode from "../Feedback/MomMode";
 import TieredPlanInfoTable from "../Plan/TieredPlanInfoTable";
-import ReusableTable from "../Global/ReusableTable";
+import ReusableTable from "../Global/data-display/ReusableTable";
 
 
 const DetailContainer = styled.div`
@@ -158,7 +158,7 @@ const PlanDetailExpanded = () => {
 					Check if your Medication is Covered
 				</Button>
 			</div>
-			<div style={{ marginTop: "2rem", textAlign: "center" }}>
+			<div style={{ marginTop: "2rem", textAlign: "center " }}>
 				<Button onClick={() => navigate(-1)}>Back</Button>
 			</div>
 		</DetailContainer>

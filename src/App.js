@@ -8,8 +8,8 @@ import { lightTheme, darkTheme } from "./styles/themes/LightDarkTheme";
 
 // Components
 import AdBanner from "./components/ui/Feedback/Ads/AdBanner";
-import TopBannerComponent from "./components/ui/Global/TopBanner";
-import BottomFooter from "./components/ui/Global/BottomFooter";
+import TopBannerComponent from "./components/ui/Global/layout/TopBanner";
+import BottomFooter from "./components/ui/Global/layout/BottomFooter";
 
 // Pages and Components
 import SignUp from "./pages/Generic/SignUp";
@@ -27,7 +27,7 @@ import Profile from "./pages/Users/UserProfile";
 import Resources from "./pages/Generic/Resources";
 import PractitionerPage from "./pages/Users/Practitioner";
 import Blog from "./pages/Generic/Blog";
-import DrugCoverage from "./components/ui/Global/DrugCoverage";
+import DrugCoverage from "./components/ui/Global/data-display/DrugCoverage";
 import ComparePlans from "./pages/Insurance/Compare";
 import PlanDetail from "./components/ui/Plan/PlanDetail";
 
@@ -35,7 +35,7 @@ import PlanDetail from "./components/ui/Plan/PlanDetail";
 import { AuthProvider } from "./services/hooks/AuthProvider";
 import { PlanProvider } from "./services/hooks/PlanContext";
 import { getCignaToken } from "./services/Api/Cigna/getCignaToken";
-import PageWrapper from "./components/ui/Global/PageWrapper";
+import PageWrapper from "./components/ui/Global/layout/PageWrapper";
 
 function App() {
 	const [isDarkMode, setIsDarkMode] = useState(false);

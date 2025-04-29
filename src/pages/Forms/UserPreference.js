@@ -2,9 +2,10 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import RangeSlider from "../../components/ui/Global/RangeSlider";
 import MetalLevelSelect from "../../components/ui/compare/MetalLevelSelect";
 import Toggle from "../../components/ui/Global/forms/Toggle";
+import useMomMode from "../../components/ui/Feedback/MomMode";
+import Tooltip from "../../components/ui/Global/data-display/Tooltip";
 
 const PreferenceContainer = styled.div`
 	padding: 2rem;
@@ -77,7 +78,15 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 
 		const isUserInterested = (benefit, userPrefs = []) =>
 			userPrefs.includes(benefit);
+	const { enabled: momMode } = useMomMode();
 
+	// Then later, if approved add more helpful tips here...If we do this it will take a while to get it right
+
+	{
+		momMode && (
+			<Tooltip title="Only answer 'Yes' if you or someone you're enrolling is currently pregnant." />
+		);
+	}
 
 	return (
 		<PreferenceContainer>
@@ -106,45 +115,40 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 			</div>
 
 			{/* Filters for metalLevels, issuers, types */}
+
 			<FieldRow>
 				<div>
-					<Label>Metal Level</Label>
+					<div>
+						<Label>
+							Metal Level
+							{momMode && (
+								<Tooltip title="Metal Levels are shortcuts to guess yearly costs: Bronze = Cheapest monthly, but bigger bills if sick. Silver = Middle ground. Gold = Expensive monthly, cheaper care. Platinum = Highest monthly, lowest care costs." />
+							)}
+						</Label>
+					</div>
+
 					<MetalLevelSelect
-						options={getFacetOptions("metalLevels")}
+						options={[
+							{
+								label: "Bronze Plan – Lower Monthly, Higher Risk",
+								value: "Bronze",
+							},
+							{ label: "Silver Plan – Balanced Costs", value: "Silver" },
+							{
+								label: "Gold Plan – Higher Monthly, Lower Risk",
+								value: "Gold",
+							},
+							{
+								label: "Platinum Plan – Highest Monthly, Lowest Risk",
+								value: "Platinum",
+							},
+						]}
 						defaultValue=""
 						onChange={(e) => handleFilterChange("metalLevel", e.target.value)}
 					/>
 				</div>
-				<div>
-					<Label>Plan Type</Label>
-					<MetalLevelSelect
-						options={getFacetOptions("types")}
-						defaultValue=""
-						onChange={(e) => handleFilterChange("planType", e.target.value)}
-					/>
-				</div>
-				<div>
-					<Label>Insurance Provider</Label>
-					<MetalLevelSelect
-						options={getFacetOptions("issuers")}
-						defaultValue=""
-						onChange={(e) => handleFilterChange("issuer", e.target.value)}
-					/>
-				</div>
-				{formData.lifestylePrograms?.length > 0 && (
-					<SectionBlock>
-						<SectionTitle>Selected Lifestyle Programs</SectionTitle>
-						<InfoList>
-							{formData.lifestylePrograms.map((b, i) => (
-								<li key={i}>
-									<Check>✓</Check>
-									{b}
-								</li>
-							))}
-						</InfoList>
-					</SectionBlock>
-				)}
 			</FieldRow>
+
 			<SectionBlock>
 				<SectionTitle>Household Details</SectionTitle>
 
@@ -183,7 +187,7 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 
 					<div>
 						<Label>
-							Has Minimum Essential Coverage (MEC)?
+							Has Minimum Essential Coverage?
 							<Tooltip title="Minimum Essential Coverage means you already have basic health insurance like employer coverage, Medicare, or Medicaid." />
 						</Label>
 						<Toggle
@@ -269,97 +273,6 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 					</label>
 				))}
 			</FieldRow>
-			<SectionBlock>
-				<SectionTitle>Household Details</SectionTitle>
-
-				<FieldRow>
-					<div>
-						<Label>
-							Pregnant?
-							<Tooltip title="Only answer 'Yes' if you or someone you're enrolling is currently pregnant." />
-						</Label>
-						<Toggle
-							isOn={formData.isPregnant || false}
-							onToggle={() =>
-								setFormData((prev) => ({
-									...prev,
-									isPregnant: !prev.isPregnant,
-								}))
-							}
-						/>
-					</div>
-
-					<div>
-						<Label>
-							Parent?
-							<Tooltip title="Answer 'Yes' if you have dependent children under your care." />
-						</Label>
-						<Toggle
-							isOn={formData.isParent || false}
-							onToggle={() =>
-								setFormData((prev) => ({
-									...prev,
-									isParent: !prev.isParent,
-								}))
-							}
-						/>
-					</div>
-
-					<div>
-						<Label>
-							Has Minimum Essential Coverage (MEC)?
-							<Tooltip title="Minimum Essential Coverage means you already have basic health insurance like employer coverage, Medicare, or Medicaid." />
-						</Label>
-						<Toggle
-							isOn={formData.hasMEC || false}
-							onToggle={() =>
-								setFormData((prev) => ({
-									...prev,
-									hasMEC: !prev.hasMEC,
-								}))
-							}
-						/>
-					</div>
-				</FieldRow>
-
-				<FieldRow>
-					<div>
-						<Label>Relationship</Label>
-						<select
-							value={formData.relationship || "Self"}
-							onChange={(e) =>
-								setFormData((prev) => ({
-									...prev,
-									relationship: e.target.value,
-								}))
-							}>
-							<option value="Self">Self</option>
-							<option value="Spouse">Spouse</option>
-							<option value="Child">Child</option>
-							<option value="Other">Other</option>
-						</select>
-					</div>
-
-					<div>
-						<Label>
-							Expected Health Usage
-							<Tooltip title="Low: Rare doctor visits. Medium: Regular visits, some meds. High: Frequent specialists or ongoing care." />
-						</Label>
-						<select
-							value={formData.utilization || "Medium"}
-							onChange={(e) =>
-								setFormData((prev) => ({
-									...prev,
-									utilization: e.target.value,
-								}))
-							}>
-							<option value="Low">Low</option>
-							<option value="Medium">Medium</option>
-							<option value="High">High</option>
-						</select>
-					</div>
-				</FieldRow>
-			</SectionBlock>
 
 			<SectionTitle>Additional Coverage</SectionTitle>
 			<FieldRow>

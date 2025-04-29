@@ -2,7 +2,7 @@
 
 import React from "react";
 import styled from "styled-components";
-import Collapsible from "../Global/CollapsableButton";
+import Collapsible from "../../Global/layout/CollapsableButton";
 import useMomMode from "../../Feedback/MomMode";
 
 const BenefitList = styled.ul`

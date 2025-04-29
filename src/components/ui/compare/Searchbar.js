@@ -3,7 +3,7 @@
 // src/components/ComparePlans/SearchBar.js
 import React from "react";
 import styled from "styled-components";
-import Input from "../Global/Input";
+import Input from "../Global/forms/Input";
 
 const StyledSearchBar = styled(Input)`
 	padding: 0.5rem;

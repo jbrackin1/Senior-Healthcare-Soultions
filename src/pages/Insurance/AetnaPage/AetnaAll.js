@@ -3,7 +3,7 @@
 // src/pages/Insurance/Aetna/AetnaPage.js
 
 import React from "react";
-import Collapsible from "../../../components/ui/Global/Collapsablebutton";
+import Collapsible from "../../../components/ui/Global/layout/CollapsableButton";
 import Location from "./DataComponents/Location";
 import Organization from "./DataComponents/Organization";
 import Practitioner from "./DataComponents/Practitioner";

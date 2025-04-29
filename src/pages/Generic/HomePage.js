@@ -3,9 +3,9 @@
 // HomePage.js
 import React, { useState } from "react";
 import styled from "styled-components";
-import button from "../../components/ui/Global/button";
-import Input from "../../components/ui/Global/Input";
-import Modal from "../../components/ui/Global/modal";
+import button from "../../components/ui/Global/everywhere/button";
+import Input from "../../components/ui/Global/forms/Input";
+import Modal from "../../components/ui/Global/everywhere/modal";
 import { Link } from "react-router-dom";
 import DarkLogoSHS from "../../Img/assets/SiteLogos/DarkLogoSHS.webp";
 import BlueBackground from "../../Img/assets/images/BlueBackground.jpeg";

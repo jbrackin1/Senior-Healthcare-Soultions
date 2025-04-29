@@ -3,7 +3,7 @@
 // src/components/Admin/Settings.js
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import button from "../Global/button";
+import button from "../Global/everywhere/button";
 
 const SettingsContainer = styled.div`
 	padding: 2rem;

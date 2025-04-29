@@ -6,9 +6,9 @@
 import React from "react";
 import styled from "styled-components";
 import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
-import button from "../../components/ui/Global/button";
-import Input from "../../components/ui/Global/Input";
-import TextArea from "../../components/ui/Global/TextArea";
+import button from "../../components/ui/Global/everywhere/button";
+import Input from "../../components/ui/Global/forms/Input";
+import TextArea from "../../components/ui/Global/forms/TextArea";
 
 const ContactContainer = styled.main`
 	padding: 2rem;
