@@ -51,15 +51,6 @@ const StyledTable = styled.table`
 		background-color: ${({ theme }) => theme.colors.backgroundHover || "#eef6fb"};
 	}
 
-	a {
-		color: ${({ theme }) => theme.colors.accent || "#007BFF"};
-		text-decoration: underline;
-		font-weight: 500;
-
-		&:hover {
-			color: #add8e6;
-			text-decoration: underline;
-		}
 	}
 
 	@media (max-width: 768px) {

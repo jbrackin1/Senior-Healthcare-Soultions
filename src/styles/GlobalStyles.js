@@ -189,20 +189,35 @@ tr:active {
 			theme.colors.backgroundHover || "#eef6fb"};
   }
 
-  td a {
+td a {
   display: block;
   width: 100%;
   height: 100%;
   padding: 0.75rem 1rem;
   text-decoration: none;
-  color: inherit;
-  transition: background-color 0.2s ease;
+  font-weight: 600;
+  color: #13343E; /* Dark blue */
+  background-color: transparent;
+  outline: none;
+  box-shadow: none;
+  border: none; /* Remove underline-like border glitch */
+  transition: background-color 0.2s ease, color 0.2s ease;
 
   &:hover {
-    background-color: #add8e6;
+    background-color: #d6ecf3; /* deeper soft blue */
+    color: #0b1d2a; /* darker for real contrast */
+    text-decoration: underline;
   }
-    &:active {
+
+  &:focus {
+    background-color: #d6ecf3;
+    color: #0b1d2a;
+    text-decoration: underline;
+  }
+
+  &:active {
     background-color: #add8e6;
+    color: #0b1d2a;
   }
 }
 
