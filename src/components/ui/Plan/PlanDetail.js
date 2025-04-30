@@ -154,7 +154,13 @@ const PlanDetailExpanded = () => {
 			/>
 			<div style={{ marginTop: "2rem", textAlign: "center" }}>
 				<Button
-					onClick={() => navigate("/drug-coverage", { state: { planId } })}>
+					onClick={() =>
+						navigate("/drug-coverage", {
+							state: {
+								selectedPlans: [{ id: planId, name: plan.name }],
+							},
+						})
+					}>
 					Check if your Medication is Covered
 				</Button>
 			</div>
