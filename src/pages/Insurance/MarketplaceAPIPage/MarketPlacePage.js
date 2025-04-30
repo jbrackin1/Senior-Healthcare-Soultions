@@ -274,7 +274,7 @@ const handleClearFilters = () => {
   </div>
 )}
 
-			<Collapsible title="Step 1: Customize Your Preferences">
+			<Collapsible title="Customize Your Preferences">
 				<UserPreference
 					formData={formData}
 					setFormData={setFormData}
