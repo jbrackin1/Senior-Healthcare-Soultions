@@ -8,12 +8,13 @@ import Input from "../../components/ui/Global/forms/Input";
 import Modal from "../../components/ui/Global/everywhere/modal";
 import { Link } from "react-router-dom";
 import DarkLogoSHS from "../../Img/assets/SiteLogos/DarkLogoSHS.webp";
-import BlueBackground from "../../Img/assets/images/BlueBackground.jpeg";
+import LappyBG from "../../Img/assets/images/LappyBG.png";
+import CellphoneBG from "../../Img/assets/images/CellphoneBG.png"
 
 const PageWrapper = styled.div`
 	padding: 0;
-	background-image: url(${BlueBackground});
-	background-size: fit;
+	background-image: url(${LappyBG});
+	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
 	color: ${({ theme }) => theme.colors.text};
@@ -22,6 +23,13 @@ const PageWrapper = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-start;
+
+	@media (max-width: 768px) {
+		background-image: url(${CellphoneBG});
+			background-size: cover;
+		background-position: center;
+	}
+	}
 `;
 
 // Hero Section alone at the top
@@ -53,6 +61,12 @@ const MiddleContent = styled.div`
 	gap: 6rem;
 	width: 100%;
 	padding: 12rem;
+
+	@media (max-width: 768px) {
+		flex-direction: column;
+		padding: 2rem;
+		gap: 2rem;
+	}
 `;
 
 const QuickLinks = styled.section`
@@ -161,19 +175,22 @@ const HomePage = () => {
 				<HeroDescription>
 					Find the best insurance plans tailored to your needs.
 				</HeroDescription>
-				<button onClick={handlebuttonClick}>Sign Up Now</button>
+
+				<Linkbutton onClick={handlebuttonClick}>
+					Get Personalized Recommendations
+				</Linkbutton>
 			</HeroSection>
 
 			<MiddleContent>
 				<QuickLinks>
-					<StyledLink to="/find-plan">
-						<Linkbutton Find The Right Plan For You></Linkbutton>
-					</StyledLink>
-					<StyledLink to="/compare">
+					<StyledLink to="/marketplace">
 						<Linkbutton>Compare Plans</Linkbutton>
 					</StyledLink>
 					<StyledLink to="/resources">
 						<Linkbutton>Resources</Linkbutton>
+					</StyledLink>
+					<StyledLink to="/about">
+						<Linkbutton>About Us</Linkbutton>
 					</StyledLink>
 					<StyledLink to="/contact">
 						<Linkbutton>Contact Us</Linkbutton>
