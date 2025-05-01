@@ -36,7 +36,6 @@ const PageWrapper = styled.div`
 const HeroSection = styled.section`
 	width: 100%;
 	text-align: center;
-	padding: 4rem 2rem;
 	background-color: ${({ theme }) => theme.colors.primary};
 	color: ${({ theme }) => theme.colors.backgroundAlt};
 `;
@@ -169,16 +168,24 @@ const HomePage = () => {
 	return (
 		<PageWrapper>
 			<HeroSection>
-				<img src={DarkLogoSHS} alt="SHS Logo" style={{ width: "400px" }} />
-
-				{/* <HeroTitle>Senior Healthcare Solutions</HeroTitle> */}
-				<HeroDescription>
-					Find the best insurance plans tailored to your needs.
-				</HeroDescription>
-
-				<Linkbutton onClick={handlebuttonClick}>
-					Get Personalized Recommendations
-				</Linkbutton>
+				<div
+					style={{
+						display: "flex",
+						flexDirection: "column",
+						alignItems: "center",
+					}}>
+					<img
+						src={DarkLogoSHS}
+						alt="SHS Logo"
+						style={{ width: "250px", maxWidth: "90%" }}
+					/>
+					<HeroDescription>
+						Find the best insurance plans tailored to your needs.
+					</HeroDescription>
+					<Linkbutton onClick={handlebuttonClick}>
+						Get Personalized Recommendations
+					</Linkbutton>
+				</div>
 			</HeroSection>
 
 			<MiddleContent>
@@ -201,10 +208,16 @@ const HomePage = () => {
 					<HighlightTitle>Why Choose Us?</HighlightTitle>
 					<HighlightList>
 						<HighlightItem>
-							Find the Best Insurance for Your Needs
+							Personalized plan matching — we tailor options to your needs
 						</HighlightItem>
-						<HighlightItem>Compare Coverage and Costs</HighlightItem>
-						<HighlightItem>Trusted by Experts</HighlightItem>
+						<HighlightItem>
+							Compare Coverage and Costs Transparent cost comparisons — no
+							hidden surprises
+						</HighlightItem>
+						<HighlightItem>
+							Built for seniors & caregivers Trusted by families, backed by
+							experts
+						</HighlightItem>
 					</HighlightList>
 				</HighlightSection>
 			</MiddleContent>

@@ -10,7 +10,7 @@ import BenefitAccordion from "../Global/data-display/BenefitAccordian";
 import useMomMode from "../Feedback/MomMode";
 import TieredPlanInfoTable from "../Plan/TieredPlanInfoTable";
 import ReusableTable from "../Global/data-display/ReusableTable";
-
+import { matchPlanToUserPrefs } from "../../../utils/user/matchUserPrefs";
 
 const DetailContainer = styled.div`
 	padding: 2rem;
@@ -33,10 +33,7 @@ const MetadataRow = styled.div`
 		flex: 1;
 		min-width: 120px;
 	}
-		
 `;
-
-
 
 const PlanDetailExpanded = () => {
 	const { planId } = useParams();
@@ -45,6 +42,7 @@ const PlanDetailExpanded = () => {
 	const { enabled } = useMomMode();
 
 	const fallbackPlan = location.state?.plan || null;
+	const userPrefs = location.state?.userPrefs || {};
 
 	const [plan, setPlan] = useState(null);
 	const [loading, setLoading] = useState(true);
@@ -88,8 +86,6 @@ const PlanDetailExpanded = () => {
 							: fallbackPlan?.ehb_premium || null,
 				};
 
-				console.log("Merged Raw Plan:", mergedData); // ✅ INSIDE loadPlanDetails
-				console.log("Formatted Plan:", formatDetailedInsInfo(mergedData)); // ✅ INSIDE loadPlanDetails
 				setPlan(formatDetailedInsInfo(mergedData));
 			} catch (error) {
 				console.error("Error fetching plan details:", error);
@@ -101,16 +97,26 @@ const PlanDetailExpanded = () => {
 		loadPlanDetails();
 	}, [planId, fallbackPlan]);
 
-
 	if (loading) return <p>Loading...</p>;
 	if (!plan) return <p>No plan details available.</p>;
+
+	const matchSummary = matchPlanToUserPrefs(plan, userPrefs);
 
 	return (
 		<DetailContainer>
 			<h2>{plan.name}</h2>
+			{matchSummary?.matchesAll ? (
+				<div className="highlight-badge">✅ Meets ALL your preferences</div>
+			) : (
+				<div className="match-summary">
+					✅ Matches: {matchSummary.matched.join(", ")}
+				</div>
+			)}
+
 			<TieredPlanInfoTable title="Deductibles" data={plan.tiered_deductibles} />
 			<TieredPlanInfoTable title="Max Out-of-Pocket" data={plan.tiered_moops} />
 			<TieredPlanInfoTable title="Premium" data={plan.tiered_premiums} />
+
 			<MetadataRow>
 				<span>
 					<b>Plan Type:</b> {plan.type}
@@ -122,15 +128,18 @@ const PlanDetailExpanded = () => {
 					<b>HSA Eligible:</b> {plan.hsaEligible}
 				</span>
 			</MetadataRow>
+
 			<BenefitAccordion
 				benefits={plan.categorizedBenefits}
 				userPreferences={false}
 				momMode={enabled}
 			/>
+
 			<ReusableTable
 				headers={["Program"]}
 				data={(plan.disease_mgmt_programs || []).map((program) => [program])}
 			/>
+
 			<ReusableTable
 				headers={["Category", "Rating"]}
 				data={[
@@ -143,6 +152,7 @@ const PlanDetailExpanded = () => {
 					],
 				]}
 			/>
+
 			<ReusableTable
 				headers={["Resource"]}
 				data={[
@@ -152,6 +162,7 @@ const PlanDetailExpanded = () => {
 					[{ label: "Drug Formulary", url: plan.formularyUrl }],
 				]}
 			/>
+
 			<div style={{ marginTop: "2rem", textAlign: "center" }}>
 				<Button
 					onClick={() =>
@@ -164,7 +175,7 @@ const PlanDetailExpanded = () => {
 					Check if your Medication is Covered
 				</Button>
 			</div>
-			<div style={{ marginTop: "2rem", textAlign: "center " }}>
+			<div style={{ marginTop: "2rem", textAlign: "center" }}>
 				<Button onClick={() => navigate(-1)}>Back</Button>
 			</div>
 		</DetailContainer>

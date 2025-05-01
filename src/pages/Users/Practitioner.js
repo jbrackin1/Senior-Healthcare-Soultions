@@ -1,7 +1,4 @@
 // /** @format */
-
-// // src/pages/Insurance/PractitionerPage.js
-
 // import React, { useState } from "react";
 // import PractitionerComponent from "../components/ui/Global/PractitionerComponent";
 

@@ -11,12 +11,12 @@ const GlobalStyles = createGlobalStyle`
   }
 
   /* Layout */
-  html, body, #root {
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 0;
-  }
+html, body, #root {
+  margin: 0;
+  padding: 0;
+ height: 100%;
+  overflow-x: hidden;
+}
 
   body {
     font-family: 'Open Sans', sans-serif;

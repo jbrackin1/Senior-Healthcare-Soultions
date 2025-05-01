@@ -161,7 +161,7 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 								gap: "0.5rem",
 								justifyContent: "center",
 							}}>
-							<span style={{ fontSize: "0.875rem" }}>Off</span>
+							<span style={{ fontSize: "0.875rem" }}>No</span>
 							<Toggle
 								isOn={formData.isPregnant || false}
 								onToggle={() =>
@@ -171,7 +171,7 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 									}))
 								}
 							/>
-							<span style={{ fontSize: "0.875rem" }}>On</span>
+							<span style={{ fontSize: "0.875rem" }}>Yes</span>
 						</div>
 					</div>
 
@@ -187,14 +187,14 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 								gap: "0.5rem",
 								justifyContent: "center",
 							}}>
-							<span style={{ fontSize: "0.875rem" }}>Off</span>
+							<span style={{ fontSize: "0.875rem" }}>No</span>
 							<Toggle
 								isOn={formData.isParent || false}
 								onToggle={() =>
 									setFormData((prev) => ({ ...prev, isParent: !prev.isParent }))
 								}
 							/>
-							<span style={{ fontSize: "0.875rem" }}>On</span>
+							<span style={{ fontSize: "0.875rem" }}>Yes</span>
 						</div>
 					</div>
 
@@ -210,14 +210,14 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 								gap: "0.5rem",
 								justifyContent: "center",
 							}}>
-							<span style={{ fontSize: "0.875rem" }}>Off</span>
+							<span style={{ fontSize: "0.875rem" }}>No</span>
 							<Toggle
 								isOn={formData.hasMEC || false}
 								onToggle={() =>
 									setFormData((prev) => ({ ...prev, hasMEC: !prev.hasMEC }))
 								}
 							/>
-							<span style={{ fontSize: "0.875rem" }}>On</span>
+							<span style={{ fontSize: "0.875rem" }}>Yes</span>
 						</div>
 					</div>
 				</FieldRow>
@@ -310,7 +310,7 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 								justifyContent: "center",
 								gap: "0.5rem",
 							}}>
-							<span style={{ fontSize: "0.875rem" }}>Off</span>
+							<span style={{ fontSize: "0.875rem" }}>No</span>
 							<Toggle
 								isOn={formData.dentalCoverage || false}
 								onToggle={() =>
@@ -320,7 +320,7 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 									}))
 								}
 							/>
-							<span style={{ fontSize: "0.875rem" }}>On</span>
+							<span style={{ fontSize: "0.875rem" }}>Yes</span>
 						</div>
 					</div>
 
@@ -333,7 +333,7 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 								justifyContent: "center",
 								gap: "0.5rem",
 							}}>
-							<span style={{ fontSize: "0.875rem" }}>Off</span>
+							<span style={{ fontSize: "0.875rem" }}>No</span>
 							<Toggle
 								isOn={formData.visionCoverage || false}
 								onToggle={() =>
@@ -343,7 +343,7 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 									}))
 								}
 							/>
-							<span style={{ fontSize: "0.875rem" }}>On</span>
+							<span style={{ fontSize: "0.875rem" }}>Yes</span>
 						</div>
 					</div>
 				</FieldRow>
