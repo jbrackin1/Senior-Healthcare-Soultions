@@ -131,7 +131,7 @@ const handleClearFilters = () => {
 				`https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${formData.zipcode}?apikey=${apiKey}`
 			);
 			const fipsData = await response.json();
-			if (fipsData && fipsData.counties.length > 0) {
+			if (fipsData) {
 				setFormData((prevData) => ({
 					...prevData,
 					countyfips: fipsData.counties[0].fips,
