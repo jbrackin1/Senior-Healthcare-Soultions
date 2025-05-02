@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 import { useTable } from "react-table";
 import styled from "styled-components";
-import button from "../Global/button";
+import button from "../Global/everywhere/button";
 
 const UserManagementContainer = styled.div`
 	padding: 2rem;

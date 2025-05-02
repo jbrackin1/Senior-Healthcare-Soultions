@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import button from "../../components/ui/Global/button";
+import button from "../../components/ui/Global/everywhere/button";
 import SearchBar from "../../components/ui/compare/Searchbar";
 import FilterSelect from "../../components/ui/compare/FilterSlelect";
 import { fetchAllAetnaData } from "../../services/Api/Aetna/Aetna";

@@ -55,4 +55,5 @@ jobs:
             "
 
     - name: Clean up SSH key
-      run: rm -f private-key.pem 
+      run: rm -f private-key.pem.
+      

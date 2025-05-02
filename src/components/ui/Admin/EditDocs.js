@@ -3,8 +3,8 @@
 // src/components/Admin/EditDocs.js
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import button from "../Global/button";
-import TextArea from "../Global/TextArea";
+import button from "../Global/everywhere/button";
+import TextArea from "../Global/forms/TextArea";
 
 const EditDocumentContainer = styled.div`
 	padding: 2rem;

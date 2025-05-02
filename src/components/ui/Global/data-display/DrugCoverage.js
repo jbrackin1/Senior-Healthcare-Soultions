@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { fetchDrugSuggestions } from "../../../utils/api/fetchDrugSuggestions";
-import { fetchDrugCoverage } from "../../../utils/api/fetchDrugCoverage";
-import Button from "./button";
-import DrugCoverageDetail from "../Plan/DrugCoverageDetail";
+import { fetchDrugSuggestions } from "../../../../utils/api/fetchDrugSuggestions";
+import { fetchDrugCoverage } from "../../../../utils/api/fetchDrugCoverage";
+import Button from "../everywhere/button";
+import DrugCoverageDetail from "../../Plan/DrugCoverageDetail";
 import AsyncSelect from "react-select/async";
 
-// Styled components for layout
+// Styled components
 const CoverageContainer = styled.div`
 	padding: 2rem;
 	background-color: ${({ theme }) => theme.colors.background || "#f8f9fa"};
@@ -23,14 +23,12 @@ const ResultsTable = styled.table`
 	margin-top: 1rem;
 	border-collapse: collapse;
 	border: 1px solid #ccc;
-
 	th,
 	td {
 		padding: 0.5rem;
 		text-align: left;
 		border: 1px solid #ddd;
 	}
-
 	th {
 		background-color: #f4f4f4;
 	}
@@ -41,28 +39,47 @@ const SpacedDiv = styled.div`
 `;
 
 const DrugCoverage = ({ isAuthenticated }) => {
-	const location = useLocation();
-	const navigate = useNavigate();
-	const [selectedPlans, setSelectedPlans] = useState(
-		location.state?.selectedPlans || []
-	);
+	const location = useLocation(); 
+	// const { selectedPlans = [], planId } = location.state || {}; 
+	
+	// const activePlans = isMultiplePlans ? selectedPlans : [{ id: planId }]; 
+	
+const [selectedPlans, setSelectedPlans] = useState(() => {
+	const fromState = location.state?.selectedPlans;
+	const fromStorage = localStorage.getItem("selectedPlans");
+	return fromState || (fromStorage ? JSON.parse(fromStorage) : []);
+});
+
+const planId = location.state?.planId;
+const activePlans =
+	selectedPlans.length > 0 ? selectedPlans : planId ? [{ id: planId }] : [];
+
 	const [drugRxCuis, setDrugRxCuis] = useState("");
 	const [coverageData, setCoverageData] = useState([]);
 	const [selectedDrug, setSelectedDrug] = useState(null);
 	const [error, setError] = useState("");
+	const isMultiplePlans = selectedPlans.length > 0;
 
 	useEffect(() => {
-		console.log("Selected plans:", selectedPlans);
-	}, [selectedPlans]);
+		const plansFromState = location.state?.selectedPlans;
+
+		if (plansFromState) {
+			setSelectedPlans(plansFromState);
+			localStorage.setItem("selectedPlans", JSON.stringify(plansFromState));
+		} else {
+			const storedPlans = localStorage.getItem("selectedPlans");
+			if (storedPlans) {
+				setSelectedPlans(JSON.parse(storedPlans));
+			}
+		}
+	}, []);
 
 	// Handle searching for drugs by name or RxCUI
 	const handleSearchDrug = async (inputValue) => {
 		if (!inputValue) return [];
-
 		try {
 			const suggestions = await fetchDrugSuggestions(inputValue);
 			console.log("Drug suggestions:", suggestions);
-
 			return suggestions.map((item) => ({
 				label: `${item.label}${item.strength ? ` - ${item.strength}` : ""}`,
 				value: item.value,
@@ -75,14 +92,14 @@ const DrugCoverage = ({ isAuthenticated }) => {
 
 	// Handle fetching coverage data for selected plans and drug RxCUI
 	const handleFetchCoverage = async () => {
-		if (selectedPlans.length === 0 || !drugRxCuis) {
+		if (activePlans.length === 0 || !drugRxCuis) {
 			setError("Please select a plan and provide a drug identifier.");
 			return;
 		}
 
 		try {
 			await fetchDrugCoverage({
-				planIds: selectedPlans.map((plan) => plan.id),
+				planIds: activePlans.map((plan) => plan.id),
 				drugRxCuis,
 				setCoverageData,
 				setError,
@@ -93,7 +110,7 @@ const DrugCoverage = ({ isAuthenticated }) => {
 		}
 	};
 
-	// Modify formatCoverageStatus to replace RxCUI with drug name if available
+	// Helper function for formatting coverage
 	const formatCoverageStatus = (coverage, generic_rxcui, generic_name) => {
 		switch (coverage) {
 			case "Covered":
@@ -114,13 +131,10 @@ const DrugCoverage = ({ isAuthenticated }) => {
 	return (
 		<CoverageContainer>
 			<h2>Drug Coverage</h2>
-
 			{/* Display selected plan names */}
-			<DrugCoverageDetail selectedPlans={selectedPlans} />
-
+			<DrugCoverageDetail selectedPlans={activePlans} />
 			<SpacedDiv>
 				{error && <p style={{ color: "red" }}>{error}</p>}
-				{/* Search bar to look up drugs */}
 				<AsyncSelect
 					cacheOptions
 					loadOptions={handleSearchDrug}
@@ -129,17 +143,23 @@ const DrugCoverage = ({ isAuthenticated }) => {
 						setDrugRxCuis(selectedOption.value);
 					}}
 					value={selectedDrug}
-					placeholder="Enter Drug Name or RxCUI"
-					noOptionsMessage={() => "No suggestions found"}
+					placeholder="Start typing a medication…"
+					noOptionsMessage={({ inputValue }) =>
+						inputValue.length < 4
+							? "Keep typing... we'll show results soon."
+							: "No matching drug found. Try the full name or generic."
+					}
 					getOptionLabel={(e) => `${e.label}`}
 				/>
 			</SpacedDiv>
-
+			{/*if statement later if ad rev for good rx or SingleCare Affiliate Program
+			via CJ (Commission Junction) */}
 			<SpacedDiv>
-				<Button onClick={handleFetchCoverage}>Check Drug Coverage</Button>
+				<Button onClick={handleFetchCoverage}>
+					Check If This Medication Is Covered
+				</Button>
 			</SpacedDiv>
-
-			{/* Display coverage data if available */}
+			{/* Show results */}
 			{coverageData?.coverage?.length > 0 && (
 				<ResultsTable>
 					<thead>
@@ -150,8 +170,8 @@ const DrugCoverage = ({ isAuthenticated }) => {
 					</thead>
 					<tbody>
 						{coverageData.coverage.map((entry, index) => (
-							<tr key={index}>
-								<td>{selectedPlans[index]?.name || "N/A"}</td>
+							<tr key={activePlans[index]?.id || index}>
+								<td>{activePlans[index]?.name || "N/A"}</td>
 								<td>
 									{formatCoverageStatus(
 										entry.coverage,
@@ -169,5 +189,3 @@ const DrugCoverage = ({ isAuthenticated }) => {
 };
 
 export default DrugCoverage;
-
-// EXAMPLE planid 11512NC0100028

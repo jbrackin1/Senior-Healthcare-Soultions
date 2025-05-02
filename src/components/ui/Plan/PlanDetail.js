@@ -1,13 +1,16 @@
 /** @format */
 
 import React, { useEffect, useState } from "react";
+import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { useParams, useNavigate } from "react-router-dom";
 import { fetchPlanDetails } from "../../../utils/api/fetchPlanDetails";
 import { formatDetailedInsInfo } from "../../../utils/formatters/formatDetailedInsInfo";
-import Button from "../Global/button";
-import BenefitAccordion from "../Global/BenefitAccordian";
+import Button from "../Global/everywhere/button";
+import BenefitAccordion from "../Global/data-display/BenefitAccordian";
 import useMomMode from "../Feedback/MomMode";
+import TieredPlanInfoTable from "../Plan/TieredPlanInfoTable";
+import ReusableTable from "../Global/data-display/ReusableTable";
+import { matchPlanToUserPrefs } from "../../../utils/user/matchUserPrefs";
 
 const DetailContainer = styled.div`
 	padding: 2rem;
@@ -18,82 +21,113 @@ const DetailContainer = styled.div`
 	margin: auto;
 `;
 
-const AccordionToggle = styled.button`
-	width: 100%;
-	text-align: left;
-	padding: 1rem;
-	background-color: ${({ theme }) => theme.colors.accent};
-	color: white;
-	border: none;
-	cursor: pointer;
-	font-weight: bold;
-	border-radius: 4px;
-`;
+const MetadataRow = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 1.5rem;
+	margin: 1rem 0;
+	font-size: 1rem;
 
-const AccordionContent = styled.div`
-	padding: 1rem;
-	background-color: ${({ theme }) => theme.colors.backgroundAlt};
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	margin-top: 0.5rem;
+	span {
+		flex: 1;
+		min-width: 120px;
+	}
 `;
 
 const PlanDetailExpanded = () => {
 	const { planId } = useParams();
 	const navigate = useNavigate();
+	const location = useLocation();
+	const { enabled } = useMomMode();
+
+	const fallbackPlan = location.state?.plan || null;
+	const userPrefs = location.state?.userPrefs || {};
+
 	const [plan, setPlan] = useState(null);
 	const [loading, setLoading] = useState(true);
-	const [expanded, setExpanded] = useState(false);
-	const { enabled } = useMomMode(); // ✅ this defines 'enabled'; still needs logic finished
-	
 
 	useEffect(() => {
 		const loadPlanDetails = async () => {
 			if (!planId) return;
-			const rawData = await fetchPlanDetails(planId);
-			if (rawData) setPlan(formatDetailedInsInfo(rawData));
-			setLoading(false);
+
+			try {
+				const rawData = await fetchPlanDetails(planId);
+
+				const mergedData = {
+					...rawData,
+					...(fallbackPlan || {}),
+					tiered_deductibles:
+						(fallbackPlan?.tiered_deductibles?.length || 0) >
+						(rawData?.tiered_deductibles?.length || 0)
+							? fallbackPlan.tiered_deductibles
+							: rawData.tiered_deductibles,
+					tiered_moops:
+						(fallbackPlan?.tiered_moops?.length || 0) >
+						(rawData?.tiered_moops?.length || 0)
+							? fallbackPlan.tiered_moops
+							: rawData.tiered_moops,
+					tiered_premiums:
+						(fallbackPlan?.tiered_premiums?.length || 0) >
+						(rawData?.tiered_premiums?.length || 0)
+							? fallbackPlan.tiered_premiums
+							: rawData.tiered_premiums,
+					premium:
+						rawData?.premium && rawData.premium > 0
+							? rawData.premium
+							: fallbackPlan?.premium || null,
+					premium_w_credit:
+						rawData?.premium_w_credit && rawData.premium_w_credit > 0
+							? rawData.premium_w_credit
+							: fallbackPlan?.premium_w_credit || null,
+					ehb_premium:
+						rawData?.ehb_premium && rawData.ehb_premium > 0
+							? rawData.ehb_premium
+							: fallbackPlan?.ehb_premium || null,
+				};
+
+				setPlan(formatDetailedInsInfo(mergedData));
+			} catch (error) {
+				console.error("Error fetching plan details:", error);
+			} finally {
+				setLoading(false);
+			}
 		};
 
 		loadPlanDetails();
-	}, [planId]);
+	}, [planId, fallbackPlan]);
 
 	if (loading) return <p>Loading...</p>;
 	if (!plan) return <p>No plan details available.</p>;
 
+	const matchSummary = matchPlanToUserPrefs(plan, userPrefs);
+
 	return (
 		<DetailContainer>
 			<h2>{plan.name}</h2>
-			<p>
-				<b>Premium:</b> ${plan.premium || "See tiers below"}
-				{plan.premium_w_credit && (
-					<>
-						<br />
-						<small>After Credit: ${plan.premium_w_credit}</small>
-					</>
-				)}
-				{plan.ehb_premium && (
-					<>
-						<br />
-						<small>EHB Only: ${plan.ehb_premium}</small>
-					</>
-				)}
-			</p>
-			<p>
-				<b>Plan Type:</b> {plan.type}
-			</p>
-			<p>
-				<b>Deductible:</b> {plan.deductible}
-			</p>
-			<p>
-				<b>Metal Level:</b> {plan.metalLevel}
-			</p>
-			<p>
-				<b>Maximum Out-of-Pocket:</b> {plan.moop}
-			</p>
-			<p>
-				<b>HSA Eligible:</b> {plan.hsaEligible}
-			</p>
+			{matchSummary?.matchesAll ? (
+				<div className="highlight-badge">✅ Meets ALL your preferences</div>
+			) : (
+				<div className="match-summary">
+					✅ Matches: {matchSummary.matched.join(", ")}
+				</div>
+			)}
+
+			<TieredPlanInfoTable title="Deductibles" data={plan.tiered_deductibles} />
+			<TieredPlanInfoTable title="Max Out-of-Pocket" data={plan.tiered_moops} />
+			<TieredPlanInfoTable title="Premium" data={plan.tiered_premiums} />
+
+			<MetadataRow>
+				<span>
+					<b>Plan Type:</b> {plan.type}
+				</span>
+				<span>
+					<b>Metal Level:</b> {plan.metalLevel}
+				</span>
+				<span>
+					<b>HSA Eligible:</b> {plan.hsaEligible}
+				</span>
+			</MetadataRow>
 
 			<BenefitAccordion
 				benefits={plan.categorizedBenefits}
@@ -101,49 +135,49 @@ const PlanDetailExpanded = () => {
 				momMode={enabled}
 			/>
 
-			<h3>Quality Ratings</h3>
-			<ul>
-				<li>Overall: {plan.qualityRating}</li>
-				<li>Experience: {plan.enrollee_experience_rating || "N/A"}</li>
-				<li>Efficiency: {plan.plan_efficiency_rating || "N/A"}</li>
-				<li>
-					{" "}
-					Clinical Quality: {plan.clinical_quality_management_rating || "N/A"}
-				</li>
-			</ul>
+			<ReusableTable
+				headers={["Program"]}
+				data={(plan.disease_mgmt_programs || []).map((program) => [program])}
+			/>
 
-			<h3>Disease Management Programs</h3>
-			<ul>
-				{(plan.disease_mgmt_programs || []).map((item, i) => (
-					<li key={i}>{item}</li>
-				))}
-			</ul>
+			<ReusableTable
+				headers={["Category", "Rating"]}
+				data={[
+					["Overall", plan.qualityRating],
+					["Experience", plan.enrollee_experience_rating || "N/A"],
+					["Efficiency", plan.plan_efficiency_rating || "N/A"],
+					[
+						"Clinical Quality",
+						plan.clinical_quality_management_rating || "N/A",
+					],
+				]}
+			/>
 
-			<h3>Resources</h3>
-			<ul>
-				<li>
-					<a href={plan.brochureUrl} target="_blank" rel="noreferrer">
-						Brochure
-					</a>
-				</li>
-				<li>
-					<a href={plan.benefitsUrl} target="_blank" rel="noreferrer">
-						Benefits Document
-					</a>
-				</li>
-				<li>
-					<a href={plan.networkUrl} target="_blank" rel="noreferrer">
-						Network Info
-					</a>
-				</li>
-				<li>
-					<a href={plan.formularyUrl} target="_blank" rel="noreferrer">
-						Drug Formulary
-					</a>
-				</li>
-			</ul>
+			<ReusableTable
+				headers={["Resource"]}
+				data={[
+					[{ label: "Brochure", url: plan.brochureUrl }],
+					[{ label: "Benefits Document", url: plan.benefitsUrl }],
+					[{ label: "Network Info", url: plan.networkUrl }],
+					[{ label: "Drug Formulary", url: plan.formularyUrl }],
+				]}
+			/>
 
-			<Button onClick={() => navigate(-1)}>Back</Button>
+			<div style={{ marginTop: "2rem", textAlign: "center" }}>
+				<Button
+					onClick={() =>
+						navigate("/drug-coverage", {
+							state: {
+								selectedPlans: [{ id: planId, name: plan.name }],
+							},
+						})
+					}>
+					Check if your Medication is Covered
+				</Button>
+			</div>
+			<div style={{ marginTop: "2rem", textAlign: "center" }}>
+				<Button onClick={() => navigate(-1)}>Back</Button>
+			</div>
 		</DetailContainer>
 	);
 };

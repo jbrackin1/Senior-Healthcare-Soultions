@@ -3,8 +3,8 @@
 // Users/ash/Desktop/NicolesProject/nicoles-app/src/components/ui/Admin/AdminBlog.js
 import React, { useState } from "react";
 import styled from "styled-components";
-import button from "../Global/button";
-import Input from "../Global/Input";
+import button from "../Global/everywhere/button";
+import Input from "../Global/forms/Input";
 
 // Styled Components
 const AdminBlogContainer = styled.main`

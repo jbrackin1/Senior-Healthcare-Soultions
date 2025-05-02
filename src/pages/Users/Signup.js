@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import button from "../../components/ui/Global/button";
-import Input from "../../components/ui/Global/Input";
+import button from "../../components/ui/Global/everywhere/button";
+import Input from "../../components/ui/Global/forms/Input";
 
 // Styled Components
 const LoginSignupContainer = styled.main`

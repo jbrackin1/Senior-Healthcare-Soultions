@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import Button from "../../../components/ui/Global/button";
+import Button from "../../../components/ui/Global/everywhere/button";
 import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
 import UserPreference from "../../Forms/UserPreference";
-import Collapsible from "../../../components/ui/Global/CollapsableButton";
+import Collapsible from "../../../components/ui/Global/layout/CollapsableButton";
 
 
 const CompareContainer = styled.main`
@@ -43,6 +42,7 @@ const FormField = styled.div`
 		border-radius: 4px;
 		font-size: 1rem;
 	}
+		
 `;
 
 const MarketPlacePage = () => {
@@ -50,8 +50,7 @@ const MarketPlacePage = () => {
 	const [selectedPlans, setSelectedPlans] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [isProcessing, setIsProcessing] = useState(false);
-	const [searchCompleted, setSearchCompleted] = useState(false);
-	const [clickedCheckMedication, setClickedCheckMedication] = useState(false); 
+	const [searchCompleted, setSearchCompleted] = useState(false); 
 	const [formData, setFormData] = useState({
 		income: "",
 		age: "",
@@ -81,7 +80,44 @@ const MarketPlacePage = () => {
 			});
 		}
 	};
-	
+
+	const filteredPlans = plans.filter((plan) => {
+		if (formData?.preferredPremium) {
+			return plan.premium <= formData.preferredPremium;
+		}
+		return true; // If no preferredPremium set, show all
+	});
+
+	const [toastMessage, setToastMessage] = useState("");
+const handleClearFilters = () => {
+	const hasFiltersToClear =
+		formData.preferredPremium ||
+		formData.metalLevel ||
+		formData.planType ||
+		formData.issuer ||
+		(formData.lifestylePrograms && formData.lifestylePrograms.length > 0) ||
+		formData.dentalCoverage ||
+		formData.visionCoverage;
+
+	if (hasFiltersToClear) {
+		setFormData((prevData) => ({
+			...prevData,
+			preferredPremium: "",
+			metalLevel: "",
+			planType: "",
+			issuer: "",
+			lifestylePrograms: [],
+			dentalCoverage: false,
+			visionCoverage: false,
+		}));
+
+		setToastMessage("Preferences cleared!");
+	} else {
+		setToastMessage("No preferences to clear.");
+	}
+
+	setTimeout(() => setToastMessage(""), 2000);
+};
 	
 	useEffect(() => {
 		loadFormData();
@@ -103,7 +139,7 @@ const MarketPlacePage = () => {
 				}));
 				console.log("FIPS Code:", fipsData.counties[0].fips);
 			} else {
-				console.error("No counties found for the provided ZIP code.");
+				console.error("No counties/parishes found for the provided ZIP code.");
 			}
 		} catch (error) {
 			console.error("Error fetching FIPS code:", error);
@@ -173,7 +209,7 @@ const MarketPlacePage = () => {
 					setPlans(data.plans); // Set plans in state
 				} else {
 					// Handle case where no plans are found
-					alert("No plans found. Please check your inputs.");
+					alert("No plans found.Try adjusting your filters — removing one or two preferences might help!");
 				}
 			} else {
 				// Log error response if not ok
@@ -212,20 +248,41 @@ const MarketPlacePage = () => {
 	};
 
 
-	const handleCheckMedicationClick = () => {
-		setClickedCheckMedication(true);  // Mark the button as clicked
-	};
-
 	return (
 		<CompareContainer>
+			{toastMessage && (
+				<div
+					style={{
+						position: "fixed",
+						top: "1rem",
+						left: "50%",
+						transform: "translateX(-50%)",
+						backgroundColor: "#add8e6", // Robin's Egg Blue!
+						color: "#13343E",
+						padding: "0.75rem 1.25rem",
+						borderRadius: "8px",
+						fontWeight: "bold",
+						boxShadow: "0px 4px 8px rgba(0,0,0,0.2)",
+						zIndex: 1000,
+						animation: "fadeInOut 2s forwards",
+					}}>
+					{toastMessage}
+				</div>
+			)}
 
-			<Collapsible title="Step 1: Customize Your Preferences">
+			<Collapsible title="Customize Your Preferences">
 				<UserPreference
 					formData={formData}
 					setFormData={setFormData}
 					facetGroups={[]} // pass actual data when you're ready
 				/>
 			</Collapsible>
+
+			<div style={{ textAlign: "center", margin: "1rem 0" }}>
+				<Button type="button" onClick={handleClearFilters}>
+					Clear All Filters
+				</Button>
+			</div>
 
 			<SectionTitle>Compare Insurance Plans</SectionTitle>
 
@@ -286,43 +343,21 @@ const MarketPlacePage = () => {
 			{!loading && plans.length > 0 && (
 				<>
 					<ComparisonTable
-						plans={plans}
+						plans={filteredPlans}
 						onTogglePlan={handlePlanToggle}
 						selectedPlans={selectedPlans}
+						userPrefs={formData}
 					/>
-
-					<div style={{ marginTop: "2rem", textAlign: "center" }}>
-						<Button
-							as={Link}
-							to="/drug-coverage"
-							state={{ selectedPlans }}
-							onClick={handleCheckMedicationClick} // Mark button as clicked
-							style={{
-								backgroundColor:
-									selectedPlans.length === 0 ? "#add8e6" : "#51BFE4",
-								pointerEvents: selectedPlans.length === 0 ? "none" : "auto",
-							}}>
-							Check if your medication is covered
-						</Button>
-
-						{clickedCheckMedication && selectedPlans.length === 0 && (
-							<p
-								style={{
-									color: "red",
-									textAlign: "center",
-									marginTop: "1rem",
-								}}>
-								<b>Please select at least one plan to continue.</b>
-							</p>
-						)}
-					</div>
 				</>
 			)}
 
 			{/* Show message if no plans were found */}
 			{!loading && searchCompleted && plans.length === 0 && (
 				<p style={{ textAlign: "center", color: "red" }}>
-					No plans found for the provided parameters.
+					No matching plans found based on your preferences.
+					<br />
+					Try adjusting your filters — removing one or two preferences might
+					help!
 				</p>
 			)}
 		</CompareContainer>

@@ -1,7 +1,7 @@
 /** @format */
 
 import React from "react";
-import Button from "../../../components/ui/Global/button";
+import Button from "../../../components/ui/Global/everywhere/button";
 
 const FinalStep = ({ onSubmit, onSignup }) => {
 	return (

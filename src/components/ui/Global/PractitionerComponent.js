@@ -1,8 +1,4 @@
-/** @format */
 
-// /** @format */
-
-// // src/components/PractitionerComponent.js
 
 // import React, { useState } from "react";
 
