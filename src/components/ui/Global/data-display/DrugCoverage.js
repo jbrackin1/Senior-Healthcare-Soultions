@@ -39,20 +39,40 @@ const SpacedDiv = styled.div`
 `;
 
 const DrugCoverage = ({ isAuthenticated }) => {
-	const location = useLocation(); // 👈 FIRST get location
-	const { selectedPlans = [], planId } = location.state || {}; // 👈 THEN destructure it
-	const isMultiplePlans = selectedPlans.length > 0;
-	const activePlans = isMultiplePlans ? selectedPlans : [{ id: planId }]; // 👈 Build a safe array
+	const location = useLocation(); 
+	// const { selectedPlans = [], planId } = location.state || {}; 
+	
+	// const activePlans = isMultiplePlans ? selectedPlans : [{ id: planId }]; 
+	
+const [selectedPlans, setSelectedPlans] = useState(() => {
+	const fromState = location.state?.selectedPlans;
+	const fromStorage = localStorage.getItem("selectedPlans");
+	return fromState || (fromStorage ? JSON.parse(fromStorage) : []);
+});
 
-	const navigate = useNavigate();
+const planId = location.state?.planId;
+const activePlans =
+	selectedPlans.length > 0 ? selectedPlans : planId ? [{ id: planId }] : [];
+
 	const [drugRxCuis, setDrugRxCuis] = useState("");
 	const [coverageData, setCoverageData] = useState([]);
 	const [selectedDrug, setSelectedDrug] = useState(null);
 	const [error, setError] = useState("");
+	const isMultiplePlans = selectedPlans.length > 0;
 
 	useEffect(() => {
-		console.log("Active plans:", activePlans);
-	}, [activePlans]);
+		const plansFromState = location.state?.selectedPlans;
+
+		if (plansFromState) {
+			setSelectedPlans(plansFromState);
+			localStorage.setItem("selectedPlans", JSON.stringify(plansFromState));
+		} else {
+			const storedPlans = localStorage.getItem("selectedPlans");
+			if (storedPlans) {
+				setSelectedPlans(JSON.parse(storedPlans));
+			}
+		}
+	}, []);
 
 	// Handle searching for drugs by name or RxCUI
 	const handleSearchDrug = async (inputValue) => {
@@ -111,10 +131,8 @@ const DrugCoverage = ({ isAuthenticated }) => {
 	return (
 		<CoverageContainer>
 			<h2>Drug Coverage</h2>
-
 			{/* Display selected plan names */}
 			<DrugCoverageDetail selectedPlans={activePlans} />
-
 			<SpacedDiv>
 				{error && <p style={{ color: "red" }}>{error}</p>}
 				<AsyncSelect
@@ -125,16 +143,22 @@ const DrugCoverage = ({ isAuthenticated }) => {
 						setDrugRxCuis(selectedOption.value);
 					}}
 					value={selectedDrug}
-					placeholder="Enter Drug Name or RxCUI"
-					noOptionsMessage={() => "No suggestions found"}
+					placeholder="Start typing a medication…"
+					noOptionsMessage={({ inputValue }) =>
+						inputValue.length < 4
+							? "Keep typing... we'll show results soon."
+							: "No matching drug found. Try the full name or generic."
+					}
 					getOptionLabel={(e) => `${e.label}`}
 				/>
 			</SpacedDiv>
-
+			{/*if statement later if ad rev for good rx or SingleCare Affiliate Program
+			via CJ (Commission Junction) */}
 			<SpacedDiv>
-				<Button onClick={handleFetchCoverage}>Check Drug Coverage</Button>
+				<Button onClick={handleFetchCoverage}>
+					Check If This Medication Is Covered
+				</Button>
 			</SpacedDiv>
-
 			{/* Show results */}
 			{coverageData?.coverage?.length > 0 && (
 				<ResultsTable>

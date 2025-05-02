@@ -28,7 +28,7 @@ import Resources from "./pages/Generic/Resources";
 import PractitionerPage from "./pages/Users/Practitioner";
 import Blog from "./pages/Generic/Blog";
 import DrugCoverage from "./components/ui/Global/data-display/DrugCoverage";
-import ComparePlans from "./pages/Insurance/Compare";
+// import ComparePlans from "./pages/Insurance/Compare";
 import PlanDetail from "./components/ui/Plan/PlanDetail";
 
 // Context and Services
@@ -64,7 +64,7 @@ function App() {
 								<Route path="/" element={<HomePage />} />
 								<Route path="/marketplace" element={<MarketPlacePage />} />
 								<Route path="/plan/:planId" element={<PlanDetail />} />
-								<Route path="/compare" element={<ComparePlans />} />
+								{/* <Route path="/compare" element={<ComparePlans />} /> */}
 								<Route path="/drug-coverage" element={<DrugCoverage />} />
 								<Route path="/signup" element={<SignUp />} />
 								<Route path="/login-signup" element={<LoginSignup />} />

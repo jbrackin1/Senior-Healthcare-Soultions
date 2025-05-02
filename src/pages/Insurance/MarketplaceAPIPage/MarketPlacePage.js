@@ -50,8 +50,7 @@ const MarketPlacePage = () => {
 	const [selectedPlans, setSelectedPlans] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [isProcessing, setIsProcessing] = useState(false);
-	const [searchCompleted, setSearchCompleted] = useState(false);
-	const [clickedCheckMedication, setClickedCheckMedication] = useState(false); 
+	const [searchCompleted, setSearchCompleted] = useState(false); 
 	const [formData, setFormData] = useState({
 		income: "",
 		age: "",
@@ -140,7 +139,7 @@ const handleClearFilters = () => {
 				}));
 				console.log("FIPS Code:", fipsData.counties[0].fips);
 			} else {
-				console.error("No counties found for the provided ZIP code.");
+				console.error("No counties/parishes found for the provided ZIP code.");
 			}
 		} catch (error) {
 			console.error("Error fetching FIPS code:", error);
@@ -210,7 +209,7 @@ const handleClearFilters = () => {
 					setPlans(data.plans); // Set plans in state
 				} else {
 					// Handle case where no plans are found
-					alert("No plans found. Please check your inputs.");
+					alert("No plans found.Try adjusting your filters — removing one or two preferences might help!");
 				}
 			} else {
 				// Log error response if not ok
@@ -249,32 +248,29 @@ const handleClearFilters = () => {
 	};
 
 
-	const handleCheckMedicationClick = () => {
-		setClickedCheckMedication(true);  // Mark the button as clicked
-	};
-
 	return (
 		<CompareContainer>
 			{toastMessage && (
-  <div style={{
-    position: "fixed",
-    top: "1rem",
-    left: "50%",
-    transform: "translateX(-50%)",
-    backgroundColor: "#add8e6", // Robin's Egg Blue!
-    color: "#13343E",
-    padding: "0.75rem 1.25rem",
-    borderRadius: "8px",
-    fontWeight: "bold",
-    boxShadow: "0px 4px 8px rgba(0,0,0,0.2)",
-    zIndex: 1000,
-    animation: "fadeInOut 2s forwards"
-  }}>
-    {toastMessage}
-  </div>
-)}
+				<div
+					style={{
+						position: "fixed",
+						top: "1rem",
+						left: "50%",
+						transform: "translateX(-50%)",
+						backgroundColor: "#add8e6", // Robin's Egg Blue!
+						color: "#13343E",
+						padding: "0.75rem 1.25rem",
+						borderRadius: "8px",
+						fontWeight: "bold",
+						boxShadow: "0px 4px 8px rgba(0,0,0,0.2)",
+						zIndex: 1000,
+						animation: "fadeInOut 2s forwards",
+					}}>
+					{toastMessage}
+				</div>
+			)}
 
-			<Collapsible title="Step 1: Customize Your Preferences">
+			<Collapsible title="Customize Your Preferences">
 				<UserPreference
 					formData={formData}
 					setFormData={setFormData}
@@ -350,6 +346,7 @@ const handleClearFilters = () => {
 						plans={filteredPlans}
 						onTogglePlan={handlePlanToggle}
 						selectedPlans={selectedPlans}
+						userPrefs={formData}
 					/>
 				</>
 			)}
@@ -357,7 +354,10 @@ const handleClearFilters = () => {
 			{/* Show message if no plans were found */}
 			{!loading && searchCompleted && plans.length === 0 && (
 				<p style={{ textAlign: "center", color: "red" }}>
-					No plans found for the provided parameters.
+					No matching plans found based on your preferences.
+					<br />
+					Try adjusting your filters — removing one or two preferences might
+					help!
 				</p>
 			)}
 		</CompareContainer>

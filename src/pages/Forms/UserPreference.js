@@ -117,93 +117,115 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 			{/* Filters for metalLevels, issuers, types */}
 
 			<FieldRow>
-				<div>
-					<div>
-						<Label>
-							Metal Level
-							{momMode && (
-								<Tooltip title="Metal Levels are shortcuts to guess yearly costs: Bronze = Cheapest monthly, but bigger bills if sick. Silver = Middle ground. Gold = Expensive monthly, cheaper care. Platinum = Highest monthly, lowest care costs." />
-							)}
-						</Label>
-					</div>
+				<div style={{ width: "100%", textAlign: "center", marginTop: "1rem" }}>
+					<Label>
+						Cost vs. Coverage Level
+						{momMode && (
+							<Tooltip title="Metal Levels are shortcuts to guess yearly costs: Bronze = Cheapest monthly, but bigger bills if sick. Silver = Middle ground. Gold = Expensive monthly, cheaper care. Platinum = Highest monthly, lowest care costs." />
+						)}
+					</Label>
+				</div>
 
-					<MetalLevelSelect
-						options={[
-							{
-								label: "Bronze Plan – Lower Monthly, Higher Risk",
-								value: "Bronze",
-							},
-							{ label: "Silver Plan – Balanced Costs", value: "Silver" },
-							{
-								label: "Gold Plan – Higher Monthly, Lower Risk",
-								value: "Gold",
-							},
-							{
-								label: "Platinum Plan – Highest Monthly, Lowest Risk",
-								value: "Platinum",
-							},
-						]}
-						defaultValue=""
-						onChange={(e) => handleFilterChange("metalLevel", e.target.value)}
-					/>
+				<div
+					style={{ width: "100%", textAlign: "center", marginTop: ".05rem" }}>
+					<select
+						style={{ maxWidth: "90%", padding: "0.5rem", fontSize: "1rem" }}
+						value={formData.metalLevel || ""}
+						onChange={(e) => handleFilterChange("metalLevel", e.target.value)}>
+						<option value="">Select a plan</option>
+						<option value="Bronze">
+							Bronze Plan – Lower Monthly, Higher Risk
+						</option>
+						<option value="Silver">Silver Plan – Balanced Costs</option>
+						<option value="Gold">Gold Plan – Higher Monthly, Lower Risk</option>
+						<option value="Platinum">
+							Platinum Plan – Highest Monthly, Lowest Risk
+						</option>
+					</select>
 				</div>
 			</FieldRow>
 
 			<SectionBlock>
-				<SectionTitle>Household Details</SectionTitle>
-
-				<FieldRow>
-					<div>
+				{/* Row 1 – Toggles with On/Off */}
+				<FieldRow
+					style={{ justifyContent: "center", flexWrap: "wrap", gap: "2rem" }}>
+					<div style={{ textAlign: "center" }}>
 						<Label>
-							Pregnant?
+							Pregnant?{" "}
 							<Tooltip title="Only answer 'Yes' if you or someone you're enrolling is currently pregnant." />
 						</Label>
-						<Toggle
-							isOn={formData.isPregnant || false}
-							onToggle={() =>
-								setFormData((prev) => ({
-									...prev,
-									isPregnant: !prev.isPregnant,
-								}))
-							}
-						/>
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								gap: "0.5rem",
+								justifyContent: "center",
+							}}>
+							<span style={{ fontSize: "0.875rem" }}>No</span>
+							<Toggle
+								isOn={formData.isPregnant || false}
+								onToggle={() =>
+									setFormData((prev) => ({
+										...prev,
+										isPregnant: !prev.isPregnant,
+									}))
+								}
+							/>
+							<span style={{ fontSize: "0.875rem" }}>Yes</span>
+						</div>
 					</div>
 
-					<div>
+					<div style={{ textAlign: "center" }}>
 						<Label>
-							Parent?
+							Parent?{" "}
 							<Tooltip title="Answer 'Yes' if you have dependent children under your care." />
 						</Label>
-						<Toggle
-							isOn={formData.isParent || false}
-							onToggle={() =>
-								setFormData((prev) => ({
-									...prev,
-									isParent: !prev.isParent,
-								}))
-							}
-						/>
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								gap: "0.5rem",
+								justifyContent: "center",
+							}}>
+							<span style={{ fontSize: "0.875rem" }}>No</span>
+							<Toggle
+								isOn={formData.isParent || false}
+								onToggle={() =>
+									setFormData((prev) => ({ ...prev, isParent: !prev.isParent }))
+								}
+							/>
+							<span style={{ fontSize: "0.875rem" }}>Yes</span>
+						</div>
 					</div>
 
-					<div>
+					<div style={{ textAlign: "center" }}>
 						<Label>
-							Has Minimum Essential Coverage?
+							Has Minimum Essential Coverage?{" "}
 							<Tooltip title="Minimum Essential Coverage means you already have basic health insurance like employer coverage, Medicare, or Medicaid." />
 						</Label>
-						<Toggle
-							isOn={formData.hasMEC || false}
-							onToggle={() =>
-								setFormData((prev) => ({
-									...prev,
-									hasMEC: !prev.hasMEC,
-								}))
-							}
-						/>
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								gap: "0.5rem",
+								justifyContent: "center",
+							}}>
+							<span style={{ fontSize: "0.875rem" }}>No</span>
+							<Toggle
+								isOn={formData.hasMEC || false}
+								onToggle={() =>
+									setFormData((prev) => ({ ...prev, hasMEC: !prev.hasMEC }))
+								}
+							/>
+							<span style={{ fontSize: "0.875rem" }}>Yes</span>
+						</div>
 					</div>
 				</FieldRow>
 
-				<FieldRow>
-					<div>
+				{/* Row 2 – Dropdowns */}
+				<FieldRow
+					style={{ justifyContent: "center", flexWrap: "wrap", gap: "2rem" }}>
+					<div style={{ textAlign: "center" }}>
 						<Label>Relationship</Label>
 						<select
 							value={formData.relationship || "Self"}
@@ -220,9 +242,9 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 						</select>
 					</div>
 
-					<div>
+					<div style={{ textAlign: "center" }}>
 						<Label>
-							Expected Health Usage
+							How Often Do You Use Healthcare?{" "}
 							<Tooltip title="Low: Rare doctor visits. Medium: Regular visits, some meds. High: Frequent specialists or ongoing care." />
 						</Label>
 						<select
@@ -240,6 +262,7 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 					</div>
 				</FieldRow>
 			</SectionBlock>
+
 			<SectionTitle>Wellness & Lifestyle Programs</SectionTitle>
 			<FieldRow>
 				{[
@@ -274,46 +297,73 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 				))}
 			</FieldRow>
 
-			<SectionTitle>Additional Coverage</SectionTitle>
-			<FieldRow>
-				<div>
-					<Label>Dental Coverage</Label>
-					<Toggle
-						isOn={formData.dentalCoverage || false}
-						onToggle={() =>
-							setFormData((prev) => ({
-								...prev,
-								dentalCoverage: !prev.dentalCoverage,
-							}))
-						}
-					/>
-				</div>
-				<div>
-					<Label>Vision Coverage</Label>
-					<Toggle
-						isOn={formData.visionCoverage || false}
-						onToggle={() =>
-							setFormData((prev) => ({
-								...prev,
-								visionCoverage: !prev.visionCoverage,
-							}))
-						}
-					/>
-				</div>
-			</FieldRow>
 			<SectionBlock>
-				<SectionTitle>Extra Help & Explanations</SectionTitle>
-				<FieldRow>
-					<div>
-						<Label>Helpful Tips</Label>
-						<Tooltip title="Turn this on to see extra explanations about plan details and coverage." />
-						<Toggle
-							isOn={tooltipOn}
-							onToggle={() => setTooltipOn((prev) => !prev)}
-						/>
+				<SectionTitle>Additional Coverage</SectionTitle>
+				<FieldRow
+					style={{ justifyContent: "center", gap: "3rem", flexWrap: "wrap" }}>
+					<div style={{ textAlign: "center" }}>
+						<Label>Dental Coverage</Label>
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "center",
+								gap: "0.5rem",
+							}}>
+							<span style={{ fontSize: "0.875rem" }}>No</span>
+							<Toggle
+								isOn={formData.dentalCoverage || false}
+								onToggle={() =>
+									setFormData((prev) => ({
+										...prev,
+										dentalCoverage: !prev.dentalCoverage,
+									}))
+								}
+							/>
+							<span style={{ fontSize: "0.875rem" }}>Yes</span>
+						</div>
+					</div>
+
+					<div style={{ textAlign: "center" }}>
+						<Label>Vision Coverage</Label>
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "center",
+								gap: "0.5rem",
+							}}>
+							<span style={{ fontSize: "0.875rem" }}>No</span>
+							<Toggle
+								isOn={formData.visionCoverage || false}
+								onToggle={() =>
+									setFormData((prev) => ({
+										...prev,
+										visionCoverage: !prev.visionCoverage,
+									}))
+								}
+							/>
+							<span style={{ fontSize: "0.875rem" }}>Yes</span>
+						</div>
 					</div>
 				</FieldRow>
 			</SectionBlock>
+
+			{/* Helpful Tips Section */}
+<div style={{ marginTop: "2rem", textAlign: "center" }}>
+  <SectionTitle>Extra Help & Explanations</SectionTitle>
+  <FieldRow style={{ justifyContent: "center" }}>
+    <div>
+      <Label>Helpful Tips</Label>
+      <Tooltip title="Turn this on to see extra explanations about plan details and coverage." />
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", marginTop: "0.5rem" }}>
+        <span style={{ fontSize: "0.875rem" }}>Off</span>
+        <Toggle isOn={tooltipOn} onToggle={() => setTooltipOn((prev) => !prev)} />
+        <span style={{ fontSize: "0.875rem" }}>On</span>
+      </div>
+    </div>
+  </FieldRow>
+  </div>
 		</PreferenceContainer>
 	);
 };
