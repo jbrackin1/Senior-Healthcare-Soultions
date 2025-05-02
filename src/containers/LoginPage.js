@@ -3,7 +3,7 @@
 // src/pages/Login.js
 import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "../components/ui/Global/button";
+import button from "../components/ui/Global/button";
 import Input from "../components/ui/Global/Input";
 
 // Styled Components
@@ -46,7 +46,7 @@ const StyledInput = styled(Input)`
 	margin-bottom: 1rem;
 `;
 
-const StyledButton = styled(Button)`
+const Styledbutton = styled(button)`
 	margin-top: 1rem;
 	background-color: ${({ theme }) => theme.colors.primary};
 	color: ${({ theme }) => theme.colors.backgroundAlt};
@@ -84,7 +84,7 @@ function Login() {
 					onChange={(e) => setPassword(e.target.value)}
 					required
 				/>
-				<StyledButton type="submit">Login</StyledButton>
+				<Styledbutton type="submit">Login</Styledbutton>
 			</LoginForm>
 		</LoginContainer>
 	);

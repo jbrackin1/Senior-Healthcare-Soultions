@@ -57,7 +57,7 @@ const JobDescription = styled.p`
 	margin-bottom: 1rem;
 `;
 
-const ApplyButton = styled(Link)`
+const Applybutton = styled(Link)`
 	display: inline-block;
 	padding: 0.5rem 1rem;
 	background-color: ${({ theme }) => theme.colors.primary};
@@ -85,7 +85,6 @@ const ApplyButton = styled(Link)`
 // 	// Add job listings here
 // ];
 
-
 // Job Listings Component
 const JobListings = () => {
 	// Placeholder for future job data (currently empty)
@@ -108,7 +107,7 @@ const JobListings = () => {
 						<JobItem key={index}>
 							<JobTitle>{job.title}</JobTitle>
 							<JobDescription>{job.description}</JobDescription>
-							<ApplyButton to={job.applyLink}>Apply Now</ApplyButton>
+							<Applybutton to={job.applyLink}>Apply Now</Applybutton>
 						</JobItem>
 					))}
 				</JobList>

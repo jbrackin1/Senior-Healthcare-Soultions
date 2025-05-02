@@ -3,8 +3,8 @@
 // src/components/Admin/EditDocs.js
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Button from "../Global/button";
-import TextArea from "../Global/TextArea";
+import button from "../Global/everywhere/button";
+import TextArea from "../Global/forms/TextArea";
 
 const EditDocumentContainer = styled.div`
 	padding: 2rem;
@@ -64,7 +64,7 @@ const EditDocument = ({ documentType }) => {
 						value={content}
 						onChange={(e) => setContent(e.target.value)}
 					/>
-					<Button onClick={handleSave}>Save Changes</Button>
+					<button onClick={handleSave}>Save Changes</button>
 					{message && <p>{message}</p>}
 				</>
 			)}

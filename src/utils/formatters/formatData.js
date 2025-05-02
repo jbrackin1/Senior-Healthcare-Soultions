@@ -1,11 +1,7 @@
 /** @format */
 
-// src/utils/formatData.js
+// nicoles-app/src/utils/formatters/formatData.js
 
-/**
- * Utility function to format insurance data for display purposes.
- * This will take raw data from APIs and standardize it for views.
- */
 
 // Helper to format dates in a readable way (MM/DD/YYYY)
 export const formatDate = (dateString) => {

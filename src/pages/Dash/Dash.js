@@ -9,7 +9,7 @@ import EditDocument from "../../components/ui/Admin/EditDocs";
 import AdminBlog from "../../components/ui/Admin/AdminBlog";
 import AnalyticsChart from "../../components/ui/Admin/AnalyticsChart";
 import Settings from "../../components/ui/Admin/Settings";
-import Button from "../../components/ui/Global/button";
+import button from "../../components/ui/Global/everywhere/button";
 
 // Styled Components for Dashboard Layout
 const DashboardContainer = styled.main`
@@ -38,7 +38,7 @@ const SectionTitle = styled.h2`
 	color: ${({ theme }) => theme.colors.accent};
 `;
 
-const AdminButton = styled(Button)`
+const Adminbutton = styled(button)`
 	margin-top: 1rem;
 	background-color: ${({ theme }) => theme.colors.primary};
 	color: ${({ theme }) => theme.colors.backgroundAlt};
@@ -63,7 +63,7 @@ const NavigationMenu = styled.div`
 	justify-content: space-around;
 `;
 
-const NavButton = styled(Button)`
+const Navbutton = styled(button)`
 	background-color: ${({ active }) =>
 		active
 			? ({ theme }) => theme.colors.accent
@@ -86,26 +86,26 @@ function Dash() {
 		<DashboardContainer>
 			{/* Navigation Menu */}
 			<NavigationMenu>
-				<NavButton
+				<Navbutton
 					active={activeSection === "user-management"}
 					onClick={() => handleNavigation("user-management")}>
 					User Management
-				</NavButton>
-				<NavButton
+				</Navbutton>
+				<Navbutton
 					active={activeSection === "content-management"}
 					onClick={() => handleNavigation("content-management")}>
 					Content Management
-				</NavButton>
-				<NavButton
+				</Navbutton>
+				<Navbutton
 					active={activeSection === "analytics"}
 					onClick={() => handleNavigation("analytics")}>
 					Analytics & Reports
-				</NavButton>
-				<NavButton
+				</Navbutton>
+				<Navbutton
 					active={activeSection === "settings"}
 					onClick={() => handleNavigation("settings")}>
 					Settings
-				</NavButton>
+				</Navbutton>
 			</NavigationMenu>
 
 			<DashboardGrid>

@@ -1,7 +1,4 @@
 // /** @format */
-
-// // src/pages/Insurance/PractitionerPage.js
-
 // import React, { useState } from "react";
 // import PractitionerComponent from "../components/ui/Global/PractitionerComponent";
 
@@ -92,3 +89,6 @@
 // };
 
 // export default PractitionerPage;
+//FUTURE PlAN AFTER THEY SIGNUP AND 
+// PICK A PLAN SO THEY CAN SEE IF THEIR DR
+// IS ON THAT INSC...Hopefully

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Button from "../../components/ui/Global/button";
+import button from "../../components/ui/Global/everywhere/button";
 import SearchBar from "../../components/ui/compare/Searchbar";
 import FilterSelect from "../../components/ui/compare/FilterSlelect";
 import { fetchAllAetnaData } from "../../services/Api/Aetna/Aetna";
@@ -49,7 +49,7 @@ const PlanTitle = styled.h3`
 	color: ${({ theme }) => theme.colors.primary};
 `;
 
-const HeartButton = styled(Button)`
+const Heartbutton = styled(button)`
 	background-color: transparent;
 	color: ${({ isFavorite }) => (isFavorite ? "red" : "grey")};
 	border: none;
@@ -156,11 +156,11 @@ const ComparePlans = () => {
 						<PlanTitle>{plan.name}</PlanTitle>
 						<p>{plan.description}</p>
 					</PlanInfo>
-					<HeartButton
+					<Heartbutton
 						isFavorite={favorites.includes(plan.id)}
 						onClick={() => toggleFavorite(plan.id)}>
 						❤️
-					</HeartButton>
+					</Heartbutton>
 				</PlanCard>
 			))}
 		</CompareContainer>

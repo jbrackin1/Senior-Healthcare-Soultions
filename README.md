@@ -1,3 +1,26 @@
+# Nicole's Healthcare Concierge App
+
+## Live Demo
+🌎 [View Live on AWS](https://your-live-aws-link.com)
+
+---
+
+## Overview
+Nicole's App helps users compare real healthcare insurance plans based on their needs, not just prices — with a focus on accessibility and plain English understanding.
+
+## Core Features
+- 🛠️ Dynamic marketplace plan search via CMS Healthcare.gov API
+- 📋 Custom user preference intake (income, age, usage, lifestyle needs)
+- 💙 Mom Mode™: Translate confusing insurance terms into human language
+- 📱 Fully mobile responsive and desktop polished
+- 🖥️ Deployed live on AWS
+
+## In Progress
+- Priority-based plan highlight system
+- Risk-based "Mom Recommends" features
+- Expanded accessibility polish
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

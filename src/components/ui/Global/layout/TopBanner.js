@@ -12,16 +12,22 @@ const TopBanner = styled.header`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	font-size: ${({ theme }) => theme.fontSizes.large};
-	color: ${({ theme }) => theme.colors.accent};
+	padding: 1rem 0;
 	font-family: "Libre Baskerville", serif;
 `;
 
 const NavMenu = styled.nav`
 	display: flex;
-	gap: 20px;
-	margin-top: 20px;
+	flex-wrap: wrap;
+	gap: 1rem;
+	justify-content: center;
+	margin-top: 10px;
 	position: relative;
+
+	@media (max-width: 768px) {
+		flex-direction: column;
+		align-items: center;
+	}
 `;
 
 const NavItem = styled(Link)`
@@ -31,7 +37,11 @@ const NavItem = styled(Link)`
 	font-weight: bold;
 
 	&:hover {
-		color: ${({ theme }) => theme.colors.backgroundAlt};
+		color: #add8e6;
+	}
+
+	@media (max-width: 768px) {
+		font-size: 1rem;
 	}
 `;
 
@@ -45,18 +55,25 @@ const DropdownToggle = styled.div`
 	&:hover > div {
 		display: block;
 	}
+
+	@media (max-width: 768px) {
+		font-size: 1rem;
+	}
 `;
 
 const DropdownMenu = styled.div`
 	display: none;
 	position: absolute;
 	top: 100%;
-	left: 0;
+	left: 50%;
+	transform: translateX(-50%);
 	background-color: ${({ theme }) => theme.colors.background};
 	border: 1px solid ${({ theme }) => theme.colors.border};
 	padding: 10px 0;
 	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-	z-index: 1;
+	z-index: 5;
+	min-width: 200px;
+	text-align: center;
 `;
 
 const DropdownItem = styled(Link)`
@@ -66,7 +83,8 @@ const DropdownItem = styled(Link)`
 	padding: 10px 20px;
 
 	&:hover {
-		background-color: ${({ theme }) => theme.colors.hoverBackground};
+		background-color: ${({ theme }) =>
+			theme.colors.hoverBackground || "#f0f0f0"};
 		color: ${({ theme }) => theme.colors.accent};
 	}
 `;
@@ -90,10 +108,10 @@ const TopBannerComponent = () => {
 						<DropdownItem to="/privacy-policy">Privacy Policy</DropdownItem>
 						<DropdownItem to="/terms-of-service">Terms of Service</DropdownItem>
 						<DropdownItem to="/testimonials">Testimonials</DropdownItem>
+						<DropdownItem to="/faq">FAQ</DropdownItem>
 					</DropdownMenu>
 				</DropdownToggle>
 
-				
 				<DropdownToggle>
 					User
 					<DropdownMenu>

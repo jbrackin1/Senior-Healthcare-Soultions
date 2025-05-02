@@ -3,7 +3,7 @@
 // src/components/ComparePlans/SearchBar.js
 import React from "react";
 import styled from "styled-components";
-import Input from "../Global/Input";
+import Input from "../Global/forms/Input";
 
 const StyledSearchBar = styled(Input)`
 	padding: 0.5rem;
@@ -18,7 +18,7 @@ const SearchBar = ({ value, onChange }) => {
 	return (
 		<StyledSearchBar
 			type="text"
-			placeholder="Search for a plan..."
+			placeholder="Search for..."
 			value={value}
 			onChange={onChange}
 		/>

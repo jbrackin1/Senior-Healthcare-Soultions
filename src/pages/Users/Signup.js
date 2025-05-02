@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "../../components/ui/Global/button";
-import Input from "../../components/ui/Global/Input";
+import button from "../../components/ui/Global/everywhere/button";
+import Input from "../../components/ui/Global/forms/Input";
 
 // Styled Components
 const LoginSignupContainer = styled.main`
@@ -40,8 +40,8 @@ const StyledInput = styled(Input)`
 	margin-bottom: 1rem;
 `;
 
-const StyledButton = styled(Button)`
-	/* Use your reusable Button */
+const Styledbutton = styled(button)`
+	/* Use your reusable button */
 	margin-top: 1rem;
 	background-color: ${({ theme }) => theme.colors.primary};
 	color: ${({ theme }) => theme.colors.backgroundAlt};
@@ -50,7 +50,7 @@ const StyledButton = styled(Button)`
 	}
 `;
 
-const ToggleButton = styled.button`
+const Togglebutton = styled.button`
 	background: none;
 	border: none;
 	color: ${({ theme }) => theme.colors.accent};
@@ -123,15 +123,15 @@ function LoginSignup() {
 						required
 					/>
 					{error && <p style={{ color: "red" }}>{error}</p>}
-					<Button type="submit" disabled={loading}>
+					<button type="submit" disabled={loading}>
 						{loading ? "Processing..." : isLogin ? "Login" : "Sign Up"}
-					</Button>
+					</button>
 				</form>
-				<ToggleButton onClick={() => setIsLogin(!isLogin)}>
+				<Togglebutton onClick={() => setIsLogin(!isLogin)}>
 					{isLogin
 						? "Don't have an account? Sign Up"
 						: "Already have an account? Login"}
-				</ToggleButton>
+				</Togglebutton>
 			</FormContainer>
 		</LoginSignupContainer>
 	);

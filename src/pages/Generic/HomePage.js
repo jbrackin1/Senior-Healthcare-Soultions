@@ -3,17 +3,18 @@
 // HomePage.js
 import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "../../components/ui/Global/button";
-import Input from "../../components/ui/Global/Input";
-import Modal from "../../components/ui/Global/modal";
+import button from "../../components/ui/Global/everywhere/button";
+import Input from "../../components/ui/Global/forms/Input";
+import Modal from "../../components/ui/Global/everywhere/modal";
 import { Link } from "react-router-dom";
 import DarkLogoSHS from "../../Img/assets/SiteLogos/DarkLogoSHS.webp";
-import BlueBackground from "../../Img/assets/images/BlueBackground.jpeg";
+import LappyBG from "../../Img/assets/images/LappyBG.png";
+import CellphoneBG from "../../Img/assets/images/CellphoneBG.png"
 
 const PageWrapper = styled.div`
 	padding: 0;
-	background-image: url(${BlueBackground});
-	background-size: fit;
+	background-image: url(${LappyBG});
+	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
 	color: ${({ theme }) => theme.colors.text};
@@ -22,13 +23,19 @@ const PageWrapper = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-start;
+
+	@media (max-width: 768px) {
+		background-image: url(${CellphoneBG});
+			background-size: cover;
+		background-position: center;
+	}
+	}
 `;
 
 // Hero Section alone at the top
 const HeroSection = styled.section`
 	width: 100%;
 	text-align: center;
-	padding: 4rem 2rem;
 	background-color: ${({ theme }) => theme.colors.primary};
 	color: ${({ theme }) => theme.colors.backgroundAlt};
 `;
@@ -53,6 +60,12 @@ const MiddleContent = styled.div`
 	gap: 6rem;
 	width: 100%;
 	padding: 12rem;
+
+	@media (max-width: 768px) {
+		flex-direction: column;
+		padding: 2rem;
+		gap: 2rem;
+	}
 `;
 
 const QuickLinks = styled.section`
@@ -67,7 +80,7 @@ const StyledLink = styled(Link)`
 	text-decoration: none;
 `;
 
-const LinkButton = styled(Button)`
+const Linkbutton = styled(button)`
 	margin-bottom: 1rem;
 `;
 
@@ -144,7 +157,7 @@ const TestimonialAuthor = styled.p`
 const HomePage = () => {
 	const [isModalOpen, setModalOpen] = useState(false);
 
-	const handleButtonClick = () => {
+	const handlebuttonClick = () => {
 		setModalOpen(true);
 	};
 
@@ -155,29 +168,39 @@ const HomePage = () => {
 	return (
 		<PageWrapper>
 			<HeroSection>
-				<img
-					src={DarkLogoSHS}
-					alt="SHS Logo"
-					style={{ width: "400px" }}
-				/>
-
-				{/* <HeroTitle>Senior Healthcare Solutions</HeroTitle> */}
-				<HeroDescription>
-					Find the best insurance plans tailored to your needs.
-				</HeroDescription>
-				<Button onClick={handleButtonClick}>Sign Up Now</Button>
+				<div
+					style={{
+						display: "flex",
+						flexDirection: "column",
+						alignItems: "center",
+					}}>
+					<img
+						src={DarkLogoSHS}
+						alt="SHS Logo"
+						style={{ width: "250px", maxWidth: "90%" }}
+					/>
+					<HeroDescription>
+						Find the best insurance plans tailored to your needs.
+					</HeroDescription>
+					<Linkbutton onClick={handlebuttonClick}>
+						Get Personalized Recommendations
+					</Linkbutton>
+				</div>
 			</HeroSection>
 
 			<MiddleContent>
 				<QuickLinks>
-					<StyledLink to="/compare">
-						<LinkButton>Compare Plans</LinkButton>
+					<StyledLink to="/marketplace">
+						<Linkbutton>Compare Plans</Linkbutton>
 					</StyledLink>
 					<StyledLink to="/resources">
-						<LinkButton>Resources</LinkButton>
+						<Linkbutton>Resources</Linkbutton>
+					</StyledLink>
+					<StyledLink to="/about">
+						<Linkbutton>About Us</Linkbutton>
 					</StyledLink>
 					<StyledLink to="/contact">
-						<LinkButton>Contact Us</LinkButton>
+						<Linkbutton>Contact Us</Linkbutton>
 					</StyledLink>
 				</QuickLinks>
 
@@ -185,10 +208,16 @@ const HomePage = () => {
 					<HighlightTitle>Why Choose Us?</HighlightTitle>
 					<HighlightList>
 						<HighlightItem>
-							Find the Best Insurance for Your Needs
+							Personalized plan matching — we tailor options to your needs
 						</HighlightItem>
-						<HighlightItem>Compare Coverage and Costs</HighlightItem>
-						<HighlightItem>Trusted by Experts</HighlightItem>
+						<HighlightItem>
+							Compare Coverage and Costs Transparent cost comparisons — no
+							hidden surprises
+						</HighlightItem>
+						<HighlightItem>
+							Built for seniors & caregivers Trusted by families, backed by
+							experts
+						</HighlightItem>
 					</HighlightList>
 				</HighlightSection>
 			</MiddleContent>
@@ -206,7 +235,7 @@ const HomePage = () => {
 					<div>Sign up with your contact details to</div>
 					<div>receive offers customized just for you.</div>
 					<Input placeholder="Enter your email" />
-					<Button onClick={handleCloseModal}>Close</Button>
+					<button onClick={handleCloseModal}>Close</button>
 				</Modal>
 			)}
 		</PageWrapper>

@@ -6,7 +6,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Button from "../../components/ui/Global/button";
+import Button from "../../components/ui/Global/everywhere/button";
 
 // Styled Components
 const ResourcesContainer = styled.main`
@@ -133,7 +133,7 @@ const Resources = () => {
 				<SectionTitle>Frequently Asked Questions (FAQs)</SectionTitle>
 				<FAQList>
 					<FAQItem>
-						<FAQQuestion>
+						<FAQQuestion id="Compare-Plans">
 							What is the best way to compare insurance plans?
 						</FAQQuestion>
 						<FAQAnswer>
@@ -143,11 +143,84 @@ const Resources = () => {
 						</FAQAnswer>
 					</FAQItem>
 					<FAQItem>
-						<FAQQuestion>How do deductibles and premiums work?</FAQQuestion>
+						<FAQQuestion id="deductibles">
+							How do deductibles and premiums work?
+						</FAQQuestion>
 						<FAQAnswer>
 							A premium is what you pay monthly for insurance, while a
 							deductible is the amount you pay out-of-pocket before the
 							insurance covers expenses.
+						</FAQAnswer>
+					</FAQItem>
+					<FAQItem>
+						<FAQQuestion id="metal-tiers">
+							What Do Metal Levels Actually Mean?
+						</FAQQuestion>
+						<p>
+							Metal levels (Bronze, Silver, Gold, Platinum) are just labels the
+							government uses to describe how costs are split between you and
+							the insurance company:
+						</p>
+
+						<table
+							style={{
+								width: "100%",
+								marginTop: "1rem",
+								borderCollapse: "collapse",
+							}}>
+							<thead>
+								<tr>
+									<th style={{ textAlign: "left" }}>Tier</th>
+									<th>Monthly Cost</th>
+									<th>Deductible</th>
+									<th>Insurance Pays</th>
+									<th>You Pay</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>🥉 Bronze</td>
+									<td>💸 Low</td>
+									<td>😬 High</td>
+									<td>~60%</td>
+									<td>~40%</td>
+								</tr>
+								<tr>
+									<td>🥈 Silver</td>
+									<td>🪙 Medium</td>
+									<td>🪙 Medium</td>
+									<td>~70%</td>
+									<td>~30%</td>
+								</tr>
+								<tr>
+									<td>🥇 Gold</td>
+									<td>💰 Higher</td>
+									<td>😊 Lower</td>
+									<td>~80%</td>
+									<td>~20%</td>
+								</tr>
+								<tr>
+									<td>💎 Platinum</td>
+									<td>🤑 Highest</td>
+									<td>😎 Lowest</td>
+									<td>~90%</td>
+									<td>~10%</td>
+								</tr>
+							</tbody>
+						</table>
+						<FAQAnswer>
+							<p style={{ marginTop: "1rem" }}>
+								🗣️ <strong>In plain English:</strong>
+								<br />
+								<strong>Bronze</strong> plans are cheaper per month but cost
+								more when you need care.
+								<br />
+								<strong>Gold</strong> and <strong>Platinum</strong> cost more up
+								front but pay more if you get sick.
+								<br />
+								<strong>Silver</strong> is the only one that may unlock{" "}
+								<em>extra savings</em> if you qualify based on income.
+							</p>
 						</FAQAnswer>
 					</FAQItem>
 					{/* Additional FAQs can be added here */}
