@@ -127,30 +127,29 @@ const handleClearFilters = () => {
 		const apiKey = process.env.REACT_APP_MARKETPLACE_API_KEY;
 		console.log("Fetching FIPS code for ZIP:", formData.zipcode);
 		try {
-			const response = await fetch(
-				`https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${formData.zipcode}?apikey=${apiKey}`
-			);
-			const fipsData = await response.json();
-			if (fipsData) {
-				setFormData((prevData) => ({
-					...prevData,
-					countyfips: fipsData.counties[0].fips,
-					state: fipsData.counties[0].state,
-				}));
-				console.log("FIPS Code:", fipsData.counties[0].fips);
-			} else {
-				console.error("No counties/parishes found for the provided ZIP code.");
-			}
+				const response = await fetch(
+						`https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${formData.zipcode}?apikey=${apiKey}`
+				);
+				const fipsData = await response.json();
+				if (fipsData  && fipsData.counties.length > 0) {
+						setFormData((prevData) => ({
+								...prevData,
+								countyfips: fipsData.counties[0].fips,
+								state: fipsData.counties[0].state,
+						}));
+						console.log("FIPS Code:", fipsData.counties[0].fips);
+				} else {
+						console.error("No counties/parishes found for the provided ZIP code.");
+				}
 		} catch (error) {
-			console.error("Error fetching FIPS code:", error);
+				console.error("Error fetching FIPS code:", error);
 		}
-	};
-
-	useEffect(() => {
-		if (formData.zipcode) {
-			fetchFipsCode();
-		}
-	}, [formData.zipcode]);
+};
+		useEffect(() => {
+				if (formData.zipcode && formData.zipcode.length === 5) {
+						fetchFipsCode();
+				}
+		}, [formData.zipcode]);
 
 	const fetchMarketplaceData = async () => {
 		// Ensure all required fields are filled before sending the request
