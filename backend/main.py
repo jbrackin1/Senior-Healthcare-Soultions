@@ -24,6 +24,7 @@ def autocomplete_medications(q: str = Query(..., min_length=1)):
                 (q + '%',)
             )
             results = cursor.fetchall()
-            return [row["Generic"] for row in results]
+            # Access the first element of each tuple in results
+            return [row[0] for row in results]
     finally:
         conn.close()
