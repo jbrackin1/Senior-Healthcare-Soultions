@@ -50,7 +50,6 @@ jobs:
             ssh -o StrictHostKeyChecking=no -i private-key.pem ec2-user@${{ secrets.EC2_HOST }} "
               cd '${sanitized_path}' && echo '✅ Connected to EC2' && \
               git pull origin main && echo '📦 Git pull complete' && \
-              npm install && echo '🚀 NPM install complete' && \
               pm2 start npm --name "app" -- run start --update-env || pm2 restart app --update-env
             "
 
