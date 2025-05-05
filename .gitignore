@@ -29,3 +29,7 @@ yarn-error.log*
 
 # Ignore the config directory with sensitive keys
 config/
+
+# Python Venv stuff
+.venv/
+venv/
