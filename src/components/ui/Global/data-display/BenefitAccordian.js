@@ -3,7 +3,7 @@
 import React from "react";
 import styled from "styled-components";
 import Collapsible from "../../Global/layout/CollapsableButton";
-import useMomMode from "../../Feedback/MomMode";
+import MomMode from "../../Feedback/MomMode";
 
 const BenefitList = styled.ul`
 	padding-left: 1rem;
@@ -52,7 +52,7 @@ const BenefitAccordion = ({
 	userPreferences = {},
 	showCheckmarks = true,
 }) => {
-	const { enabled: momMode, translate } = useMomMode();
+	const { enabled: momMode, translate } = MomMode.useMomMode();
 
 	const isUserInterested = (title) => {
 		if (!userPreferences || typeof userPreferences !== "object") return false;

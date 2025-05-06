@@ -1,10 +1,12 @@
 /** @format */
 
+//nicoles-app/src/pages/Forms/UserPreference.js
+
 import React, { useState } from "react";
 import styled from "styled-components";
 import MetalLevelSelect from "../../components/ui/compare/MetalLevelSelect";
 import Toggle from "../../components/ui/Global/forms/Toggle";
-import useMomMode from "../../components/ui/Feedback/MomMode";
+import MomMode from "../../components/ui/Feedback/MomMode";
 import Tooltip from "../../components/ui/Global/data-display/Tooltip";
 
 const PreferenceContainer = styled.div`
@@ -78,15 +80,17 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 
 		const isUserInterested = (benefit, userPrefs = []) =>
 			userPrefs.includes(benefit);
-	const { enabled: momMode } = useMomMode();
+	const { enabled } = MomMode.useMomMode();
+	const momMode = enabled;
 
 	// Then later, if approved add more helpful tips here...If we do this it will take a while to get it right
 
 	{
-		momMode && (
+		enabled && (
 			<Tooltip title="Only answer 'Yes' if you or someone you're enrolling is currently pregnant." />
 		);
 	}
+	
 
 	return (
 		<PreferenceContainer>
@@ -132,23 +136,61 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 						style={{ maxWidth: "90%", padding: "0.5rem", fontSize: "1rem" }}
 						value={formData.metalLevel || ""}
 						onChange={(e) => handleFilterChange("metalLevel", e.target.value)}>
-						<option value="">Select a plan</option>
+						<option value="">Select a plan type (optional)</option>
 						<option value="Bronze">
-							Bronze Plan – Lower Monthly, Higher Risk
+							Bronze – Low Monthly Cost, High Out-of-Pocket (Good if you're
+							healthy)
 						</option>
-						<option value="Silver">Silver Plan – Balanced Costs</option>
-						<option value="Gold">Gold Plan – Higher Monthly, Lower Risk</option>
+						<option value="Silver">
+							Silver – Balanced Costs & Coverage (Most people choose this)
+						</option>
+						<option value="Gold">
+							Gold – Higher Monthly, Lower Care Costs (Ideal for frequent care)
+						</option>
 						<option value="Platinum">
-							Platinum Plan – Highest Monthly, Lowest Risk
+							Platinum – Highest Monthly, Lowest Care Costs (Best for ongoing
+							care)
 						</option>
 					</select>
 				</div>
 			</FieldRow>
 
 			<SectionBlock>
-				{/* Row 1 – Toggles with On/Off */}
+				{/* Toggles with On/Off */}
 				<FieldRow
-					style={{ justifyContent: "center", flexWrap: "wrap", gap: "2rem" }}>
+					style={{
+						justifyContent: "space-around",
+						gap: "1rem",
+						flexWrap: "wrap",
+					}}>
+					{/* Uses Tobacco */}
+					<div style={{ textAlign: "center" }}>
+						<Label>
+							Uses Tobacco?{" "}
+							<Tooltip title="Answer 'Yes' if you’ve used tobacco products in the last 6 months. This may affect premiums." />
+						</Label>
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								gap: "0.5rem",
+								justifyContent: "center",
+							}}>
+							<span style={{ fontSize: "0.875rem" }}>No</span>
+							<Toggle
+								isOn={formData.usesTobacco || false}
+								onToggle={() =>
+									setFormData((prev) => ({
+										...prev,
+										usesTobacco: !prev.usesTobacco,
+									}))
+								}
+							/>
+							<span style={{ fontSize: "0.875rem" }}>Yes</span>
+						</div>
+					</div>
+
+					{/* Pregnant */}
 					<div style={{ textAlign: "center" }}>
 						<Label>
 							Pregnant?{" "}
@@ -175,6 +217,7 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 						</div>
 					</div>
 
+					{/* Parent */}
 					<div style={{ textAlign: "center" }}>
 						<Label>
 							Parent?{" "}
@@ -197,6 +240,11 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 							<span style={{ fontSize: "0.875rem" }}>Yes</span>
 						</div>
 					</div>
+				</FieldRow>
+
+				<FieldRow
+					style={{ justifyContent: "center", flexWrap: "wrap", gap: "2rem" }}>
+					<div style={{ textAlign: "center" }}></div>
 
 					<div style={{ textAlign: "center" }}>
 						<Label>
@@ -222,45 +270,7 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 					</div>
 				</FieldRow>
 
-				{/* Row 2 – Dropdowns */}
-				<FieldRow
-					style={{ justifyContent: "center", flexWrap: "wrap", gap: "2rem" }}>
-					<div style={{ textAlign: "center" }}>
-						<Label>Relationship</Label>
-						<select
-							value={formData.relationship || "Self"}
-							onChange={(e) =>
-								setFormData((prev) => ({
-									...prev,
-									relationship: e.target.value,
-								}))
-							}>
-							<option value="Self">Self</option>
-							<option value="Spouse">Spouse</option>
-							<option value="Child">Child</option>
-							<option value="Other">Other</option>
-						</select>
-					</div>
-
-					<div style={{ textAlign: "center" }}>
-						<Label>
-							How Often Do You Use Healthcare?{" "}
-							<Tooltip title="Low: Rare doctor visits. Medium: Regular visits, some meds. High: Frequent specialists or ongoing care." />
-						</Label>
-						<select
-							value={formData.utilization || "Medium"}
-							onChange={(e) =>
-								setFormData((prev) => ({
-									...prev,
-									utilization: e.target.value,
-								}))
-							}>
-							<option value="Low">Low</option>
-							<option value="Medium">Medium</option>
-							<option value="High">High</option>
-						</select>
-					</div>
-				</FieldRow>
+				{/* Row Checkboxes */}
 			</SectionBlock>
 
 			<SectionTitle>Wellness & Lifestyle Programs</SectionTitle>
@@ -350,20 +360,30 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 			</SectionBlock>
 
 			{/* Helpful Tips Section */}
-<div style={{ marginTop: "2rem", textAlign: "center" }}>
-  <SectionTitle>Extra Help & Explanations</SectionTitle>
-  <FieldRow style={{ justifyContent: "center" }}>
-    <div>
-      <Label>Helpful Tips</Label>
-      <Tooltip title="Turn this on to see extra explanations about plan details and coverage." />
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", marginTop: "0.5rem" }}>
-        <span style={{ fontSize: "0.875rem" }}>Off</span>
-        <Toggle isOn={tooltipOn} onToggle={() => setTooltipOn((prev) => !prev)} />
-        <span style={{ fontSize: "0.875rem" }}>On</span>
-      </div>
-    </div>
-  </FieldRow>
-  </div>
+			<div style={{ marginTop: "2rem", textAlign: "center" }}>
+				<SectionTitle>Extra Help & Explanations</SectionTitle>
+				<FieldRow style={{ justifyContent: "center" }}>
+					<div>
+						<Label>Helpful Tips</Label>
+						<Tooltip title="Turn this on to see extra explanations about plan details and coverage." />
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "center",
+								gap: "0.5rem",
+								marginTop: "0.5rem",
+							}}>
+							<span style={{ fontSize: "0.875rem" }}>Off</span>
+							<Toggle
+								isOn={tooltipOn}
+								onToggle={() => setTooltipOn((prev) => !prev)}
+							/>
+							<span style={{ fontSize: "0.875rem" }}>On</span>
+						</div>
+					</div>
+				</FieldRow>
+			</div>
 		</PreferenceContainer>
 	);
 };

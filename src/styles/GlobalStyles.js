@@ -221,6 +221,34 @@ td a {
   }
 }
 
+.tooltip-wrapper {
+	position: relative;
+	display: inline-block;
+	cursor: help;
+}
+
+.tooltip-content {
+	visibility: hidden;
+	opacity: 0;
+	position: absolute;
+	background-color: #333;
+	color: #fff;
+	padding: 0.5rem;
+	border-radius: 4px;
+	top: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	white-space: nowrap;
+	transition: opacity 0.2s;
+	z-index: 10;
+}
+
+.tooltip-wrapper:hover .tooltip-content {
+	visibility: visible;
+	opacity: 1;
+}
+
+
 // Toast container 
 @keyframes fadeInOut {
   0% { opacity: 0; transform: translateY(-20px); }

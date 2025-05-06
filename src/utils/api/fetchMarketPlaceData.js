@@ -1,11 +1,13 @@
 /** @format */
+import { fetchPlanDetails } from "../../utils/api/fetchPlanDetails";
+import { formatDetailedInsInfo } from "../../utils/formatters/formatDetailedInsInfo";
+
 const fetchMarketplaceData = async ({
 	formData,
 	fipsCode,
 	users_state,
 	setPlans,
 	setLoading,
-	
 }) => {
 	if (!fipsCode || !users_state) {
 		alert(
@@ -74,13 +76,51 @@ const fetchMarketplaceData = async ({
 		const data = await response.json();
 		console.log("🧾 Plans Data:", data);
 
-		setPlans(data.plans || []);
+		if (!data.plans || data.plans.length === 0) {
+			alert("No plans found. Try adjusting your filters.");
+			setPlans([]);
+			return;
+		}
+
+		const enrichedPlans = await Promise.all(
+			data.plans.map(async (plan) => {
+				try {
+					const details = await fetchPlanDetails(plan.id);
+					const merged = {
+						...details,
+						...plan,
+						tiered_deductibles:
+							(plan.tiered_deductibles?.length || 0) >
+							(details.tiered_deductibles?.length || 0)
+								? plan.tiered_deductibles
+								: details.tiered_deductibles,
+						tiered_moops:
+							(plan.tiered_moops?.length || 0) >
+							(details.tiered_moops?.length || 0)
+								? plan.tiered_moops
+								: details.tiered_moops,
+						tiered_premiums:
+							(plan.tiered_premiums?.length || 0) >
+							(details.tiered_premiums?.length || 0)
+								? plan.tiered_premiums
+								: details.tiered_premiums,
+						premium: details?.premium || plan.premium,
+					};
+					return formatDetailedInsInfo(merged);
+				} catch (err) {
+					console.error(`⚠️ Failed to fetch details for plan ${plan.id}:`, err);
+					return formatDetailedInsInfo(plan);
+				}
+			})
+		);
+
+		setPlans(enrichedPlans);
 	} catch (error) {
 		console.error("❌ Error fetching marketplace data:", error);
 		alert("There was an error while fetching plans. Please try again.");
 	} finally {
 		setLoading(false);
 	}
-	
 };
+
 export default fetchMarketplaceData;
