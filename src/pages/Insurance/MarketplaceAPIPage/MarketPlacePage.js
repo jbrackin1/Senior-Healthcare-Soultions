@@ -6,8 +6,6 @@ import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
 import UserPreference from "../../Forms/UserPreference";
 import Collapsible from "../../../components/ui/Global/layout/CollapsableButton";
 import MomMode from "../../../components/ui/Feedback/MomMode";
-import { fetchPlanDetails } from "../../../utils/api/fetchPlanDetails";
-import { formatDetailedInsInfo } from "../../../utils/formatters/formatDetailedInsInfo";
 
 const CompareContainer = styled.main`
 	padding: 2rem;
@@ -153,21 +151,7 @@ const MarketPlacePage = () => {
 
 			if (response.ok) {
 				const data = await response.json();
-				const enrichedPlans = await Promise.all(
-					(data.plans || []).map(async (plan) => {
-						try {
-							const details = await fetchPlanDetails(plan.id);
-							return formatDetailedInsInfo({ ...plan, ...details });
-						} catch (err) {
-							console.error(
-								`Failed to fetch details for plan ${plan.id}:`,
-								err
-							);
-							return formatDetailedInsInfo(plan);
-						}
-					})
-				);
-				setPlans(enrichedPlans);
+				setPlans(data.plans || []);
 			} else {
 				const errorData = await response.json();
 				alert(
