@@ -28,6 +28,7 @@ import Resources from "./pages/Generic/Resources";
 import PractitionerPage from "./pages/Users/Practitioner";
 import Blog from "./pages/Generic/Blog";
 import DrugCoverage from "./components/ui/Global/data-display/DrugCoverage";
+import VADrugCoverage from "./components/ui/Global/data-display/VADrugCoverage";
 // import ComparePlans from "./pages/Insurance/Compare";
 import PlanDetail from "./components/ui/Plan/PlanDetail";
 
@@ -79,6 +80,7 @@ function App() {
 								<Route path="/resources" element={<Resources />} />
 								<Route path="/testimonials" element={<Testimonials />} />
 								<Route path="/drug-coverage" element={<DrugCoverage />} />
+								<Route path="/va-drug-coverage" element={<VADrugCoverage />} />
 
 								{/* Add any additional routes here */}
 							</Routes>

@@ -100,6 +100,7 @@ const TopBannerComponent = () => {
 				<NavItem to="/careers">Careers</NavItem>
 				<NavItem to="/contact">Contact</NavItem>
 				<NavItem to="/marketplace">MarketPlace</NavItem>
+				<NavItem to="/va-drug-coverage">VA Benefit Info</NavItem>
 
 				{/* Dropdown Menu Example */}
 				<DropdownToggle>

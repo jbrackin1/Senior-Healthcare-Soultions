@@ -33,3 +33,4 @@ config/
 # Python Venv stuff
 .venv/
 venv/
+__pycache__/
