@@ -62,15 +62,34 @@ const fetchMarketplaceData = async ({
 			}
 		);
 
-		if (!response.ok) {
-			const errorDetails = await response.json();
-			console.error("🛑 API Error Response:", errorDetails);
-			alert(
-				`Failed to fetch plans. Server says: ${
-					errorDetails.message || "Unknown error"
-				}`
+		if (response.ok) {
+			const data = await response.json();
+
+			// ✅ THIS IS THE ONE CODE BLOCK YOU ASKED TO ADD
+			const enrichedPlans = await Promise.all(
+				(data.plans || []).map(async (plan) => {
+					try {
+						const details = await fetchPlanDetails(plan.id);
+						const merged = {
+							...details,
+							...plan,
+							premium: details?.premium || plan.premium,
+						};
+						return formatDetailedInsInfo(merged);
+					} catch (err) {
+						console.error(
+							`⚠️ Failed to fetch details for plan ${plan.id}:`,
+							err
+						);
+						return formatDetailedInsInfo(plan);
+					}
+				})
 			);
-			return;
+
+			setPlans(enrichedPlans);
+		} else {
+			const errorData = await response.json();
+			alert("Failed to fetch plans. " + (errorData.message || "Unknown error"));
 		}
 
 		const data = await response.json();

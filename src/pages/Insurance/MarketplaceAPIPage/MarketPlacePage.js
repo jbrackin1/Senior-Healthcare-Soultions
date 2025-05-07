@@ -6,6 +6,9 @@ import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
 import UserPreference from "../../Forms/UserPreference";
 import Collapsible from "../../../components/ui/Global/layout/CollapsableButton";
 import MomMode from "../../../components/ui/Feedback/MomMode";
+import { matchPlanToUserPrefs } from "../../../utils/user/matchUserPrefs";
+import { fetchPlanDetails } from "../../../utils/api/fetchPlanDetails";
+import { formatDetailedInsInfo } from "../../../utils/formatters/formatDetailedInsInfo";
 
 const CompareContainer = styled.main`
 	padding: 2rem;

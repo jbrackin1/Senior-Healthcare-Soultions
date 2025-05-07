@@ -44,6 +44,12 @@ const SectionBlock = styled.div`
 	background-color: ${({ theme }) => theme.colors.backgroundAlt || "#f9f9f9"};
 `;
 
+   const Check = styled.span`
+			margin-right: 0.5rem;
+			color: ${({ color }) => color || "black"};
+			font-weight: bold;
+		`;
+
 const InfoList = styled.ul`
 	list-style: none;
 	padding: 0;
@@ -71,12 +77,6 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 			  }))
 			: [];
 	};
-
-    const Check = styled.span`
-			margin-right: 0.5rem;
-			color: ${({ color }) => color || "black"};
-			font-weight: bold;
-		`;
 
 		const isUserInterested = (benefit, userPrefs = []) =>
 			userPrefs.includes(benefit);
