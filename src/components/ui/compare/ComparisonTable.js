@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import propTypes from "prop-types";
 import { Link } from "react-router-dom";
+
 import {
 	matchPlanToUserPrefs,
 	hasUserSelectedPrefs,
@@ -84,6 +85,7 @@ const ComparisonTable = ({
 	}, []);
 
 	if (loading) return <p>Loading plans...</p>;
+	
 
 	const userHasPrefs = hasUserSelectedPrefs(userPrefs);
 
@@ -137,18 +139,11 @@ const ComparisonTable = ({
 			{isMobile ? (
 				<div>
 					{sortedPlans.map((plan) => {
-						const fullPlan = {
-							...plan,
-							benefits:
-								Array.isArray(plan.benefits) && plan.benefits.length > 0
-									? plan.benefits
-									: plan.details?.benefits || [],
-						};
-
-
+						const fullPlan = plan.formattedInfo ?? plan;
 						const matchSummary = userHasPrefs
-							? matchPlanToUserPrefs(fullPlan, userPrefs)
+							? plan.matchSummary || matchPlanToUserPrefs(fullPlan, userPrefs)
 							: null;
+
 
 						return (
 							<PlanCard key={plan.id}>
@@ -217,15 +212,7 @@ const ComparisonTable = ({
 					</thead>
 					<tbody>
 						{sortedPlans.map((plan) => {
-							const fullPlan = {
-								...plan,
-								benefits:
-									Array.isArray(plan.benefits) && plan.benefits.length > 0
-										? plan.benefits
-										: plan.details?.benefits || [],
-							};
-
-
+							const fullPlan = plan.formattedInfo ?? plan;
 							const matchSummary = userHasPrefs
 								? matchPlanToUserPrefs(fullPlan, userPrefs)
 								: null;

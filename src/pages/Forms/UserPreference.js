@@ -4,7 +4,6 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import MetalLevelSelect from "../../components/ui/compare/MetalLevelSelect";
 import Toggle from "../../components/ui/Global/forms/Toggle";
 import MomMode from "../../components/ui/Feedback/MomMode";
 import Tooltip from "../../components/ui/Global/data-display/Tooltip";

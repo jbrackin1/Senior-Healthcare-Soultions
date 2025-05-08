@@ -6,9 +6,14 @@ import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
 import UserPreference from "../../Forms/UserPreference";
 import Collapsible from "../../../components/ui/Global/layout/CollapsableButton";
 import MomMode from "../../../components/ui/Feedback/MomMode";
-import { matchPlanToUserPrefs } from "../../../utils/user/matchUserPrefs";
+import {
+	matchPlanToUserPrefs,
+	hasUserSelectedPrefs,
+} from "../../../utils/user/matchUserPrefs";
 import { fetchPlanDetails } from "../../../utils/api/fetchPlanDetails";
 import { formatDetailedInsInfo } from "../../../utils/formatters/formatDetailedInsInfo";
+
+
 
 const CompareContainer = styled.main`
 	padding: 2rem;
@@ -154,13 +159,49 @@ const MarketPlacePage = () => {
 
 			if (response.ok) {
 				const data = await response.json();
-				setPlans(data.plans || []);
-			} else {
-				const errorData = await response.json();
-				alert(
-					"Failed to fetch plans. " + (errorData.message || "Unknown error")
+				const rawPlans = data.plans || [];
+
+				const enrichedPlans = await Promise.all(
+					rawPlans.map(async (plan) => {
+						const fullData = await fetchPlanDetails(plan.id);
+						return {
+							...plan,
+							...fullData,
+							benefits:
+								Array.isArray(fullData?.benefits) &&
+								fullData.benefits.length > 0
+									? fullData.benefits
+									: plan.benefits || [],
+						};
+					})
 				);
+
+				const enrichedWithMatch = enrichedPlans.map((plan) => {
+	const formatted = formatDetailedInsInfo(plan);
+	const matchSummary = matchPlanToUserPrefs(plan, formData);
+
+	console.groupCollapsed(`🧪 MATCH CHECK: ${plan.name}`);
+	console.log("Benefit count:", plan.benefits?.length);
+	console.log("Matched:", matchSummary.matched);
+	console.log("Missing:", matchSummary.missing);
+	console.groupEnd();
+
+			// const enrichedWithMatch = enrichedPlans.map((plan) => {
+			// 	const formatted = plan.formattedInfo ?? formatDetailedInsInfo(plan);
+			// 	const matchSummary = hasUserSelectedPrefs(formData)
+					// ? matchPlanToUserPrefs(formatted, formData)
+					// : null;
+
+				return {
+					...plan,
+					matchSummary,
+					formattedInfo: formatted,
+				};
+			});
+setPlans(enrichedWithMatch);
+
 			}
+
 		} catch (error) {
 			console.error("Error fetching marketplace data:", error);
 			alert("There was an error while fetching data.");
