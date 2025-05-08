@@ -101,15 +101,14 @@ const MarketPlacePage = () => {
 				}));
 			}
 		} catch (error) {
-			console.error("Error fetching FIPS code:", error);
+				console.error("Error fetching FIPS code:", error);
 		}
-	};
-
-	useEffect(() => {
-		if (formData.zipcode) {
-			fetchFipsCode();
-		}
-	}, [formData.zipcode]);
+};
+		useEffect(() => {
+				if (formData.zipcode && formData.zipcode.length === 5) {
+						fetchFipsCode();
+				}
+		}, [formData.zipcode]);
 
 	const fetchMarketplaceData = async () => {
 		if (
