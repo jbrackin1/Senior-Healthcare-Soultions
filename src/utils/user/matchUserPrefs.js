@@ -71,6 +71,22 @@ const matchPlanToUserPrefs = (plan, formData = {}) => {
 		}
 	}
 
+	if (formData.metalLevel) {
+		console.log("🔍 Checking metal level:", {
+			formValue: formData.metalLevel,
+			planValue: plan.metal_level,
+		});
+		const planMetal = String(plan.metal_level || "").toLowerCase();
+		const userMetal = formData.metalLevel.toLowerCase();
+
+		if (planMetal === userMetal) {
+			matched.push(`Metal Level: ${formData.metalLevel}`);
+		} else {
+			missing.push(`Metal Level: ${formData.metalLevel}`);
+		}
+	}
+
+
 	// Dental
 	if (formData.dentalCoverage) {
 		const hasDental = plan.benefits.some((b) =>
