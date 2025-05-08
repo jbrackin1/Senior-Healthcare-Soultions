@@ -186,12 +186,6 @@ const MarketPlacePage = () => {
 	console.log("Missing:", matchSummary.missing);
 	console.groupEnd();
 
-			// const enrichedWithMatch = enrichedPlans.map((plan) => {
-			// 	const formatted = plan.formattedInfo ?? formatDetailedInsInfo(plan);
-			// 	const matchSummary = hasUserSelectedPrefs(formData)
-					// ? matchPlanToUserPrefs(formatted, formData)
-					// : null;
-
 				return {
 					...plan,
 					matchSummary,
