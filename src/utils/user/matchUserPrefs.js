@@ -93,6 +93,48 @@ const matchPlanToUserPrefs = (plan, formData = {}) => {
 		normalizeBenefitName
 	);
 
+	// Concierge Logic 🔥
+
+	// Tobacco
+	if (formData.usesTobacco) {
+		const hasCessation = plan.benefits.some((b) =>
+			normalizeBenefitName(b.name).includes("Smoking Cessation")
+		);
+		hasCessation
+			? matched.push("Smoking Cessation")
+			: missing.push("Smoking Cessation");
+	}
+
+	// Pregnancy
+	if (formData.isPregnant) {
+		const hasMaternity = plan.benefits.some((b) =>
+			normalizeBenefitName(b.name).includes("Maternity")
+		);
+		hasMaternity
+			? matched.push("Maternity Care")
+			: missing.push("Maternity Care");
+	}
+
+	// Parent
+	if (formData.isParent) {
+		const hasPediatric = plan.benefits.some((b) =>
+			normalizeBenefitName(b.name).includes("Pediatric")
+		);
+		hasPediatric
+			? matched.push("Pediatric Coverage")
+			: missing.push("Pediatric Coverage");
+	}
+
+	// Minimum Essential Coverage
+	if (formData.hasMEC) {
+		const hasMEC = plan.benefits.some((b) =>
+			normalizeBenefitName(b.name).includes("Essential Benefits")
+		);
+		hasMEC
+			? matched.push("Minimum Essential Coverage")
+			: missing.push("Minimum Essential Coverage");
+	}
+
 	userPrograms.forEach((program) => {
 		if (planPrograms.includes(program)) {
 			matched.push(program);
