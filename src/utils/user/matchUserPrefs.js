@@ -1,6 +1,8 @@
 /** @format */
 
-//utils/user/matchUserPrefs.js
+import { normalizeBenefitName } from "./normalizeBenefitName";
+
+// 🔍 Finds wellness-related programs in a plan, matching name, desc, or covered flag
 const extractWellnessPrograms = (plan) => {
 	const keywords = [
 		"Telehealth",
@@ -14,29 +16,81 @@ const extractWellnessPrograms = (plan) => {
 		"SilverSneakers",
 	];
 
-	return plan.benefits
-		.map((b) => b.name)
-		.filter((name) =>
-			keywords.some((kw) => name.toLowerCase().includes(kw.toLowerCase()))
-		);
+	return (plan.benefits || [])
+		.filter((b) => {
+			const name = normalizeBenefitName(b.name || "");
+			const desc = normalizeBenefitName(b.description || "");
+			const covered = String(b.covered || "").toLowerCase();
+
+			return keywords.some((kw) => {
+				const keyword = normalizeBenefitName(kw);
+				return (
+					name.includes(keyword) ||
+					desc.includes(keyword) ||
+					covered.includes(keyword)
+				);
+			});
+		})
+		.map((b) => normalizeBenefitName(b.name));
 };
 
-// 🧠 Main match function
-const matchPlanToUserPrefs = (plan, formData) => {
+// ✅ Detect if user selected any preferences
+const hasUserSelectedPrefs = (prefs = {}) => {
+	return (
+		(Array.isArray(prefs.lifestylePrograms) &&
+			prefs.lifestylePrograms.length > 0) ||
+		prefs.dentalCoverage ||
+		prefs.visionCoverage ||
+		prefs.metalLevel ||
+		typeof prefs.preferredPremium === "number"
+	);
+};
+
+// 🧠 Main logic to match a plan to user preferences
+const matchPlanToUserPrefs = (plan, formData = {}) => {
 	const matched = [];
 	const missing = [];
 
-	// Premium
-	if (plan.premium <= formData.preferredPremium) {
-		matched.push("Under $" + formData.preferredPremium + "/month");
-	} else {
-		missing.push("Premium under $" + formData.preferredPremium);
+	if (!hasUserSelectedPrefs(formData))
+		return { matchesAll: false, matched, missing };
+	if (!Array.isArray(plan.benefits)) {
+		missing.push("Benefit details not loaded");
+		return { matchesAll: false, matched, missing };
 	}
+
+	// Premium
+	if (
+		typeof formData.preferredPremium === "number" &&
+		formData.preferredPremium > 0
+	) {
+		const maxPremium = formData.preferredPremium;
+		if (plan.premium <= maxPremium) {
+			matched.push(`Under $${maxPremium}/month`);
+		} else {
+			missing.push(`Premium under $${maxPremium}`);
+		}
+	}
+
+	if (formData.metalLevel) {
+		console.log("🔍 Checking metal level:", {
+			formValue: formData.metalLevel,
+			planValue: plan.metal_level,
+		});
+		const planMetal = String(plan.metal_level || "").toLowerCase();
+		const userMetal = formData.metalLevel.toLowerCase();
+
+		if (planMetal === userMetal) {
+			matched.push(`Metal Level: ${formData.metalLevel}`);
+		} else {
+			missing.push(`Metal Level: ${formData.metalLevel}`);
+		}
+	}
+
 
 	// Dental
 	if (formData.dentalCoverage) {
 		const hasDental = plan.benefits.some((b) =>
-			b.name.toLowerCase().includes("dental")
+			normalizeBenefitName(b.name).includes("Dental")
 		);
 		hasDental ? matched.push("Dental") : missing.push("Dental");
 	}
@@ -44,14 +98,58 @@ const matchPlanToUserPrefs = (plan, formData) => {
 	// Vision
 	if (formData.visionCoverage) {
 		const hasVision = plan.benefits.some((b) =>
-			b.name.toLowerCase().includes("vision")
+			normalizeBenefitName(b.name).includes("Vision")
 		);
 		hasVision ? matched.push("Vision") : missing.push("Vision");
 	}
 
-	// Wellness/Lifestyle
+	// Lifestyle / Wellness Programs
 	const planPrograms = extractWellnessPrograms(plan);
-	const userPrograms = formData.lifestylePrograms || [];
+	const userPrograms = (formData.lifestylePrograms || []).map(
+		normalizeBenefitName
+	);
+
+	// Concierge Logic 🔥
+
+	// Tobacco
+	if (formData.usesTobacco) {
+		const hasCessation = plan.benefits.some((b) =>
+			normalizeBenefitName(b.name).includes("Smoking Cessation")
+		);
+		hasCessation
+			? matched.push("Smoking Cessation")
+			: missing.push("Smoking Cessation");
+	}
+
+	// Pregnancy
+	if (formData.isPregnant) {
+		const hasMaternity = plan.benefits.some((b) =>
+			normalizeBenefitName(b.name).includes("Maternity")
+		);
+		hasMaternity
+			? matched.push("Maternity Care")
+			: missing.push("Maternity Care");
+	}
+
+	// Parent
+	if (formData.isParent) {
+		const hasPediatric = plan.benefits.some((b) =>
+			normalizeBenefitName(b.name).includes("Pediatric")
+		);
+		hasPediatric
+			? matched.push("Pediatric Coverage")
+			: missing.push("Pediatric Coverage");
+	}
+
+	// Minimum Essential Coverage
+	if (formData.hasMEC) {
+		const hasMEC = plan.benefits.some((b) =>
+			normalizeBenefitName(b.name).includes("Essential Benefits")
+		);
+		hasMEC
+			? matched.push("Minimum Essential Coverage")
+			: missing.push("Minimum Essential Coverage");
+	}
 
 	userPrograms.forEach((program) => {
 		if (planPrograms.includes(program)) {
@@ -66,4 +164,4 @@ const matchPlanToUserPrefs = (plan, formData) => {
 	return { matchesAll, matched, missing };
 };
 
-export { matchPlanToUserPrefs, extractWellnessPrograms };
+export { matchPlanToUserPrefs, extractWellnessPrograms, hasUserSelectedPrefs };

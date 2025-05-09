@@ -3,7 +3,11 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import propTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { matchPlanToUserPrefs } from "../../../utils/user/matchUserPrefs";
+
+import {
+	matchPlanToUserPrefs,
+	hasUserSelectedPrefs,
+} from "../../../utils/user/matchUserPrefs";
 
 // --- Styled Components ---
 const PlanCard = styled.div`
@@ -50,21 +54,6 @@ const TableHeader = styled.th`
 	text-align: left;
 `;
 
-const Tooltip = styled.div`
-	position: absolute;
-	top: 120%;
-	left: 50%;
-	transform: translateX(-50%);
-	background-color: #333;
-	color: #fff;
-	padding: 0.5rem;
-	font-size: 0.875rem;
-	border-radius: 4px;
-	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-	white-space: nowrap;
-	z-index: 10;
-`;
-
 const InfoIcon = styled.span`
 	font-size: 0.9rem;
 	margin-left: 0.25rem;
@@ -82,7 +71,7 @@ const ComparisonTable = ({
 	loading,
 	userPrefs = {},
 }) => {
-	const [sortKey, setSortKey] = useState("premium");
+	const [sortKey, setSortKey] = useState("matchScore");
 	const [sortOrder, setSortOrder] = useState("asc");
 	const [isMobile, setIsMobile] = useState(false);
 
@@ -96,6 +85,9 @@ const ComparisonTable = ({
 	}, []);
 
 	if (loading) return <p>Loading plans...</p>;
+	
+
+	const userHasPrefs = hasUserSelectedPrefs(userPrefs);
 
 	const handleSort = (key) => {
 		if (sortKey === key) {
@@ -107,6 +99,12 @@ const ComparisonTable = ({
 	};
 
 	const sortedPlans = [...plans].sort((a, b) => {
+		if (sortKey === "matchScore" && userHasPrefs) {
+			const aScore = matchPlanToUserPrefs(a, userPrefs).matched.length;
+			const bScore = matchPlanToUserPrefs(b, userPrefs).matched.length;
+			return sortOrder === "asc" ? aScore - bScore : bScore - aScore;
+		}
+
 		let aValue = a[sortKey];
 		let bValue = b[sortKey];
 
@@ -141,7 +139,11 @@ const ComparisonTable = ({
 			{isMobile ? (
 				<div>
 					{sortedPlans.map((plan) => {
-						const matchSummary = matchPlanToUserPrefs(plan, userPrefs);
+						const fullPlan = plan.formattedInfo ?? plan;
+						const matchSummary = userHasPrefs
+							? plan.matchSummary || matchPlanToUserPrefs(fullPlan, userPrefs)
+							: null;
+
 
 						return (
 							<PlanCard key={plan.id}>
@@ -155,16 +157,33 @@ const ComparisonTable = ({
 									<b>Premium:</b> ${plan.premium}
 								</PlanInfo>
 
-								{matchSummary.matchesAll ? (
-									<div
-										className="highlight-badge"
-										style={{ marginTop: "1rem" }}>
-										✅ Meets ALL your preferences
-									</div>
-								) : (
-									<div className="match-summary" style={{ marginTop: "1rem" }}>
-										✅ Matches: {matchSummary.matched.join(", ")}
-									</div>
+								{userHasPrefs && matchSummary && (
+									<>
+										{matchSummary.matchesAll ? (
+											<div
+												className="highlight-badge"
+												style={{ marginTop: "1rem", color: "green" }}>
+												✅ Meets ALL your preferences
+											</div>
+										) : (
+											<>
+												{matchSummary.matched.length > 0 && (
+													<div
+														className="match-summary"
+														style={{ marginTop: "1rem", color: "green" }}>
+														✅ Matches: {matchSummary.matched.join(", ")}
+													</div>
+												)}
+												{matchSummary.missing.length > 0 && (
+													<div
+														className="missing-summary"
+														style={{ color: "gray" }}>
+														❌ Missing: {matchSummary.missing.join(", ")}
+													</div>
+												)}
+											</>
+										)}
+									</>
 								)}
 							</PlanCard>
 						);
@@ -175,26 +194,28 @@ const ComparisonTable = ({
 					<thead>
 						<tr>
 							<TableHeader onClick={() => handleSort("name")}>
-								Plan Name <InfoIcon>ⓘ</InfoIcon>
-								<Tooltip>Click to sort plans alphabetically.</Tooltip>
+								Plan Name{" "}
+								<InfoIcon title="Click to sort alphabetically">ⓘ</InfoIcon>
 							</TableHeader>
 							<TableHeader onClick={() => handleSort("premium")}>
-								Premium <InfoIcon>ⓘ</InfoIcon>
-								<Tooltip>Click to sort by monthly premium.</Tooltip>
+								Premium <InfoIcon title="Click to sort by premium">ⓘ</InfoIcon>
 							</TableHeader>
 							<TableHeader onClick={() => handleSort("deductibles")}>
-								Deductible <InfoIcon>ⓘ</InfoIcon>
-								<Tooltip>Click to sort by deductible amount.</Tooltip>
+								Deductible{" "}
+								<InfoIcon title="Click to sort by deductible">ⓘ</InfoIcon>
 							</TableHeader>
 							<TableHeader onClick={() => handleSort("moops")}>
-								Out-of-Pocket Max <InfoIcon>ⓘ</InfoIcon>
-								<Tooltip>Click to sort by max out-of-pocket cost.</Tooltip>
+								Out-of-Pocket Max{" "}
+								<InfoIcon title="Click to sort by max OOP">ⓘ</InfoIcon>
 							</TableHeader>
 						</tr>
 					</thead>
 					<tbody>
 						{sortedPlans.map((plan) => {
-							const matchSummary = matchPlanToUserPrefs(plan, userPrefs);
+							const fullPlan = plan.formattedInfo ?? plan;
+							const matchSummary = userHasPrefs
+								? matchPlanToUserPrefs(fullPlan, userPrefs)
+								: null;
 
 							return (
 								<tr key={plan.id}>
@@ -202,13 +223,32 @@ const ComparisonTable = ({
 										<Link to={`/plan/${plan.id}`} state={{ plan, userPrefs }}>
 											<b>{plan.name || "N/A"}</b>
 										</Link>
-										{matchSummary.matchesAll ? (
-											<div className="highlight-badge">
-												✅ Meets ALL your preferences
-											</div>
-										) : (
-											<div className="match-summary">
-												✅ Matches: {matchSummary.matched.join(", ")}
+										{userHasPrefs && matchSummary && (
+											<div style={{ marginTop: "0.5rem" }}>
+												{matchSummary.matchesAll ? (
+													<div
+														className="highlight-badge"
+														style={{ color: "green" }}>
+														✅ Meets ALL your preferences
+													</div>
+												) : (
+													<>
+														{matchSummary.matched.length > 0 && (
+															<div
+																className="match-summary"
+																style={{ color: "green" }}>
+																✅ {matchSummary.matched.join(", ")}
+															</div>
+														)}
+														{matchSummary.missing.length > 0 && (
+															<div
+																className="missing-summary"
+																style={{ color: "gray" }}>
+																❌ {matchSummary.missing.join(", ")}
+															</div>
+														)}
+													</>
+												)}
 											</div>
 										)}
 									</td>
@@ -230,12 +270,12 @@ ComparisonTable.propTypes = {
 	selectedPlans: propTypes.array,
 	onTogglePlan: propTypes.func.isRequired,
 	loading: propTypes.bool.isRequired,
-	userPrefs: propTypes.object, // ✅ new prop
+	userPrefs: propTypes.object,
 };
 
 ComparisonTable.defaultProps = {
 	selectedPlans: [],
-	userPrefs: {}, // ✅ default fallback
+	userPrefs: {},
 };
 
 export default ComparisonTable;

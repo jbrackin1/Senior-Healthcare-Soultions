@@ -7,7 +7,7 @@ import { fetchPlanDetails } from "../../../utils/api/fetchPlanDetails";
 import { formatDetailedInsInfo } from "../../../utils/formatters/formatDetailedInsInfo";
 import Button from "../Global/everywhere/button";
 import BenefitAccordion from "../Global/data-display/BenefitAccordian";
-import useMomMode from "../Feedback/MomMode";
+import MomMode from "../Feedback/MomMode";
 import TieredPlanInfoTable from "../Plan/TieredPlanInfoTable";
 import ReusableTable from "../Global/data-display/ReusableTable";
 import { matchPlanToUserPrefs } from "../../../utils/user/matchUserPrefs";
@@ -39,7 +39,8 @@ const PlanDetailExpanded = () => {
 	const { planId } = useParams();
 	const navigate = useNavigate();
 	const location = useLocation();
-	const { enabled } = useMomMode();
+	const { enabled } = MomMode.useMomMode();
+
 
 	const fallbackPlan = location.state?.plan || null;
 	const userPrefs = location.state?.userPrefs || {};
@@ -108,14 +109,32 @@ const PlanDetailExpanded = () => {
 			{matchSummary?.matchesAll ? (
 				<div className="highlight-badge">✅ Meets ALL your preferences</div>
 			) : (
-				<div className="match-summary">
-					✅ Matches: {matchSummary.matched.join(", ")}
-				</div>
+				<>
+					{matchSummary.matched.length > 0 && (
+						<div className="match-summary">
+							✅ Matches: {matchSummary.matched.join(", ")}
+						</div>
+					)}
+					{matchSummary.missing.length > 0 && (
+						<div className="missing-summary" style={{ color: "gray" }}>
+							❌ Missing: {matchSummary.missing.join(", ")}
+						</div>
+					)}
+				</>
 			)}
 
-			<TieredPlanInfoTable title="Deductibles" data={plan.tiered_deductibles} />
-			<TieredPlanInfoTable title="Max Out-of-Pocket" data={plan.tiered_moops} />
-			<TieredPlanInfoTable title="Premium" data={plan.tiered_premiums} />
+			{plan.tiered_deductibles?.length > 0 && (
+	<TieredPlanInfoTable title="Deductibles" data={plan.tiered_deductibles} />
+)}
+
+{plan.tiered_moops?.length > 0 && (
+	<TieredPlanInfoTable title="Max Out-of-Pocket" data={plan.tiered_moops} />
+)}
+
+{plan.tiered_premiums?.length > 0 && (
+	<TieredPlanInfoTable title="Premium" data={plan.tiered_premiums} />
+)}
+
 
 			<MetadataRow>
 				<span>
