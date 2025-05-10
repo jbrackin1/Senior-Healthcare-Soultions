@@ -1,9 +1,18 @@
+/** @format */
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "../../../components/ui/Global/everywhere/button";
 import ComparisonTable from "../../../components/ui/compare/ComparisonTable";
 import UserPreference from "../../Forms/UserPreference";
 import Collapsible from "../../../components/ui/Global/layout/CollapsableButton";
+import MomMode from "../../../components/ui/Feedback/MomMode";
+import {
+	matchPlanToUserPrefs,
+	hasUserSelectedPrefs,
+} from "../../../utils/user/matchUserPrefs";
+import { fetchPlanDetails } from "../../../utils/api/fetchPlanDetails";
+import { formatDetailedInsInfo } from "../../../utils/formatters/formatDetailedInsInfo";
+
 
 
 const CompareContainer = styled.main`
@@ -42,15 +51,13 @@ const FormField = styled.div`
 		border-radius: 4px;
 		font-size: 1rem;
 	}
-		
 `;
 
 const MarketPlacePage = () => {
 	const [plans, setPlans] = useState([]);
 	const [selectedPlans, setSelectedPlans] = useState([]);
 	const [loading, setLoading] = useState(false);
-	const [isProcessing, setIsProcessing] = useState(false);
-	const [searchCompleted, setSearchCompleted] = useState(false); 
+	const [searchCompleted, setSearchCompleted] = useState(false);
 	const [formData, setFormData] = useState({
 		income: "",
 		age: "",
@@ -61,13 +68,12 @@ const MarketPlacePage = () => {
 		zipcode: "",
 	});
 
-	const loadFormData = () => {
-		const savedData = localStorage.getItem('formData');
+	const { useMomMode } = MomMode;
+
+	useEffect(() => {
+		const savedData = localStorage.getItem("formData");
 		if (savedData) {
-			
 			const parsedData = JSON.parse(savedData);
-	
-			
 			setFormData({
 				income: parsedData.household.income.toString(),
 				age: parsedData.household.people[0].age.toString(),
@@ -76,71 +82,24 @@ const MarketPlacePage = () => {
 				countyfips: parsedData.place.countyfips,
 				state: parsedData.place.state,
 				zipcode: parsedData.place.zipcode,
-				year: parsedData.year,
 			});
 		}
-	};
-
-	const filteredPlans = plans.filter((plan) => {
-		if (formData?.preferredPremium) {
-			return plan.premium <= formData.preferredPremium;
-		}
-		return true; // If no preferredPremium set, show all
-	});
-
-	const [toastMessage, setToastMessage] = useState("");
-const handleClearFilters = () => {
-	const hasFiltersToClear =
-		formData.preferredPremium ||
-		formData.metalLevel ||
-		formData.planType ||
-		formData.issuer ||
-		(formData.lifestylePrograms && formData.lifestylePrograms.length > 0) ||
-		formData.dentalCoverage ||
-		formData.visionCoverage;
-
-	if (hasFiltersToClear) {
-		setFormData((prevData) => ({
-			...prevData,
-			preferredPremium: "",
-			metalLevel: "",
-			planType: "",
-			issuer: "",
-			lifestylePrograms: [],
-			dentalCoverage: false,
-			visionCoverage: false,
-		}));
-
-		setToastMessage("Preferences cleared!");
-	} else {
-		setToastMessage("No preferences to clear.");
-	}
-
-	setTimeout(() => setToastMessage(""), 2000);
-};
-	
-	useEffect(() => {
-		loadFormData();
 	}, []);
 
 	const fetchFipsCode = async () => {
 		const apiKey = process.env.REACT_APP_MARKETPLACE_API_KEY;
-		console.log("Fetching FIPS code for ZIP:", formData.zipcode);
 		try {
-				const response = await fetch(
-						`https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${formData.zipcode}?apikey=${apiKey}`
-				);
-				const fipsData = await response.json();
-				if (fipsData  && fipsData.counties.length > 0) {
-						setFormData((prevData) => ({
-								...prevData,
-								countyfips: fipsData.counties[0].fips,
-								state: fipsData.counties[0].state,
-						}));
-						console.log("FIPS Code:", fipsData.counties[0].fips);
-				} else {
-						console.error("No counties/parishes found for the provided ZIP code.");
-				}
+			const response = await fetch(
+				`https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${formData.zipcode}?apikey=${apiKey}`
+			);
+			const fipsData = await response.json();
+			if (fipsData && fipsData.counties.length > 0) {
+				setFormData((prevData) => ({
+					...prevData,
+					countyfips: fipsData.counties[0].fips,
+					state: fipsData.counties[0].state,
+				}));
+			}
 		} catch (error) {
 				console.error("Error fetching FIPS code:", error);
 		}
@@ -152,14 +111,18 @@ const handleClearFilters = () => {
 		}, [formData.zipcode]);
 
 	const fetchMarketplaceData = async () => {
-		// Ensure all required fields are filled before sending the request
-		if (!formData.countyfips || !formData.state || !formData.zipcode || !formData.income) {
+		if (
+			!formData.countyfips ||
+			!formData.state ||
+			!formData.zipcode ||
+			!formData.income
+		) {
 			alert("Please fill in all required fields before submitting.");
 			return;
 		}
-	
+
 		setLoading(true);
-		const currentYear = new Date().getFullYear(); 
+		const currentYear = new Date().getFullYear();
 
 		const requestData = {
 			household: {
@@ -179,109 +142,91 @@ const handleClearFilters = () => {
 				state: formData.state,
 				zipcode: formData.zipcode,
 			},
-			currentYear,
+			year: currentYear,
 		};
-		localStorage.setItem('formData', JSON.stringify(requestData));
-		
-		console.log("Request Data: ", requestData);
-	
+		localStorage.setItem("formData", JSON.stringify(requestData));
+
 		try {
-			// Make the API request
 			const response = await fetch(
 				`https://marketplace.api.healthcare.gov/api/v1/plans/search?apikey=${process.env.REACT_APP_MARKETPLACE_API_KEY}`,
 				{
 					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
+					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify(requestData),
 				}
 			);
-	
-			// Check if the response is 200
+
 			if (response.ok) {
 				const data = await response.json();
-				console.log("API Response Data:", data); // Log the response
-	
-				// Check if the API returned any plans
-				if (data.plans && data.plans.length > 0) {
-					setPlans(data.plans); // Set plans in state
-				} else {
-					// Handle case where no plans are found
-					alert("No plans found.Try adjusting your filters — removing one or two preferences might help!");
-				}
-			} else {
-				// Log error response if not ok
-				const errorData = await response.json();
-				console.error("API Error Response:", errorData);
-				alert("Failed to fetch plans. Error: " + (errorData.message || "Unknown error"));
+				const rawPlans = data.plans || [];
+
+				const enrichedPlans = await Promise.all(
+					rawPlans.map(async (plan) => {
+						const fullData = await fetchPlanDetails(plan.id);
+						return {
+							...plan,
+							...fullData,
+							benefits:
+								Array.isArray(fullData?.benefits) &&
+								fullData.benefits.length > 0
+									? fullData.benefits
+									: plan.benefits || [],
+						};
+					})
+				);
+
+				const enrichedWithMatch = enrichedPlans.map((plan) => {
+	const formatted = formatDetailedInsInfo(plan);
+	const matchSummary = matchPlanToUserPrefs(plan, formData);
+
+	console.groupCollapsed(`🧪 MATCH CHECK: ${plan.name}`);
+	console.log("Benefit count:", plan.benefits?.length);
+	console.log("Matched:", matchSummary.matched);
+	console.log("Missing:", matchSummary.missing);
+	console.groupEnd();
+
+				return {
+					...plan,
+					matchSummary,
+					formattedInfo: formatted,
+				};
+			});
+setPlans(enrichedWithMatch);
+
 			}
+
 		} catch (error) {
-			// Catch any errors during the fetch
 			console.error("Error fetching marketplace data:", error);
-			alert("There was an error while fetching data. Please try again.");
+			alert("There was an error while fetching data.");
 		} finally {
-			setLoading(false); // Always turn off the loading state
-			setSearchCompleted(true);  // Set searchCompleted to true after fetching
+			setLoading(false);
+			setSearchCompleted(true);
 		}
 	};
 
 	const handleFormSubmit = (e) => {
 		e.preventDefault();
-		setSearchCompleted(false);  // Set searchCompleted to true after fetching
+		setSearchCompleted(false);
 		fetchMarketplaceData();
 	};
 
 	const handlePlanToggle = (planId) => {
-		if (isProcessing) return;
-
-		setIsProcessing(true);
-
-		setSelectedPlans((prevSelectedPlans) => {
-			if (prevSelectedPlans.includes(planId)) {
-				return prevSelectedPlans.filter((id) => id !== planId);
-			}
-			return [...prevSelectedPlans, planId];
-		});
-		setIsProcessing(false);
+		setSelectedPlans((prev) =>
+			prev.includes(planId)
+				? prev.filter((id) => id !== planId)
+				: [...prev, planId]
+		);
 	};
-
 
 	return (
 		<CompareContainer>
-			{toastMessage && (
-				<div
-					style={{
-						position: "fixed",
-						top: "1rem",
-						left: "50%",
-						transform: "translateX(-50%)",
-						backgroundColor: "#add8e6", // Robin's Egg Blue!
-						color: "#13343E",
-						padding: "0.75rem 1.25rem",
-						borderRadius: "8px",
-						fontWeight: "bold",
-						boxShadow: "0px 4px 8px rgba(0,0,0,0.2)",
-						zIndex: 1000,
-						animation: "fadeInOut 2s forwards",
-					}}>
-					{toastMessage}
-				</div>
-			)}
-
 			<Collapsible title="Customize Your Preferences">
 				<UserPreference
 					formData={formData}
 					setFormData={setFormData}
-					facetGroups={[]} // pass actual data when you're ready
+					facetGroups={[]}
 				/>
 			</Collapsible>
-
-			<div style={{ textAlign: "center", margin: "1rem 0" }}>
-				<Button type="button" onClick={handleClearFilters}>
-					Clear All Filters
-				</Button>
-			</div>
 
 			<SectionTitle>Compare Insurance Plans</SectionTitle>
 
@@ -298,7 +243,6 @@ const handleClearFilters = () => {
 						}
 					/>
 				</FormField>
-
 				<FormField>
 					<label htmlFor="age">Age</label>
 					<input
@@ -309,7 +253,6 @@ const handleClearFilters = () => {
 						onChange={(e) => setFormData({ ...formData, age: e.target.value })}
 					/>
 				</FormField>
-
 				<FormField>
 					<label htmlFor="gender">Gender</label>
 					<select
@@ -335,28 +278,23 @@ const handleClearFilters = () => {
 						}
 					/>
 				</FormField>
-
 				<Button type="submit">{loading ? "Loading..." : "Search Plans"}</Button>
 			</form>
 
 			{!loading && plans.length > 0 && (
-				<>
-					<ComparisonTable
-						plans={filteredPlans}
-						onTogglePlan={handlePlanToggle}
-						selectedPlans={selectedPlans}
-						userPrefs={formData}
-					/>
-				</>
+				<ComparisonTable
+					plans={plans}
+					onTogglePlan={handlePlanToggle}
+					selectedPlans={selectedPlans}
+					userPrefs={formData}
+				/>
 			)}
 
-			{/* Show message if no plans were found */}
 			{!loading && searchCompleted && plans.length === 0 && (
 				<p style={{ textAlign: "center", color: "red" }}>
 					No matching plans found based on your preferences.
 					<br />
-					Try adjusting your filters — removing one or two preferences might
-					help!
+					Try adjusting your filters.
 				</p>
 			)}
 		</CompareContainer>

@@ -1,7 +1,7 @@
 /** @format */
 
 // src/services/Api/PlanNet/PlanNetService.js
-c// src/services/PlanNet/PlanNetService.js
+// src/services/PlanNet/PlanNetService.js
 
 // Base URLs for different providers
 const PROVIDER_BASE_URLS = {

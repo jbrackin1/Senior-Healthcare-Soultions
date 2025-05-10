@@ -54,9 +54,11 @@ Potentially patentable as a UX assistive system
 Unique enough to anchor marketing around
 */
 //nicoles-app/src/components/ui/Feedback/MomMode.js
-
+// nicoles-app/src/components/ui/Feedback/MomMode.js
+// nicoles-app/src/components/ui/Feedback/MomMode.js
 import { useState } from "react";
 
+// ✅ The hook
 const useMomMode = () => {
 	const [enabled, setEnabled] = useState(false);
 
@@ -72,11 +74,23 @@ const useMomMode = () => {
 		return dictionary[term.toLowerCase()] || term;
 	};
 
-	return {
-		enabled,
-		toggleMomMode,
-		translate,
-	};
+	return { enabled, toggleMomMode, translate };
 };
 
-export default useMomMode;
+// ✅ The Tooltip
+const Tooltip = ({ title }) => {
+	return (
+		<span className="tooltip-wrapper">
+			<span className="tooltip-icon">ℹ️</span>
+			<span className="tooltip-content">{title}</span>
+		</span>
+	);
+};
+
+const MomMode = {
+	useMomMode,
+	Tooltip,
+};
+
+export default MomMode;
+
