@@ -1,11 +1,11 @@
 /** @format */
 
 // src/hooks/useAuth.js
-import { useContext } from "react";
 import { useAuthContext } from "./authContext";
 
 
 const useAuth = () => {
+	// eslint-disable-next-line no-unused-vars
 	const { isSignedIn, setIsSignedIn } = false;
 	 useAuthContext();
 

@@ -1,3 +1,5 @@
+/** @format */
+
 // About.js
 /** @format */
 
@@ -17,63 +19,63 @@ const BackgroundContainer = styled.div`
 `;
 
 const AboutContainer = styled.main`
-  padding: 2rem;
-  background-color: ${({ theme }) => theme.colors.backgroundAlt};
-  color: ${({ theme }) => theme.colors.text};
-  font-family: "Open Sans", sans-serif;
-  line-height: 1.8;
-  max-width: 800px;
-  margin: 2rem auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	padding: 2rem;
+	background-color: ${({ theme }) => theme.colors.backgroundAlt};
+	color: ${({ theme }) => theme.colors.text};
+	font-family: "Open Sans", sans-serif;
+	line-height: 1.8;
+	max-width: 800px;
+	margin: 2rem auto;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
 const SectionTitle = styled.h2`
-  font-family: "Libre Baskerville", serif;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: ${({ theme }) => theme.colors.accent};
-  text-align: center;
+	font-family: "Libre Baskerville", serif;
+	font-size: 2rem;
+	margin-bottom: 1.5rem;
+	color: ${({ theme }) => theme.colors.accent};
+	text-align: center;
 `;
 
 const Paragraph = styled.p`
-  margin-bottom: 1.5rem;
-  font-size: 1rem;
+	margin-bottom: 1.5rem;
+	font-size: 1rem;
 `;
 
 const TeamSection = styled.section`
-  margin-top: 2rem;
+	margin-top: 2rem;
 `;
 
 const TeamMember = styled.div`
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
+	margin-bottom: 1.5rem;
+	display: flex;
+	align-items: center;
 `;
 
 const TeamImage = styled.img`
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  margin-right: 1rem;
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	margin-right: 1rem;
 `;
 
 const TeamBio = styled.div`
-  font-size: 1rem;
+	font-size: 1rem;
 `;
 
 const ValueSection = styled.div`
-  margin-top: 2rem;
-  padding: 1rem;
-  background-color: ${({ theme }) => theme.colors.background};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 8px;
-  line-height: 1.6;
+	margin-top: 2rem;
+	padding: 1rem;
+	background-color: ${({ theme }) => theme.colors.background};
+	border: 1px solid ${({ theme }) => theme.colors.border};
+	border-radius: 8px;
+	line-height: 1.6;
 `;
 
 // About Component
 const About = () => {
-  return (
+	return (
 		<BackgroundContainer>
 			<AboutContainer>
 				{/* Company Mission */}
@@ -173,7 +175,6 @@ const About = () => {
 };
 
 export default About;
-
 
 // Purpose: Provides background information about the website, its mission, and the team.
 // Content:
