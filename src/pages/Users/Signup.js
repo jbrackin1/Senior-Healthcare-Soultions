@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import button from "../../components/ui/Global/everywhere/button";
+import Button from "../../components/ui/Global/everywhere/button";
 import Input from "../../components/ui/Global/forms/Input";
 
 // Styled Components
@@ -40,15 +40,6 @@ const StyledInput = styled(Input)`
 	margin-bottom: 1rem;
 `;
 
-const Styledbutton = styled(button)`
-	/* Use your reusable button */
-	margin-top: 1rem;
-	background-color: ${({ theme }) => theme.colors.primary};
-	color: ${({ theme }) => theme.colors.backgroundAlt};
-	&:hover {
-		background-color: ${({ theme }) => theme.colors.accent};
-	}
-`;
 
 const Togglebutton = styled.button`
 	background: none;
@@ -123,9 +114,9 @@ function LoginSignup() {
 						required
 					/>
 					{error && <p style={{ color: "red" }}>{error}</p>}
-					<button type="submit" disabled={loading}>
+					<Button type="submit" disabled={loading}>
 						{loading ? "Processing..." : isLogin ? "Login" : "Sign Up"}
-					</button>
+					</Button>
 				</form>
 				<Togglebutton onClick={() => setIsLogin(!isLogin)}>
 					{isLogin

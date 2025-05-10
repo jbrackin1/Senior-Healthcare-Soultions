@@ -79,12 +79,12 @@ const About = () => {
 				{/* Company Mission */}
 				<SectionTitle>Our Mission</SectionTitle>
 				<Paragraph>
-					At [Website Name], we believe that everyone deserves access to health
-					insurance that truly covers their needs, without the stress and
-					confusion of hidden exclusions or unwanted solicitations. Our mission
-					is to provide a quick, easy way for patients to find the best coverage
-					for their specific conditions, without feeling overwhelmed or
-					harassed.
+					At Senior Healthcare Solutions, we believe that everyone deserves
+					access to health insurance that truly covers their needs, without the
+					stress and confusion of hidden exclusions or unwanted solicitations.
+					Our mission is to provide a quick, easy way for patients to find the
+					best coverage for their specific conditions, without feeling
+					overwhelmed or harassed.
 				</Paragraph>
 				<Paragraph>
 					Our founder, a dedicated physician, was inspired to create this
@@ -96,10 +96,11 @@ const About = () => {
 					something needed to change.
 				</Paragraph>
 				<Paragraph>
-					That's why we created [Website Name]—a place where patients can
-					compare insurance plans tailored to their needs, without having to
-					provide personal information like phone numbers or emails unless they
-					choose to. We are committed to transparency, privacy, and compassion.
+					That's why we created Senior Healthcare Solutions —a place where
+					patients can compare insurance plans tailored to their needs, without
+					having to provide personal information like phone numbers or emails
+					unless they choose to. We are committed to transparency, privacy, and
+					compassion.
 				</Paragraph>
 
 				{/* Team Members */}
@@ -111,7 +112,7 @@ const About = () => {
 							alt="Dr. Jane Smith"
 						/>
 						<TeamBio>
-							<strong>Dr. Jane Smith</strong> – Founder and CEO, passionate
+							<strong>Dr. Nicole</strong> – Founder and CEO, passionate
 							physician and advocate for patient-centered care. With over 15
 							years of experience in the medical field, she brings a wealth of
 							knowledge and a deep commitment to helping patients navigate the
@@ -124,16 +125,19 @@ const About = () => {
 				{/* History */}
 				<SectionTitle>Our History</SectionTitle>
 				<Paragraph>
-					Founded in 2023, [Website Name] was born out of a desire to simplify
-					the process of finding reliable insurance coverage. Our journey began
-					with a simple idea: to create a platform that is different from
-					others—a platform that genuinely cares about the people it serves.
+					Founded in 2023, Senior Healthcare Solutions was born out of a desire
+					to simplify the process of finding reliable insurance coverage. Our
+					journey began with a simple idea: to create a platform that is
+					different from others—a platform that genuinely cares about the people
+					it serves.
 				</Paragraph>
 
 				{/* Values and Credibility */}
 				<SectionTitle>Our Values</SectionTitle>
 				<ValueSection>
-					<Paragraph>At [Website Name], we are committed to:</Paragraph>
+					<Paragraph>
+						At Senior Healthcare Solutions, we are committed to:
+					</Paragraph>
 					<ul>
 						<li>
 							Compassionate Service: We care deeply about our users and strive

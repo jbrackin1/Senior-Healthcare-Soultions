@@ -50,9 +50,9 @@ const TestimonialText = styled.p`
 `;
 
 const TestimonialAuthor = styled.p`
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.primary};
+	font-size: 1.1rem;
+	font-weight: bold;
+	color: ${({ theme }) => theme.colors.text || "#333"};
 `;
 
 const TestimonialSource = styled.p`

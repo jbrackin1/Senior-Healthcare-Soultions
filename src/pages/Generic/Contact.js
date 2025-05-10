@@ -6,7 +6,7 @@
 import React from "react";
 import styled from "styled-components";
 import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
-import button from "../../components/ui/Global/everywhere/button";
+import Button from "../../components/ui/Global/everywhere/button";
 import Input from "../../components/ui/Global/forms/Input";
 import TextArea from "../../components/ui/Global/forms/TextArea";
 
@@ -102,6 +102,8 @@ const MapContainer = styled.div`
 	}
 `;
 
+
+
 const Contact = () => {
 	return (
 		<ContactContainer>
@@ -112,7 +114,7 @@ const Contact = () => {
 					<Input type="email" placeholder="Your Email" required />
 					<Input type="tel" placeholder="Your Phone Number" />
 					<TextArea rows="5" placeholder="Your Message" required />
-					<button type="submit">Send Message</button>
+					<Button type="submit" >Send Message</Button>
 				</ContactForm>
 			</Section>
 

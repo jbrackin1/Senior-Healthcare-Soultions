@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import button from "../../components/ui/Global/everywhere/button";
+import Button from "../../components/ui/Global/everywhere/button";
 import Input from "../../components/ui/Global/forms/Input";
 import Dropdowns from "../../components/ui/Global/forms/Dropdowns";
 
@@ -58,15 +58,6 @@ const NotificationSettingsSection = styled.div`
 	border-radius: 5px;
 	background-color: ${({ theme }) => theme.colors.background};
 `;
-
-// const Styledbutton = styled(button)`
-// 	background-color: ${({ theme }) => theme.colors.primary};
-// 	color: ${({ theme }) => theme.colors.backgroundAlt};
-// 	margin-top: 1rem;
-// 	&:hover {
-// 		background-color: ${({ theme }) => theme.colors.accent};
-// 	}
-// `;
 
 // Profile Component
 function Profile() {
@@ -199,7 +190,7 @@ function Profile() {
 						/>
 						<span>Are you a veteran? (Check the box if yes)</span>
 					</label>
-					<button type="submit">Update Profile</button>
+					<Button type="submit">Update Profile</Button>
 				</ProfileForm>
 
 				{/* <SavedComparisonsSection>
