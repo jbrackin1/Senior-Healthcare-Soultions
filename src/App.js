@@ -27,11 +27,7 @@ import PrivacyPolicy from "./pages/Legal/PrivacyPolicy";
 import TermsOfService from "./pages/Legal/TermsOfService";
 import LoginSignup from "./pages/Users/Signup";
 import Profile from "./pages/Users/UserProfile";
-import Resources from "./pages/Generic/Resources";
 import PractitionerPage from "./pages/Users/Practitioner";
-import Blog from "./pages/Generic/Blog";
-import DrugCoverage from "./components/ui/Global/data-display/DrugCoverage";
-import VADrugCoverage from "./components/ui/Global/data-display/VADrugCoverage";
 import FAQ from "./pages/Generic/faq"
 // import ComparePlans from "./pages/Insurance/Compare";
 import PlanDetail from "./components/ui/Plan/PlanDetail";
