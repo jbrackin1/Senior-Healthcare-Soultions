@@ -29,18 +29,17 @@ const Paragraph = styled.p`
 `;
 
 const TermsOfService = () => {
-
 	return (
 		<TermsContainer>
 			<Heading>
-				Terms and Conditions - NOTICE - Generic template have a lawyer verify
-				if it is good or not
+				Terms and Conditions - NOTICE - Generic template have a lawyer verify if
+				it is good or not
 			</Heading>
 			<Paragraph>
-				Welcome to [Your Website Name]. By accessing or using our website, you
-				agree to comply with and be bound by the following terms and conditions
-				of use. If you disagree with any part of these terms, please do not use
-				our website.
+				Welcome to Senior Healthcare Solution. By accessing or using our
+				website, you agree to comply with and be bound by the following terms
+				and conditions of use. If you disagree with any part of these terms,
+				please do not use our website.
 			</Paragraph>
 			<Section>User Responsibilities</Section>
 			<Paragraph>
@@ -62,19 +61,19 @@ const TermsOfService = () => {
 				own risk.
 			</Paragraph>
 			<Paragraph>
-				In no event will [Your Website Name], its directors, employees, or
-				agents be liable for any loss or damage including without limitation,
+				In no event will Senior Healthcare Solution, its directors, employees,
+				or agents be liable for any loss or damage including without limitation,
 				indirect or consequential loss or damage, or any loss or damage
 				whatsoever arising from loss of data or profits arising out of, or in
 				connection with, the use of this website.
 			</Paragraph>
 			<Section>Modifications and Updates</Section>
 			<Paragraph>
-				[Your Website Name] reserves the right to modify or update these terms
-				and conditions at any time without prior notice. Your continued use of
-				the website following any changes signifies your acceptance of the new
-				terms. It is your responsibility to review these terms periodically for
-				any updates or changes.
+				Senior Healthcare Solution reserves the right to modify or update these
+				terms and conditions at any time without prior notice. Your continued
+				use of the website following any changes signifies your acceptance of
+				the new terms. It is your responsibility to review these terms
+				periodically for any updates or changes.
 			</Paragraph>
 			<Section>Governing Law</Section>
 			<Paragraph>

@@ -2,13 +2,13 @@
 
 // PrivacyPolicy.js
 // Purpose: Legal page to outline how user data is handled.
-// Review for Compliance: Depending on your audience and location, 
-// consider reviewing this content with a legal professional to ensure it 
+// Review for Compliance: Depending on your audience and location,
+// consider reviewing this content with a legal professional to ensure it
 //complies with applicable laws like GDPR or CCPA.
 // Additional Tips:
 // Link to the Page: Make sure this PrivacyPolicy page is easily accessible
 // from your website's footer or any other relevant section.
-// User Consent: Consider implementing a cookie consent banner or 
+// User Consent: Consider implementing a cookie consent banner or
 //modal to ensure users are aware of your data collection practices.
 
 import React from "react";
@@ -40,11 +40,13 @@ const Paragraph = styled.p`
 const PrivacyPolicy = () => {
 	return (
 		<PrivacyContainer>
-			<Heading>Privacy Policy- NOTICE - Generic template have a lawyer review it.</Heading>
+			<Heading>
+				Privacy Policy- NOTICE - Generic template have a lawyer review it.
+			</Heading>
 			<Paragraph>
-				This Privacy Policy explains how [Your Website Name] collects, uses, and
-				protects the personal information you provide while using our website.
-				By using this website, you agree to the collection and use of
+				This Privacy Policy explains how Senior Healthcare Solution collects,
+				uses, and protects the personal information you provide while using our
+				website. By using this website, you agree to the collection and use of
 				information in accordance with this policy.
 			</Paragraph>
 

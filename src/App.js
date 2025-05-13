@@ -16,6 +16,7 @@ import DrugCoverage from "./components/ui/Global/data-display/DrugCoverage";
 import VADrugCoverage from "./components/ui/Global/data-display/VADrugCoverage";
 import About from "./pages/Generic/About";
 import Blog from "./pages/Generic/Blog";
+import BlogPost from "./pages/Generic/BlogPost";
 import Careers from "./pages/Generic/Careers";
 import Contact from "./pages/Generic/Contact";
 import HomePage from "./pages/Generic/HomePage";
@@ -43,37 +44,38 @@ function App() {
 		<AuthProvider>
 			<ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
 				<GlobalStyles />
-					<Router>
-						<TopBannerComponent />
-						<AdBanner />
-						<PageWrapper>
-							<Routes>
-								<Route path="/" element={<HomePage />} />
-								<Route path="/marketplace" element={<MarketPlacePage />} />
-								<Route path="/plan/:planId" element={<PlanDetail />} />
-								{/* <Route path="/compare" element={<ComparePlans />} /> */}
-								<Route path="/drug-coverage" element={<DrugCoverage />} />
-								<Route path="/signup" element={<SignUp />} />
-								<Route path="/login-signup" element={<LoginSignup />} />
-								<Route path="/user-profile" element={<Profile />} />
-								{/* <Route path="/practitioner" element={<PractitionerPage />} /> */}
-								<Route path="/about" element={<About />} />
-								<Route path="/blog" element={<Blog />} />
-								<Route path="/careers" element={<Careers />} />
-								<Route path="/contact" element={<Contact />} />
-								<Route path="/privacy-policy" element={<PrivacyPolicy />} />
-								<Route path="/terms-of-service" element={<TermsOfService />} />
-								<Route path="/resources" element={<Resources />} />
-								<Route path="/faq" element={<FAQ />} />
-								<Route path="/testimonials" element={<Testimonials />} />
-								<Route path="/drug-coverage" element={<DrugCoverage />} />
-								<Route path="/va-drug-coverage" element={<VADrugCoverage />} />
+				<Router>
+					<TopBannerComponent />
+					<AdBanner />
+					<PageWrapper>
+						<Routes>
+							<Route path="/" element={<HomePage />} />
+							<Route path="/marketplace" element={<MarketPlacePage />} />
+							<Route path="/plan/:planId" element={<PlanDetail />} />
+							{/* <Route path="/compare" element={<ComparePlans />} /> */}
+							<Route path="/drug-coverage" element={<DrugCoverage />} />
+							{/* <Route path="/signup" element={<SignUp />} />
+							<Route path="/login-signup" element={<LoginSignup />} />
+							<Route path="/user-profile" element={<Profile />} /> */}
+							{/* <Route path="/practitioner" element={<PractitionerPage />} /> */}
+							<Route path="/about" element={<About />} />
+							<Route path="/blog" element={<Blog />} />
+							<Route path="/blog/:slug" element={<BlogPost />} />
+							<Route path="/careers" element={<Careers />} />
+							<Route path="/contact" element={<Contact />} />
+							<Route path="/privacy-policy" element={<PrivacyPolicy />} />
+							<Route path="/terms-of-service" element={<TermsOfService />} />
+							<Route path="/resources" element={<Resources />} />
+							<Route path="/faq" element={<FAQ />} />
+							<Route path="/testimonials" element={<Testimonials />} />
+							<Route path="/drug-coverage" element={<DrugCoverage />} />
+							<Route path="/va-drug-coverage" element={<VADrugCoverage />} />
 
-								{/* Add any additional routes here */}
-							</Routes>
-						</PageWrapper>
-						<BottomFooter />
-					</Router>
+							{/* Add any additional routes here */}
+						</Routes>
+					</PageWrapper>
+					<BottomFooter />
+				</Router>
 			</ThemeProvider>
 		</AuthProvider>
 	);

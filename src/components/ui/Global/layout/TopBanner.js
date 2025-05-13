@@ -113,13 +113,13 @@ const TopBannerComponent = () => {
 					</DropdownMenu>
 				</DropdownToggle>
 
-				<DropdownToggle>
+				{/* <DropdownToggle>
 					User
 					<DropdownMenu>
 						<DropdownItem to="/login-signup">Login/Signup</DropdownItem>
 						<DropdownItem to="/user-profile">User Profile</DropdownItem>
 					</DropdownMenu>
-				</DropdownToggle>
+				</DropdownToggle> */}
 			</NavMenu>
 		</TopBanner>
 	);
