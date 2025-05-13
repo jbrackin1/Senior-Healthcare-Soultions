@@ -25,11 +25,9 @@ const BlogPostTitle = styled.h2`
 	color: ${({ theme }) => theme.colors.accent};
 	margin-bottom: 1rem;
 	text-align: center;
+	max-width: 800px;
+	margin: auto;
 `;
-
-const BlogPostContent = styled.div`
-	font-size: 1rem;
-	line-height: 1.8;
 
 	h4 {
 		margin-top: 1.5rem;
@@ -61,7 +59,6 @@ const BlogPostContent = styled.div`
 	}
 `;
 
-// Full blog article viewer
 const BlogPost = () => {
 	const { slug } = useParams();
 	const post = blogPosts.find((p) => p.slug === slug);
@@ -77,3 +74,4 @@ const BlogPost = () => {
 };
 
 export default BlogPost;
+
