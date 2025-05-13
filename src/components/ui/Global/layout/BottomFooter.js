@@ -112,7 +112,7 @@ const BottomFooter = () => {
 			</FooterSection>
 
 			<FooterSection>
-				<FooterText>&copy; 2024 Insurance Co. All rights reserved.</FooterText>
+				<FooterText>&copy; 2024 Senior Healthcare Solution. All rights reserved.</FooterText>
 				<FooterText>
 					Insurance products are offered by licensed entities and agents.
 				</FooterText>
