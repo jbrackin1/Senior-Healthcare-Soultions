@@ -1,30 +1,19 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from typing import List
-from db.session import get_db
+
+from routers import user, va_formulary  # Add any other routers as needed
 
 app = FastAPI()
 
-# Allow frontend requests
+# CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Change to your frontend's origin for production    
+    allow_origins=["*"],  # TODO: tighten this for prod
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-@app.api_route("/autocomplete", methods=["GET", "OPTIONS"], response_model=List[str])
-def autocomplete_medications(q: str = Query(..., min_length=1)):
-    conn = get_connection()
-    try:
-        with conn.cursor() as cursor:
-            cursor.execute(
-                "SELECT Generic FROM va_formulary_feb_2025 WHERE Generic LIKE %s LIMIT 10",
-                (q + '%',)
-            )
-            results = cursor.fetchall()
-            # Access the first element of each tuple in results
-            return [row[0] for row in results]
-    finally:
-        conn.close()
+# Register API routers
+app.include_router(user.router)
+app.include_router(va_formulary.router)

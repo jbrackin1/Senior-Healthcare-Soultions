@@ -3,7 +3,8 @@ from sqlalchemy.orm import sessionmaker
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+env_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '.env'))
+load_dotenv(dotenv_path=env_path)
 
 DB_USER = os.getenv("DB_USER")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
