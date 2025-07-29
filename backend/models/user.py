@@ -3,10 +3,11 @@ import uuid
 import bcrypt
 from sqlalchemy import Column, String, Boolean, DateTime, LargeBinary, text, func
 from sqlalchemy.sql import expression
-from sqlalchemy.ext.declarative import declarative_base
+# from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import declared_attr
+from db.base import Base
 
-Base = declarative_base()
+
 SECRET_KEY = os.getenv("DB_SECRET_KEY", "changeme")
 
 class User(Base):
