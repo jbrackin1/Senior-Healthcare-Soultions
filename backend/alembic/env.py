@@ -16,6 +16,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.
 from db.base import Base  # Your declarative base
 from models import user   # Import all models to register them
 from models import va_formulary
+from models.audit_log import AuditLog
+
 
 # Load .env if you're using it
 from dotenv import load_dotenv

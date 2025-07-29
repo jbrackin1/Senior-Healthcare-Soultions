@@ -1,22 +1,43 @@
-# schemas/user.py
-
 from pydantic import BaseModel, EmailStr
 from typing import Optional
+from datetime import datetime
 
-
-# ---------- Input Schema (e.g., for creation) ----------
-class UserCreate(BaseModel):
-    email: EmailStr
-    password: str
+class UserBase(BaseModel):
+    email: Optional[EmailStr]   
     full_name: Optional[str] = None
     gender: Optional[str] = None
+    role: Optional[str] = "patient"
+    is_admin: Optional[bool] = False
 
+class UserCreate(UserBase):
+    password: str
 
-# ---------- Output Schema (limited, no PII by default) ----------
+class UserOut(UserBase):
+    id: str
+    created_at: Optional[datetime]
+    updated_at: Optional[datetime]
+        
+    class Config:
+        from_attributes = True
+
 class UserPublic(BaseModel):
     id: str
-    # You can include decrypted fields only if necessary and justified
-    # email: EmailStr
+    email: EmailStr
+    full_name: Optional[str]
+    gender: Optional[str]
+    role: Optional[str]
+    is_admin: Optional[bool]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+class UserUpdate(BaseModel):
+    email: Optional[EmailStr]
+    password: Optional[str]
+    full_name: Optional[str]
+    gender: Optional[str]
+    role: Optional[str]
+    is_admin: Optional[bool]
+
+    class Config:
+        from_attributes = True
