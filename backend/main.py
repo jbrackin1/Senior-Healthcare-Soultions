@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
-from db import get_connection
+from db.session import get_db
 
 app = FastAPI()
 
@@ -14,7 +14,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/autocomplete", response_model=List[str])
+@app.api_route("/autocomplete", methods=["GET", "OPTIONS"], response_model=List[str])
 def autocomplete_medications(q: str = Query(..., min_length=1)):
     conn = get_connection()
     try:

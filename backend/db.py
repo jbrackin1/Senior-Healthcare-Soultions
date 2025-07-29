@@ -1,10 +1,10 @@
 import os
 import mysql.connector
 from dotenv import load_dotenv
+from pathlib import Path
 
 # Load environment variables from .env file
-load_dotenv()
-
+load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env")
 
 def get_connection():
     host = os.getenv("DB_HOST", "localhost")  # Default to localhost if not in .env
