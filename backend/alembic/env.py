@@ -15,6 +15,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.
 
 from db.base import Base  # Your declarative base
 from models import user   # Import all models to register them
+from models import va_formulary
 
 # Load .env if you're using it
 from dotenv import load_dotenv
@@ -61,6 +62,7 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        compare_type=True
     )
 
     # ▶️ Run migrations
@@ -74,7 +76,7 @@ def run_migrations_online() -> None:
     engine = create_engine(url, poolclass=pool.NullPool)
 
     with engine.connect() as connection:
-        context.configure(connection=connection, target_metadata=target_metadata)
+        context.configure(connection=connection, target_metadata=target_metadata, compare_type=True)
         with context.begin_transaction():
             context.run_migrations()
 
