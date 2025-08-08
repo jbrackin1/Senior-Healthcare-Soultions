@@ -231,9 +231,11 @@ setPlans(enrichedWithMatch);
 				/>
 			</Collapsible>
 
-			<SectionTitle>Compare Insurance Plans</SectionTitle>
+			<SectionTitle as="h1">Compare Insurance Plans</SectionTitle>
 
-			<form onSubmit={handleFormSubmit}>
+			<form
+				onSubmit={handleFormSubmit}
+				aria-label="Marketplace Plan Search Form">
 				<FormField>
 					<label htmlFor="income">Household Income</label>
 					<input
@@ -257,14 +259,18 @@ setPlans(enrichedWithMatch);
 					/>
 				</FormField>
 				<FormField>
-					<label htmlFor="gender">Gender</label>
+					<label htmlFor="gender">Select your Gender</label>
 					<select
 						id="gender"
 						name="gender"
 						value={formData.gender}
 						onChange={(e) =>
 							setFormData({ ...formData, gender: e.target.value })
-						}>
+						}
+						aria-required="true">
+						<option value="" disabled>
+							-- Please select --
+						</option>
 						<option value="Female">Female</option>
 						<option value="Male">Male</option>
 					</select>
