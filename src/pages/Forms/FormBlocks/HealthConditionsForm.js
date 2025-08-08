@@ -22,130 +22,158 @@ const HealthConditionsForm = ({ onNext }) => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h3>Health Conditions</h3>
+		<section aria-labelledby="health-conditions-heading">
+			<h2 id="health-conditions-heading">Health Conditions</h2>
 
-			<button type="button" onClick={() => setShowInfo(!showInfo)}>
+			<button
+				type="button"
+				onClick={() => setShowInfo(!showInfo)}
+				aria-expanded={showInfo}
+				aria-controls="info-text">
 				Why do we ask this?
 			</button>
+
 			{showInfo && (
-				<p className="info-text">
+				<p id="info-text" className="info-text">
 					Collecting information on pre-existing conditions allows us to
 					identify plans that cover specific health needs, medications, and
 					treatments that are essential for managing your health effectively.
 				</p>
 			)}
+			<form onSubmit={handleSubmit}>
+				<fieldset>
+					<legend>Select any health conditions you have:</legend>
 
-			<label>
-				<input
-					type="checkbox"
-					value="Diabetes"
-					onChange={handleConditionsChange}
-				/>
-				Diabetes
-			</label>
+					<div>
+						<input
+							type="checkbox"
+							id="cond-diabetes"
+							value="Diabetes"
+							onChange={handleConditionsChange}
+						/>
+						<label htmlFor="cond-diabetes">Diabetes</label>
+					</div>
 
-			<label>
-				<input
-					type="checkbox"
-					value="High Blood Pressure"
-					onChange={handleConditionsChange}
-				/>
-				High Blood Pressure
-			</label>
+					<div>
+						<input
+							type="checkbox"
+							id="cond-bp"
+							value="High Blood Pressure"
+							onChange={handleConditionsChange}
+						/>
+						<label htmlFor="cond-bp">High Blood Pressure</label>
+					</div>
 
-			<label>
-				<input
-					type="checkbox"
-					value="Heart Disease"
-					onChange={handleConditionsChange}
-				/>
-				Heart Disease
-			</label>
+					<div>
+						<input
+							type="checkbox"
+							id="cond-heart"
+							value="Heart Disease"
+							onChange={handleConditionsChange}
+						/>
+						<label htmlFor="cond-heart">Heart Disease</label>
+					</div>
 
-			<label>
-				<input
-					type="checkbox"
-					value="Asthma"
-					onChange={handleConditionsChange}
-				/>
-				Asthma
-			</label>
+					<div>
+						<input
+							type="checkbox"
+							id="cond-asthma"
+							value="Asthma"
+							onChange={handleConditionsChange}
+						/>
+						<label htmlFor="cond-asthma">Asthma</label>
+					</div>
 
-			<label>
-				<input
-					type="checkbox"
-					value="Cancer"
-					onChange={handleConditionsChange}
-				/>
-				Cancer
-			</label>
+					<div>
+						<input
+							type="checkbox"
+							id="cond-cancer"
+							value="Cancer"
+							onChange={handleConditionsChange}
+						/>
+						<label htmlFor="cond-cancer">Cancer</label>
+					</div>
 
-			<label>
-				<input
-					type="checkbox"
-					value="Arthritis"
-					onChange={handleConditionsChange}
-				/>
-				Arthritis
-			</label>
+					<div>
+						<input
+							type="checkbox"
+							id="cond-arthritis"
+							value="Arthritis"
+							onChange={handleConditionsChange}
+						/>
+						<label htmlFor="cond-arthritis">Arthritis</label>
+					</div>
 
-			<label>
-				<input
-					type="checkbox"
-					value="Chronic Kidney Disease"
-					onChange={handleConditionsChange}
-				/>
-				Chronic Kidney Disease
-			</label>
+					<div>
+						<input
+							type="checkbox"
+							id="cond-kidney"
+							value="Chronic Kidney Disease"
+							onChange={handleConditionsChange}
+						/>
+						<label htmlFor="cond-kidney">Chronic Kidney Disease</label>
+					</div>
 
-			<label>
-				<input
-					type="checkbox"
-					value="COPD (Chronic Obstructive Pulmonary Disease)"
-					onChange={handleConditionsChange}
-				/>
-				COPD (Chronic Obstructive Pulmonary Disease)
-			</label>
+					<div>
+						<input
+							type="checkbox"
+							id="cond-copd"
+							value="COPD (Chronic Obstructive Pulmonary Disease)"
+							onChange={handleConditionsChange}
+						/>
+						<label htmlFor="cond-copd">
+							COPD (Chronic Obstructive Pulmonary Disease)
+						</label>
+					</div>
 
-			<label>
-				<input
-					type="checkbox"
-					value="Depression/Anxiety"
-					onChange={handleConditionsChange}
-				/>
-				Depression/Anxiety
-			</label>
+					<div>
+						<input
+							type="checkbox"
+							id="cond-depression"
+							value="Depression/Anxiety"
+							onChange={handleConditionsChange}
+						/>
+						<label htmlFor="cond-depression">Depression/Anxiety</label>
+					</div>
 
-			<label>
-				<input
-					type="checkbox"
-					value="Obesity"
-					onChange={handleConditionsChange}
-				/>
-				Obesity
-			</label>
+					<div>
+						<input
+							type="checkbox"
+							id="cond-obesity"
+							value="Obesity"
+							onChange={handleConditionsChange}
+						/>
+						<label htmlFor="cond-obesity">Obesity</label>
+					</div>
 
-			<label>
-				<input
-					type="checkbox"
-					value="Thyroid Disorders"
-					onChange={handleConditionsChange}
-				/>
-				Thyroid Disorders
-			</label>
+					<div>
+						<input
+							type="checkbox"
+							id="cond-thyroid"
+							value="Thyroid Disorders"
+							onChange={handleConditionsChange}
+						/>
+						<label htmlFor="cond-thyroid">Thyroid Disorders</label>
+					</div>
+				</fieldset>
 
-			<label>
-				Medications:
-				<input
-					type="text"
-					value={medications}
-					onChange={(e) => setMedications(e.target.value)}
-				/>
-			</label>
+				<div className="form-group">
+					<label htmlFor="medications">Medications (optional):</label>
+					<input
+						type="text"
+						id="medications"
+						value={medications}
+						onChange={(e) => setMedications(e.target.value)}
+					/>
+				</div>
 
-			<button type="submit">Next</button>
-		</form>
+				<button
+					type="submit"
+					aria-label="Submit health conditions and proceed to next step">
+					Next
+				</button>
+			</form>
+		</section>
 	);
 };
 

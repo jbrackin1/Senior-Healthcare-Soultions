@@ -95,7 +95,7 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 		<PreferenceContainer>
 			<SectionTitle>Set Your Insurance Preferences</SectionTitle>
 
-			<Label>Preferred Monthly Premium</Label>
+			<Label htmlFor="preferredPremium">Preferred Monthly Premium</Label>
 
 			<input
 				type="range"
@@ -121,7 +121,7 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 
 			<FieldRow>
 				<div style={{ width: "100%", textAlign: "center", marginTop: "1rem" }}>
-					<Label>
+					<Label htmlFor="metalLevel">
 						Cost vs. Coverage Level
 						{momMode && (
 							<Tooltip title="Metal Levels are shortcuts to guess yearly costs: Bronze = Cheapest monthly, but bigger bills if sick. Silver = Middle ground. Gold = Expensive monthly, cheaper care. Platinum = Highest monthly, lowest care costs." />
@@ -287,6 +287,7 @@ const UserPreference = ({ formData, setFormData, facetGroups = [] }) => {
 				].map((program) => (
 					<label key={program}>
 						<input
+							id={`program-${program}`}
 							type="checkbox"
 							value={program}
 							checked={formData.lifestylePrograms?.includes(program) || false}

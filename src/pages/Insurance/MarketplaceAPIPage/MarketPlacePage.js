@@ -15,7 +15,10 @@ import { formatDetailedInsInfo } from "../../../utils/formatters/formatDetailedI
 
 
 
-const CompareContainer = styled.main`
+const CompareContainer = styled.main.attrs({
+	role: "main",
+	"aria-label": "Marketplace Comparison Tool",
+})`
 	padding: 2rem;
 	background-color: ${({ theme }) => theme.colors.backgroundAlt};
 	color: ${({ theme }) => theme.colors.text};

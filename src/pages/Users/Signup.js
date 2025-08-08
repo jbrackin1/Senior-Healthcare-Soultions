@@ -2,34 +2,33 @@
 
 import React, { useState } from "react";
 import styled from "styled-components";
-import button from "../../components/ui/Global/everywhere/button";
+import Button from "../../components/ui/Global/everywhere/button";
 import Input from "../../components/ui/Global/forms/Input";
 
-// Styled Components
 const LoginSignupContainer = styled.main`
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
-	background-image: url("/assets/images/BlueBackground.jpeg"); /* Background image */
+	background-image: url("/assets/images/BlueBackground.jpeg");
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
 	color: ${({ theme }) => theme.colors.text};
 `;
 
-const FormContainer = styled.div`
+const FormContainer = styled.section`
 	background-color: rgba(255, 255, 255, 0.95);
 	padding: 2rem;
 	border-radius: 8px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	display: flex;
 	flex-direction: column;
-	width: 300px;
+	width: 320px;
 	text-align: center;
 `;
 
-const FormTitle = styled.h2`
+const FormTitle = styled.h1`
 	font-family: "Libre Baskerville", serif;
 	font-size: 2rem;
 	margin-bottom: 1.5rem;
@@ -40,17 +39,12 @@ const StyledInput = styled(Input)`
 	margin-bottom: 1rem;
 `;
 
-const Styledbutton = styled(button)`
-	/* Use your reusable button */
+const FullWidthButton = styled(Button)`
+	width: 100%;
 	margin-top: 1rem;
-	background-color: ${({ theme }) => theme.colors.primary};
-	color: ${({ theme }) => theme.colors.backgroundAlt};
-	&:hover {
-		background-color: ${({ theme }) => theme.colors.accent};
-	}
 `;
 
-const Togglebutton = styled.button`
+const ToggleButton = styled.button`
 	background: none;
 	border: none;
 	color: ${({ theme }) => theme.colors.accent};
@@ -61,6 +55,12 @@ const Togglebutton = styled.button`
 	&:hover {
 		text-decoration: underline;
 	}
+`;
+
+const ErrorText = styled.p`
+	color: red;
+	font-size: 0.875rem;
+	text-align: left;
 `;
 
 function LoginSignup() {
@@ -92,46 +92,85 @@ function LoginSignup() {
 	const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
 
 	return (
-		<LoginSignupContainer>
-			<FormContainer>
-				<FormTitle>{isLogin ? "Login" : "Sign Up"}</FormTitle>
-				<form onSubmit={handleSubmit}>
+		<LoginSignupContainer role="main">
+			<FormContainer aria-labelledby="form-title">
+				<FormTitle id="form-title">{isLogin ? "Login" : "Sign Up"}</FormTitle>
+				<form
+					onSubmit={handleSubmit}
+					aria-label={isLogin ? "Login form" : "Signup form"}>
 					{!isLogin && (
+						<div>
+							<label htmlFor="name" className="sr-only">
+								Name
+							</label>
+							<StyledInput
+								id="name"
+								name="name"
+								type="text"
+								placeholder="Name"
+								value={name}
+								onChange={(e) => setName(e.target.value)}
+								required
+								aria-required="true"
+								aria-label="Name"
+							/>
+						</div>
+					)}
+
+					<div>
+						<label htmlFor="email" className="sr-only">
+							Email
+						</label>
 						<StyledInput
-							type="text"
-							placeholder="Name"
-							value={name}
-							onChange={(e) => setName(e.target.value)}
+							id="email"
+							name="email"
+							type="email"
+							placeholder="Email"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
 							required
+							aria-required="true"
+							aria-label="Email"
 						/>
-					)}
-					<StyledInput
-						type="email"
-						placeholder="Email"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-						required
-					/>
-					{!validateEmail(email) && email && (
-						<p style={{ color: "red" }}>Invalid email format</p>
-					)}
-					<StyledInput
-						type="password"
-						placeholder="Password"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-						required
-					/>
-					{error && <p style={{ color: "red" }}>{error}</p>}
-					<button type="submit" disabled={loading}>
+						{!validateEmail(email) && email && (
+							<ErrorText role="alert">Invalid email format</ErrorText>
+						)}
+					</div>
+
+					<div>
+						<label htmlFor="password" className="sr-only">
+							Password
+						</label>
+						<StyledInput
+							id="password"
+							name="password"
+							type="password"
+							placeholder="Password"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+							required
+							aria-required="true"
+							aria-label="Password"
+						/>
+					</div>
+
+					{error && <ErrorText role="alert">{error}</ErrorText>}
+
+					<FullWidthButton
+						type="submit"
+						disabled={loading}
+						aria-disabled={loading}>
 						{loading ? "Processing..." : isLogin ? "Login" : "Sign Up"}
-					</button>
+					</FullWidthButton>
 				</form>
-				<Togglebutton onClick={() => setIsLogin(!isLogin)}>
+
+				<ToggleButton
+					onClick={() => setIsLogin(!isLogin)}
+					aria-label={isLogin ? "Switch to signup" : "Switch to login"}>
 					{isLogin
 						? "Don't have an account? Sign Up"
 						: "Already have an account? Login"}
-				</Togglebutton>
+				</ToggleButton>
 			</FormContainer>
 		</LoginSignupContainer>
 	);

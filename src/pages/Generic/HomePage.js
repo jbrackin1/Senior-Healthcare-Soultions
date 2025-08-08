@@ -1,15 +1,30 @@
 /** @format */
 
-// HomePage.js
 import React, { useState } from "react";
 import styled from "styled-components";
-import button from "../../components/ui/Global/everywhere/button";
+import Button from "../../components/ui/Global/everywhere/button"; // ✅ Capitalized
 import Input from "../../components/ui/Global/forms/Input";
 import Modal from "../../components/ui/Global/everywhere/modal";
 import { Link } from "react-router-dom";
 import DarkLogoSHS from "../../Img/assets/SiteLogos/DarkLogoSHS.webp";
 import LappyBG from "../../Img/assets/images/LappyBG.png";
-import CellphoneBG from "../../Img/assets/images/CellphoneBG.png"
+import CellphoneBG from "../../Img/assets/images/CellphoneBG.png";
+
+// ✅ Skip link
+const SkipLink = styled.a`
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: #ffffff;
+	color: #000000;
+	padding: 0.5rem;
+	z-index: 1000;
+	text-decoration: underline;
+	transform: translateY(-200%);
+	&:focus {
+		transform: translateY(0%);
+	}
+`;
 
 const PageWrapper = styled.div`
 	padding: 0;
@@ -26,25 +41,18 @@ const PageWrapper = styled.div`
 
 	@media (max-width: 768px) {
 		background-image: url(${CellphoneBG});
-			background-size: cover;
+		background-size: cover;
 		background-position: center;
-	}
 	}
 `;
 
-// Hero Section alone at the top
 const HeroSection = styled.section`
 	width: 100%;
 	text-align: center;
 	background-color: ${({ theme }) => theme.colors.primary};
 	color: ${({ theme }) => theme.colors.backgroundAlt};
+	padding: 2rem;
 `;
-
-// const HeroTitle = styled.h1`
-// 	font-family: "Libre Baskerville", serif;
-// 	font-size: 3rem;
-// 	margin-bottom: 1rem;
-// `;
 
 const HeroDescription = styled.p`
 	font-family: "Open Sans", sans-serif;
@@ -80,7 +88,7 @@ const StyledLink = styled(Link)`
 	text-decoration: none;
 `;
 
-const Linkbutton = styled(button)`
+const LinkButton = styled(Button)`
 	margin-bottom: 1rem;
 `;
 
@@ -131,12 +139,10 @@ const HighlightItem = styled.li`
 
 const TestimonialSection = styled.section`
 	padding: 2rem;
-	border-radius: 8px;
-	background-color: rgba(255, 255, 255, 0.8);
+	background-color: rgba(255, 255, 255, 0.5);
 	text-align: center;
 	width: 100%;
 	margin-top: 2rem;
-	background-color: rgba(255, 255, 255, 0.5);
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 	border-radius: 12px;
 `;
@@ -157,7 +163,7 @@ const TestimonialAuthor = styled.p`
 const HomePage = () => {
 	const [isModalOpen, setModalOpen] = useState(false);
 
-	const handlebuttonClick = () => {
+	const handleButtonClick = () => {
 		setModalOpen(true);
 	};
 
@@ -166,79 +172,109 @@ const HomePage = () => {
 	};
 
 	return (
-		<PageWrapper>
-			<HeroSection>
-				<div
-					style={{
-						display: "flex",
-						flexDirection: "column",
-						alignItems: "center",
-					}}>
-					<img
-						src={DarkLogoSHS}
-						alt="SHS Logo"
-						style={{ width: "250px", maxWidth: "90%" }}
-					/>
-					<HeroDescription>
-						Find the best insurance plans tailored to your needs.
-					</HeroDescription>
-					<Linkbutton onClick={handlebuttonClick}>
-						Get Personalized Recommendations
-					</Linkbutton>
-				</div>
-			</HeroSection>
+		<>
+			<SkipLink href="#main">Skip to main content</SkipLink>
 
-			<MiddleContent>
-				<QuickLinks>
-					<StyledLink to="/marketplace">
-						<Linkbutton>Compare Plans</Linkbutton>
-					</StyledLink>
-					<StyledLink to="/resources">
-						<Linkbutton>Resources</Linkbutton>
-					</StyledLink>
-					<StyledLink to="/about">
-						<Linkbutton>About Us</Linkbutton>
-					</StyledLink>
-					<StyledLink to="/contact">
-						<Linkbutton>Contact Us</Linkbutton>
-					</StyledLink>
-				</QuickLinks>
+			<PageWrapper id="main">
+				<HeroSection>
+					<div
+						style={{
+							display: "flex",
+							flexDirection: "column",
+							alignItems: "center",
+						}}>
+						<img
+							src={DarkLogoSHS}
+							alt="Senior Healthcare Solutions company logo"
+							style={{ width: "250px", maxWidth: "90%" }}
+						/>
 
-				<HighlightSection>
-					<HighlightTitle>Why Choose Us?</HighlightTitle>
-					<HighlightList>
-						<HighlightItem>
-							Personalized plan matching — we tailor options to your needs
-						</HighlightItem>
-						<HighlightItem>
-							Compare Coverage and Costs Transparent cost comparisons — no
-							hidden surprises
-						</HighlightItem>
-						<HighlightItem>
-							Built for seniors & caregivers Trusted by families, backed by
-							experts
-						</HighlightItem>
-					</HighlightList>
-				</HighlightSection>
-			</MiddleContent>
+						<h1
+							style={{
+								fontFamily: "Libre Baskerville",
+								fontSize: "2rem",
+								marginBottom: "1rem",
+							}}>
+							Confused by Medicare or Marketplace plans? Let us simplify it for
+							you.
+						</h1>
 
-			<TestimonialSection>
-				<TestimonialQuote>
-					"This website made it so easy to find the best insurance for me!"
-				</TestimonialQuote>
-				<TestimonialAuthor>A Happy Customer</TestimonialAuthor>
-			</TestimonialSection>
+						<HeroDescription>
+							Get clear, personalized insurance options, No pressure, no cost.
+							We'll only reach out if you ask for help from a licensed expert
+							you can trust.
+						</HeroDescription>
 
-			{isModalOpen && (
-				<Modal onClose={handleCloseModal}>
-					<h2>Request More Information</h2>
-					<div>Sign up with your contact details to</div>
-					<div>receive offers customized just for you.</div>
-					<Input placeholder="Enter your email" />
-					<button onClick={handleCloseModal}>Close</button>
-				</Modal>
-			)}
-		</PageWrapper>
+						<LinkButton onClick={handleButtonClick}>
+							Get Personalized Recommendations
+						</LinkButton>
+					</div>
+				</HeroSection>
+
+				<MiddleContent>
+					<QuickLinks>
+						<StyledLink to="/marketplace">
+							<LinkButton>Compare Plans</LinkButton>
+						</StyledLink>
+						<StyledLink to="/resources">
+							<LinkButton>Resources</LinkButton>
+						</StyledLink>
+						<StyledLink to="/about">
+							<LinkButton>About Us</LinkButton>
+						</StyledLink>
+						<StyledLink to="/contact">
+							<LinkButton>Contact Us</LinkButton>
+						</StyledLink>
+					</QuickLinks>
+
+					<HighlightSection>
+						<HighlightTitle>Why Choose Us?</HighlightTitle>
+						<HighlightList>
+							<HighlightItem>
+								Personalized plan matching — we tailor options to your needs
+							</HighlightItem>
+							<HighlightItem>
+								Transparent cost comparisons — no hidden surprises
+							</HighlightItem>
+							<HighlightItem>
+								Built for seniors & caregivers — trusted by families, backed by
+								experts
+							</HighlightItem>
+						</HighlightList>
+					</HighlightSection>
+				</MiddleContent>
+
+				<TestimonialSection>
+					<TestimonialQuote>
+						"This website made it so easy to find the best insurance for me!"
+					</TestimonialQuote>
+					<TestimonialAuthor>A Happy Customer</TestimonialAuthor>
+				</TestimonialSection>
+
+				{isModalOpen && (
+					<Modal
+						onClose={handleCloseModal}
+						role="dialog"
+						aria-labelledby="modal-title"
+						aria-modal="true">
+						<h2 id="modal-title">Request More Information</h2>
+						<p>
+							Sign up with your contact details to receive offers customized
+							just for you.
+						</p>
+						<label htmlFor="modal-email" className="sr-only">
+							Your email address
+						</label>
+						<Input
+							id="modal-email"
+							placeholder="Enter your email"
+							aria-label="Your email address"
+						/>
+						<Button onClick={handleCloseModal}>Close</Button>
+					</Modal>
+				)}
+			</PageWrapper>
+		</>
 	);
 };
 
