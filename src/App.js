@@ -43,7 +43,7 @@ function App() {
 				<GlobalStyles />
 					<Router>
 						<TopBannerComponent />
-						<AdBanner />
+						{/* <AdBanner /> */}
 						<PageWrapper>
 							<Routes>
 								<Route path="/" element={<HomePage />} />
@@ -66,7 +66,6 @@ function App() {
 								<Route path="/drug-coverage" element={<DrugCoverage />} />
 								<Route path="/va-drug-coverage" element={<VADrugCoverage />} />
 
-								{/* Add any additional routes here */}
 							</Routes>
 						</PageWrapper>
 						<BottomFooter />

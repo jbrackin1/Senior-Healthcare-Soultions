@@ -65,9 +65,9 @@ const MiddleContent = styled.div`
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-	gap: 6rem;
+	gap: 2rem;
 	width: 100%;
-	padding: 12rem;
+	padding: 6rem;
 
 	@media (max-width: 768px) {
 		flex-direction: column;
@@ -231,13 +231,13 @@ const HomePage = () => {
 						<HighlightTitle>Why Choose Us?</HighlightTitle>
 						<HighlightList>
 							<HighlightItem>
-								Personalized plan matching — we tailor options to your needs
+								Personalized plan matching: We tailor options to your needs
 							</HighlightItem>
 							<HighlightItem>
-								Transparent cost comparisons — no hidden surprises
+								Transparent cost comparisons: No hidden surprises
 							</HighlightItem>
 							<HighlightItem>
-								Built for seniors & caregivers — trusted by families, backed by
+								Built for seniors & caregivers: Trusted by families, backed by
 								experts
 							</HighlightItem>
 						</HighlightList>
