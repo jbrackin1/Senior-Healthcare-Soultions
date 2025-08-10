@@ -124,7 +124,7 @@ const ListItem = styled.li`
 /* ---------- Extras you used on Privacy (keep + match styling) ---------- */
 const TableWrapper = styled.div`
 	margin: 1rem 0;
-	overflow-x: auto; /* a11y: prevent horizontal scroll traps on small screens */
+
 `;
 
 const VisuallyHidden = styled.span`
@@ -360,9 +360,6 @@ const PrivacyPolicy = () => {
 						explicitly requested.
 					</Paragraph>
 				</Section>
-				<BackToTop href="#toc" aria-label="Back to top of index">
-					Back to top
-				</BackToTop>
 				<BackToTop href="#toc" aria-label="Back to top of index">
 					Back to top
 				</BackToTop>
