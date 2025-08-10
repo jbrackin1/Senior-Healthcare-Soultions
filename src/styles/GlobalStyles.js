@@ -155,7 +155,7 @@ html, body, #root {
   
     .table-wrapper {
   width: 100%;
-  overflow-x: auto;
+  
 }
 
 table {
