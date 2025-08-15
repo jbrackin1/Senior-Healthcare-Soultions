@@ -1,3 +1,7 @@
+# Load .env if you're using it
+from dotenv import load_dotenv
+load_dotenv()
+
 import sys
 import os 
 
@@ -19,9 +23,6 @@ from models import va_formulary
 from models.audit_log import AuditLog
 
 
-# Load .env if you're using it
-from dotenv import load_dotenv
-load_dotenv()
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
