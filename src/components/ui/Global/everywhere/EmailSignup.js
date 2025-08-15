@@ -21,7 +21,7 @@ const Input = styled.input`
 	border-radius: 4px;
 `;
 
-const button = styled.button`
+const SubmitButton = styled.button`
 	padding: 10px 20px;
 	background-color: #333;
 	color: white;
@@ -34,29 +34,30 @@ const button = styled.button`
 	}
 `;
 
-// Email Signup Component
 function EmailSignup() {
 	const [email, setEmail] = useState("");
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		// Here you would typically handle the form submission,
-		// like sending the email to an API or backend server
 		alert(`Thank you for subscribing with: ${email}`);
-		setEmail(""); // Reset email field after submission
+		setEmail("");
 	};
 
 	return (
 		<SignupContainer>
 			<form onSubmit={handleSubmit}>
+				<label htmlFor="email-signup" className="sr-only">
+					Email address
+				</label>
 				<Input
+					id="email-signup"
 					type="email"
 					placeholder="Enter your email"
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
 					required
 				/>
-				<button type="submit">Subscribe</button>
+				<SubmitButton type="submit">Subscribe</SubmitButton>
 			</form>
 		</SignupContainer>
 	);

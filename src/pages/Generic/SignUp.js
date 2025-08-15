@@ -16,7 +16,7 @@ const PageWrapper = styled.div`
 	background-position: center;
 	background-repeat: no-repeat;
 	color: ${({ theme }) => theme.colors.text};
-	min-height: 100vh; /* Ensure it covers the full viewport height */
+	min-height: 100vh; 
 	display: flex;
 	flex-direction: column;
 	align-items: center;

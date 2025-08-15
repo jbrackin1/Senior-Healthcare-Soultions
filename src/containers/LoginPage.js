@@ -49,7 +49,7 @@ const StyledInput = styled(Input)`
 const Styledbutton = styled(button)`
 	margin-top: 1rem;
 	background-color: ${({ theme }) => theme.colors.primary};
-	color: ${({ theme }) => theme.colors.backgroundAlt};
+	color: ${({ theme }) => theme.colors.primary};
 	&:hover {
 		background-color: ${({ theme }) => theme.colors.accent};
 	}

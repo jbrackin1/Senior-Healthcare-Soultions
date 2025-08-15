@@ -1,11 +1,10 @@
-// About.js
 /** @format */
 
 // src/pages/About.js
 import React from "react";
 import styled from "styled-components";
 
-// Styled Components
+// Styled Components (unchanged from your code)
 const BackgroundContainer = styled.div`
 	background-image: url("/assets/images/MedicalWallpaper.webp");
 	display: flex;
@@ -17,163 +16,150 @@ const BackgroundContainer = styled.div`
 `;
 
 const AboutContainer = styled.main`
-  padding: 2rem;
-  background-color: ${({ theme }) => theme.colors.backgroundAlt};
-  color: ${({ theme }) => theme.colors.text};
-  font-family: "Open Sans", sans-serif;
-  line-height: 1.8;
-  max-width: 800px;
-  margin: 2rem auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	padding: 2rem;
+	background-color: ${({ theme }) => theme.colors.backgroundAlt};
+	color: ${({ theme }) => theme.colors.text};
+	font-family: "Open Sans", sans-serif;
+	line-height: 1.8;
+	max-width: 800px;
+	margin: 2rem auto;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
 const SectionTitle = styled.h2`
-  font-family: "Libre Baskerville", serif;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: ${({ theme }) => theme.colors.accent};
-  text-align: center;
+	font-family: "Libre Baskerville", serif;
+	font-size: 2rem;
+	margin-bottom: 1.5rem;
+	color: ${({ theme }) => theme.colors.accent};
+	text-align: center;
 `;
 
 const Paragraph = styled.p`
-  margin-bottom: 1.5rem;
-  font-size: 1rem;
+	margin-bottom: 1.5rem;
+	font-size: 1rem;
 `;
 
 const TeamSection = styled.section`
-  margin-top: 2rem;
+	margin-top: 2rem;
 `;
 
 const TeamMember = styled.div`
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
+	margin-bottom: 1.5rem;
+	display: flex;
+	align-items: center;
 `;
 
 const TeamImage = styled.img`
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  margin-right: 1rem;
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	margin-right: 1rem;
 `;
 
 const TeamBio = styled.div`
-  font-size: 1rem;
+	font-size: 1rem;
 `;
 
 const ValueSection = styled.div`
-  margin-top: 2rem;
-  padding: 1rem;
-  background-color: ${({ theme }) => theme.colors.background};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 8px;
-  line-height: 1.6;
+	margin-top: 2rem;
+	padding: 1rem;
+	background-color: ${({ theme }) => theme.colors.background};
+	border: 1px solid ${({ theme }) => theme.colors.border};
+	border-radius: 8px;
+	line-height: 1.6;
 `;
 
-// About Component
+// New About Component content
 const About = () => {
-  return (
+	return (
 		<BackgroundContainer>
 			<AboutContainer>
 				{/* Company Mission */}
 				<SectionTitle>Our Mission</SectionTitle>
 				<Paragraph>
-					At [Website Name], we believe that everyone deserves access to health
-					insurance that truly covers their needs, without the stress and
-					confusion of hidden exclusions or unwanted solicitations. Our mission
-					is to provide a quick, easy way for patients to find the best coverage
-					for their specific conditions, without feeling overwhelmed or
-					harassed.
+					At SR Healthcare Solutions, we believe everyone deserves access to
+					insurance plans tailored to their unique health needs—without stress,
+					confusion, or unwanted solicitations. Our mission is to simplify your
+					search for coverage by providing transparent, personalized options
+					that empower you to make informed decisions confidently.
 				</Paragraph>
 				<Paragraph>
-					Our founder, a dedicated physician, was inspired to create this
-					platform after witnessing her own family struggle with the
-					complexities of finding adequate health insurance. Seeing firsthand
-					how difficult it was for her mother-in-law to navigate insurance
-					policies that didn't cover her specific condition, and observing
-					countless patients face similar challenges, she realized that
-					something needed to change.
-				</Paragraph>
-				<Paragraph>
-					That's why we created [Website Name]—a place where patients can
-					compare insurance plans tailored to their needs, without having to
-					provide personal information like phone numbers or emails unless they
-					choose to. We are committed to transparency, privacy, and compassion.
+					Founded by Nicole Townley Williams, MA, CCC-SLP, SR Healthcare
+					Solutions draws from her deep commitment to community well-being and
+					professional expertise. Nicole’s passion for helping individuals eat
+					safely and communicate effectively extends to her dedication to
+					improving insurance access for patients in South Louisiana.
 				</Paragraph>
 
 				{/* Team Members */}
 				<TeamSection>
-					<SectionTitle>Meet Our Team</SectionTitle>
+					<SectionTitle>Meet Our Founder</SectionTitle>
 					<TeamMember>
 						<TeamImage
-							src="/assets/images/team-member1.jpg"
-							alt="Dr. Jane Smith"
+							src="/assets/images/NicoleTownleyWilliams.jpg"
+							alt="Nicole Townley Williams, MA, CCC-SLP"
 						/>
 						<TeamBio>
-							<strong>Dr. Jane Smith</strong> – Founder and CEO, passionate
-							physician and advocate for patient-centered care. With over 15
-							years of experience in the medical field, she brings a wealth of
-							knowledge and a deep commitment to helping patients navigate the
-							complexities of healthcare.
+							<strong>Nicole Townley Williams, MA, CCC-SLP</strong> is a
+							Speech-Language Pathologist and veteran with over 15 years of
+							experience serving patients in hospitals, rehabilitation centers,
+							and home health settings. She founded SR Healthcare Solutions to
+							provide the highest quality diagnostics and personalized care
+							recommendations, helping people live safer, fuller lives.
 						</TeamBio>
 					</TeamMember>
-					{/* Add more team members as needed */}
 				</TeamSection>
 
 				{/* History */}
-				<SectionTitle>Our History</SectionTitle>
+				<SectionTitle>Our Story</SectionTitle>
 				<Paragraph>
-					Founded in 2023, [Website Name] was born out of a desire to simplify
-					the process of finding reliable insurance coverage. Our journey began
-					with a simple idea: to create a platform that is different from
-					others—a platform that genuinely cares about the people it serves.
+					Nicole’s journey began in the military and continued through her
+					graduate studies and clinical career. Inspired by the challenges her
+					own family faced navigating complex insurance policies, she set out to
+					build a platform that puts patient needs and privacy first. Launched
+					in 2023, SR Healthcare Solutions combines compassionate service with
+					advanced diagnostics and individualized support.
 				</Paragraph>
 
 				{/* Values and Credibility */}
 				<SectionTitle>Our Values</SectionTitle>
 				<ValueSection>
-					<Paragraph>At [Website Name], we are committed to:</Paragraph>
+					<Paragraph>
+						At SR Healthcare Solutions, we are committed to:
+					</Paragraph>
 					<ul>
 						<li>
-							Compassionate Service: We care deeply about our users and strive
-							to provide them with the best possible experience.
+							Compassionate Service: We genuinely care about our patients and
+							strive to make the insurance process easier and more transparent.
 						</li>
 						<li>
-							Transparency: No hidden fees, no hidden terms. Our goal is to help
-							you make informed decisions.
+							Privacy First: Your information belongs to you, and we never sell
+							or share it without consent.
 						</li>
 						<li>
-							Privacy First: Your personal information is yours. You decide when
-							and if you want to share it.
+							Transparency: No hidden fees or confusing jargon. We provide
+							clear, honest comparisons tailored to your unique conditions.
 						</li>
 						<li>
-							Integrity: We do not sell your information. Ever. We only partner
-							with trusted organizations that share our values.
+							Integrity: We partner only with trusted insurers and providers who
+							share our dedication to ethical patient care.
 						</li>
 					</ul>
 				</ValueSection>
 
 				{/* Credibility */}
-				<SectionTitle>Our Credibility</SectionTitle>
+				<SectionTitle>Our Partners</SectionTitle>
 				<Paragraph>
-					We are proud to partner with leading healthcare organizations and have
-					received recognition for our commitment to patient advocacy and
-					transparent practices. Our partnerships and certifications are a
-					testament to our dedication to building a platform you can trust.
-					{/* get the 11 providers and put their logos here */}
+					We proudly collaborate with leading healthcare organizations and
+					insurers to bring you reliable, up-to-date plan options. Our
+					partnerships ensure you receive expert guidance and access to
+					comprehensive coverage suited to your needs.
 				</Paragraph>
+				{/* TODO: Add partner logos here */}
 			</AboutContainer>
 		</BackgroundContainer>
 	);
 };
 
 export default About;
-
-
-// Purpose: Provides background information about the website, its mission, and the team.
-// Content:
-// Company Mission: A statement about what you do and why it matters.
-// Team Members: Photos and bios of key team members or contributors.
-// History: Brief background of how the site was founded or the organization’s history.
-// Values and Credibility: Any certifications, partnerships, or recognitions.

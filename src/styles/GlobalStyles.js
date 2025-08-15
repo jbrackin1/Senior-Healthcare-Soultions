@@ -15,7 +15,7 @@ html, body, #root {
   margin: 0;
   padding: 0;
  height: 100%;
-  overflow-x: hidden;
+
 }
 
   body {
@@ -155,7 +155,7 @@ html, body, #root {
   
     .table-wrapper {
   width: 100%;
-  overflow-x: auto;
+  
 }
 
 table {
@@ -258,5 +258,7 @@ td a {
 }
     
 `;
+
+
 
 export default GlobalStyles;

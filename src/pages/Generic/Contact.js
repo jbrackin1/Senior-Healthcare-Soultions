@@ -1,12 +1,9 @@
 /** @format */
 
-// Contact.js
-
-// src/pages/Contact.js
 import React from "react";
 import styled from "styled-components";
-import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
-import button from "../../components/ui/Global/everywhere/button";
+import { FaFacebook, FaTwitter, FaLinkedin,FaInstagram } from "react-icons/fa";
+import Button from "../../components/ui/Global/everywhere/button";
 import Input from "../../components/ui/Global/forms/Input";
 import TextArea from "../../components/ui/Global/forms/TextArea";
 
@@ -41,6 +38,11 @@ const ContactForm = styled.form`
 	gap: 1rem;
 	max-width: 600px;
 	margin: 0 auto;
+`;
+
+const Label = styled.label`
+	text-align: left;
+	font-weight: 600;
 `;
 
 const SocialMediaLinks = styled.div`
@@ -104,66 +106,133 @@ const MapContainer = styled.div`
 
 const Contact = () => {
 	return (
-		<ContactContainer>
-			<Section>
-				<SectionTitle>Contact Us</SectionTitle>
-				<ContactForm>
-					<Input type="text" placeholder="Your Name" required />
-					<Input type="email" placeholder="Your Email" required />
-					<Input type="tel" placeholder="Your Phone Number" />
-					<TextArea rows="5" placeholder="Your Message" required />
-					<button type="submit">Send Message</button>
+		<ContactContainer role="main">
+			<Section aria-labelledby="contact-form-heading">
+				<SectionTitle id="contact-form-heading">Contact Us</SectionTitle>
+				<ContactForm aria-label="Contact form">
+					<Label htmlFor="name">Your Name</Label>
+					<Input
+						id="name"
+						type="text"
+						required
+						aria-required="true"
+						aria-label="Your name"
+					/>
+
+					<Label htmlFor="email">Your Email</Label>
+					<Input
+						id="email"
+						type="email"
+						required
+						aria-required="true"
+						aria-label="Your email"
+					/>
+
+					<Label htmlFor="phone">Your Phone Number</Label>
+					<Input id="phone" type="tel" aria-label="Your phone number" />
+
+					<Label htmlFor="message">Your Message</Label>
+					<TextArea
+						id="message"
+						rows="5"
+						required
+						aria-required="true"
+						aria-label="Your message"
+					/>
+
+					<p style={{ fontSize: "0.875rem", color: "gray", textAlign: "left" }}>
+						<strong>Note:</strong> This form is not intended for sharing
+						sensitive medical information. Please avoid including personal
+						health details.
+					</p>
+
+					
+						<Label htmlFor="consent" style={{ fontSize: "0.875rem" }}>
+							<input
+								type="checkbox"
+								id="consent"
+								required
+								style={{ marginRight: "0.5rem" }}
+							/>
+							I consent to being contacted by a team member from
+							SeniorHealthcareSolutions.net.
+						</Label>
+
+					<Button type="submit" aria-label="Submit contact form">
+						Send Message
+					</Button>
 				</ContactForm>
 			</Section>
 
-			<Section>
-				<SectionTitle>Contact Information</SectionTitle>
+			<Section aria-labelledby="contact-info-heading">
+				<SectionTitle id="contact-info-heading">
+					Contact Information
+				</SectionTitle>
 				<ContactInfo>
-					<ContactInfoItem>Phone: 1-800-INSUREME</ContactInfoItem>
-					<ContactInfoItem>Email: support@insuranceco.com</ContactInfoItem>
+					<ContactInfoItem>Phone: (225) 269-9971</ContactInfoItem>
 					<ContactInfoItem>
-						Address: 123 Main Street, Suite 400, City, State ZIP
+						Email: nicole@louisianavoiceandswallow.com
 					</ContactInfoItem>
-					<ContactInfoItem>Office Hours: Mon-Fri, 9 AM - 5 PM</ContactInfoItem>
+					<ContactInfoItem>
+						Address: 2255 S. Burnside Ave, Gonzales, LA 70737
+					</ContactInfoItem>
+					<ContactInfoItem>
+						Typical response hours: Monday – Friday, 8 AM – 5 PM
+					</ContactInfoItem>
+					<ContactInfoItem>
+						Please use the form above or email us anytime — we’ll get back to
+						you as soon as possible.
+					</ContactInfoItem>
 				</ContactInfo>
 			</Section>
 
-			<Section>
-				<SectionTitle>Our Location</SectionTitle>
+			<Section aria-labelledby="map-heading">
+				<SectionTitle id="map-heading">Our Location</SectionTitle>
 				<MapContainer>
 					<iframe
-						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345093744!2d144.9537353153214!3d-37.81621897975195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf5772a8c8dd9e8e!2sInsurance%20Co.!5e0!3m2!1sen!2sus!4v1600000000000!5m2!1sen!2sus"
+						title="Our office location on map"
+						src="https://www.google.com/maps/place/Louisiana+Voice+and+Swallow+Solutions/@30.2144676,-90.923434,773m/data=!3m1!1e3!4m15!1m8!3m7!1s0x8626cbd28e97209f:0xe52ad53e22ee9b64!2sLouisiana+Voice+and+Swallow+Solutions!8m2!3d30.2144676!4d-90.9208591!10e2!16s%2Fg%2F11ndx3jd58!3m5!1s0x8626cbd28e97209f:0xe52ad53e22ee9b64!8m2!3d30.2144676!4d-90.9208591!16s%2Fg%2F11ndx3jd58?entry=ttu&g_ep=EgoyMDI1MDgwNS4wIKXMDSoASAFQAw%3D%3D"
 						allowFullScreen=""
 						loading="lazy"></iframe>
 				</MapContainer>
 			</Section>
 
-			<Section>
-				<SectionTitle>Follow Us</SectionTitle>
+			<Section aria-labelledby="follow-us-heading">
+				<SectionTitle id="follow-us-heading">Follow Us</SectionTitle>
 				<SocialMediaLinks>
 					<SocialIcon
-						href="https://facebook.com"
-						target="fill_in_the_blank"
-						rel="noopener noreferrer">
+						href="https://www.facebook.com/nicolewilliamsslp"
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label="Follow us on Facebook">
 						<FaFacebook />
 					</SocialIcon>
 					<SocialIcon
+						href="https://www.instagram.com/louisianavoiceandswallow/"
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label="Follow us on Instagram">
+						<FaInstagram />
+					</SocialIcon>
+					{/* <SocialIcon
 						href="https://twitter.com"
 						target="_blank"
-						rel="noopener noreferrer">
+						rel="noopener noreferrer"
+						aria-label="Follow us on Twitter">
 						<FaTwitter />
-					</SocialIcon>
+					</SocialIcon> */}
 					<SocialIcon
-						href="https://linkedin.com"
+						href="https://www.linkedin.com/company/louisianavoiceandswallowsolutions/"
 						target="_blank"
-						rel="noopener noreferrer">
+						rel="noopener noreferrer"
+						aria-label="Follow us on LinkedIn">
 						<FaLinkedin />
 					</SocialIcon>
 				</SocialMediaLinks>
 			</Section>
 
-			<Section>
-				<SectionTitle>Frequently Asked Questions</SectionTitle>
+			<Section aria-labelledby="faq-heading">
+				<SectionTitle id="faq-heading">Frequently Asked Questions</SectionTitle>
 				<FAQList>
 					<FAQItem>
 						<FAQQuestion>How can I contact customer support?</FAQQuestion>
@@ -175,10 +244,9 @@ const Contact = () => {
 					<FAQItem>
 						<FAQQuestion>What are your office hours?</FAQQuestion>
 						<FAQAnswer>
-							Our office hours are Monday to Friday, 9 AM to 5 PM.
+							We respond to messages Monday to Friday, 8 AM to 5 PM.
 						</FAQAnswer>
 					</FAQItem>
-					{/* Additional FAQs can be added here */}
 				</FAQList>
 			</Section>
 		</ContactContainer>
@@ -186,11 +254,3 @@ const Contact = () => {
 };
 
 export default Contact;
-
-// Purpose: Allows users to reach out for more information, support, or inquiries.
-// Content:
-// Contact Form: Fields for name, email, phone number, and a message.
-// Contact Information: Phone number, email address, physical address and office hours.
-// Map Integration: If there's a physical location, include a map.
-// Social Media Links: Icons linking to your social media pages.
-// FAQ Section: Short list of FAQs to help with common inquiries.

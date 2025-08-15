@@ -1,7 +1,5 @@
-# Load .env if you're using it
 from dotenv import load_dotenv
 load_dotenv()
-
 import sys
 import os 
 
